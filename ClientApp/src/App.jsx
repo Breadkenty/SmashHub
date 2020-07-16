@@ -4,7 +4,15 @@ import './custom.scss'
 export function App() {
   return (
     <>
-      <h1>hiiii</h1>
+      <nav>
+        <div>
+          {/* <img src={} /> */}
+          <div>
+            <button>Sign up</button>
+            <button>Log in</button>
+          </div>
+        </div>
+      </nav>
     </>
   )
 }
