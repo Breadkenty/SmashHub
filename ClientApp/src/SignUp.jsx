@@ -4,9 +4,9 @@ export function SignUp() {
     <div className="login-signup">
       <h3>Sign up</h3>
       <form>
-        <input type="text" placeholder="Display name" />
-        <input type="text" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <input className="bg-yellow" type="text" placeholder="Display name" />
+        <input className="bg-yellow" type="text" placeholder="Email" />
+        <input className="bg-yellow" type="password" placeholder="Password" />
       </form>
     </div>
   )

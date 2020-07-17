@@ -5,12 +5,12 @@ export function TopNav() {
   return (
     <nav>
       <div>
-        <button className="yellow-button">Submit a combo</button>
+        <button className="bg-yellow button">Submit a combo</button>
         <img src={logo} alt="Smash combos logo" />
 
         <div className="nav-buttons">
-          <button>Sign up</button>
-          <button>Log in</button>
+          <button className="white-text">Sign up</button>
+          <button className="white-text">Log in</button>
         </div>
       </div>
     </nav>

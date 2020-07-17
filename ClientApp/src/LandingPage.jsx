@@ -6,9 +6,9 @@ export function LandingPage() {
       <div className="landing-page-background">
         <div className="landing-page">
           <img src={SmashLogo} alt="smash ultimate logo" />
-          <h3>Combos</h3>
+          <h3 className="black-text">Combos</h3>
         </div>
-        <div className="click-to-start">
+        <div className="click-to-start bg-red">
           <h3>Click to continue</h3>
         </div>
       </div>

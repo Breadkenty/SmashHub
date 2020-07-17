@@ -8,19 +8,26 @@ h1, h2, h3 {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 4px;
+  color: white;
 }
 
 h3 {
   font-size: 1.2rem;
+}
+
+.small-text {
+  font-size: .7rem;
+}
+
+.black-text {
+  color: black;
+}
+
+.white-text {
   color: white;
 }
 
-.landing-page h3 {
-  color: black;
-}
-
 button {
-  color: black;
   font-weight: 800;
   font-size: .9rem;
   letter-spacing: 1px;
@@ -28,13 +35,10 @@ button {
 }
 
 nav button {
-  color: white;
   font-size: .8rem;
 }
 
-.click-to-start h3 {
-  color: white;
-}
+.click-to-start h3 {}
 
 input[type=text]::placeholder, input[type=password]::placeholder {
   color: black;

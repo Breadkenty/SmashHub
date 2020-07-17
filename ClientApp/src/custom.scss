@@ -12,12 +12,57 @@
 html {
   height: 100%;
   margin: 0;
+  padding: 0;
 }
 
 body {
   background-color: black;
 }
 
+.header-space {
+  padding-top: 55px;
+}
+
+.bg-yellow {
+  background-color: var(--yellow);
+}
+
+.bg-lightblack {
+  background-color: var(--lightblack);
+}
+
+.bg-red {
+  background-color: var(--red);
+}
+
+.bg-green {
+  background-color: var(--green);
+}
+
+.bg-blue {
+  background-color: var(--blue);
+}
+
+.bg-pink {
+  background-color: var(--pink);
+}
+
+.button {
+  border: none;
+  border-radius: 2px;
+  padding: 7px 15px;
+}
+
+.button-small {
+  height: 20px;
+  border: none;
+  border-radius: 2px;
+  padding: 2px 12px;
+}
+
+p {
+  margin: 0;
+}
 // nav bar
 
 nav {
@@ -108,7 +153,6 @@ h3 {
 
 form input {
   height: 40px;
-  background-color: (--yellow);
   border: none;
   border-radius: 0px;
   margin-bottom: 24px;
@@ -117,37 +161,21 @@ form input {
 
 input[type='text'] {
   height: 40px;
-  background-color: var(--yellow);
   border: none;
   border-radius: 0px;
   padding: 10px;
-  margin: 24px 0;
-}
-
-.yellow-button {
-  background-color: var(--yellow);
-  border: none;
-  padding: 7px 15px;
-}
-
-.red-button {
-  background-color: var(--red);
-  border: none;
 }
 
 // Character select
 .character-select {
   min-height: 100%;
   width: 100vw;
-  margin-bottom: -120px;
 }
 
 .character-select header {
-  padding-top: 55px;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
-  // align-items: center;
-  // background-color: black;
 }
 
 .characters {
@@ -181,11 +209,117 @@ input[type='text'] {
   outline-offset: -3px;
 }
 
+// character combos
+.character-header-large {
+  width: 100vw;
+  position: fixed;
+  z-index: 1;
+  height: 150px;
+  background-color: black;
+  background-position: 175% 20%;
+  background-size: 75%;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  padding-left: 48px;
+}
+
+.search-bar {
+  width: 100%;
+  position: fixed;
+  padding: 162px 10px 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-bar > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar button {
+  height: 30px;
+  padding: 5px;
+  margin: 5px;
+  display: flex;
+}
+
+.search-bar input {
+  width: 175px;
+}
+
+.character-combos section {
+  padding-top: 214px;
+}
+
+.character-combos-combo {
+  display: flex;
+  border-bottom: 1px solid var(--lightblack);
+}
+
+.vote-container {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 10px solid var(--lightblack);
+}
+
+.vote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.character-combos-combo-information {
+  height: 100%;
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.character-combos-combo-information header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.character-combos-combo-information footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.combo-inputs {
+  margin: 8px 0;
+}
+
+.combo-input {
+  width: 50px;
+  height: 50px;
+  margin: 3px;
+  border: none;
+  background-color: black;
+  background-position: center;
+  background-size: cover;
+}
+
 @media screen and (min-width: 1200px) {
   .characters {
     display: inline-flex;
     align-items: flex-start;
     flex-flow: wrap;
     max-width: 1024px;
+  }
+  .character-header-large {
+    background-position: 100% 20%;
+    background-size: initial;
+    padding-left: 300px;
+  }
+
+  .search-bar input {
+    width: 700px;
+    margin-left: 80px;
   }
 }
