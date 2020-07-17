@@ -19,9 +19,10 @@ namespace Smash_Combos
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).
-                          UseUrls("http://0.0.0.0:5000/;https://0.0.0.0:5001").
-                          Build();
+            var host = CreateWebHostBuilder(args).Build();
+            // var host = CreateWebHostBuilder(args).
+            //               UseUrls("http://0.0.0.0:5000/;https://0.0.0.0:5001").
+            //               Build();
 
             using (var scope = host.Services.CreateScope())
             {
