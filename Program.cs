@@ -49,9 +49,19 @@ namespace Smash_Combos
             WebHostExtensions.WaitForShutdown(host);
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        // public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        //     WebHost.CreateDefaultBuilder(args)
+        //         .UseStartup<Startup>();
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args);
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                builder = builder.UseUrls("http://0.0.0.0:5000/;https://0.0.0.0:5001");
+            }
+            return builder.UseStartup<Startup>();
+        }
 
         public static void Notify(string message)
         {
