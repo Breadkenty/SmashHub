@@ -9,3 +9,42 @@ h1, h2, h3 {
   text-transform: uppercase;
   letter-spacing: 4px;
 }
+
+h3 {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.landing-page h3 {
+  color: black;
+}
+
+button {
+  color: black;
+  font-weight: 800;
+  font-size: .9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+nav button {
+  color: white;
+  font-size: .8rem;
+}
+
+.click-to-start h3 {
+  color: white;
+}
+
+input[type=text]::placeholder, input[type=password]::placeholder {
+  color: black;
+  opacity: 50%;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+input[type=text] {
+  color: black;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
