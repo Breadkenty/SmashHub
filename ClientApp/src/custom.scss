@@ -60,6 +60,10 @@ body {
   padding: 2px 12px;
 }
 
+a:hover {
+  text-decoration: red;
+}
+
 p {
   margin: 0;
 }
@@ -83,7 +87,7 @@ nav > div {
   padding: 10px;
 }
 
-nav > div > img {
+nav > div img {
   height: 30px;
 }
 
@@ -293,6 +297,8 @@ input[type='text'] {
 
 .combo-inputs {
   margin: 8px 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .combo-input {
@@ -303,6 +309,7 @@ input[type='text'] {
   background-color: black;
   background-position: center;
   background-size: cover;
+  cursor: default;
 }
 
 @media screen and (min-width: 1200px) {
