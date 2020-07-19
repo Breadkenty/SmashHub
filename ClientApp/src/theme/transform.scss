@@ -37,6 +37,7 @@ input[type='text'] {
 }
 
 iframe {
+  position: fixed;
   margin-top: 50px;
   height: calc(100vw * 0.56);
   width: 100vw;
@@ -300,15 +301,17 @@ nav > div button {
       color: white;
     }
   }
-
-  article > header {
-    display: flex;
-    align-items: center;
-    padding: 24px 0;
-
-    .character-combo-detail {
+  article {
+    padding-top: 500px;
+    header {
       display: flex;
       align-items: center;
+      padding: 24px 0;
+
+      .character-combo-detail {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 
@@ -381,6 +384,7 @@ nav > div button {
     padding-left: 300px;
   }
   iframe {
+    padding-top: 775px;
     margin-top: 100px;
     height: calc(100vw * 0.56);
     width: 100vw;
