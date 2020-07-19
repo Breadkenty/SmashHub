@@ -302,7 +302,8 @@ nav > div button {
     }
   }
   article {
-    padding-top: 500px;
+    margin-top: calc((100vw * 0.56) + 50px);
+
     header {
       display: flex;
       align-items: center;
@@ -384,13 +385,17 @@ nav > div button {
     padding-left: 300px;
   }
   iframe {
-    padding-top: 775px;
-    margin-top: 100px;
+    margin-top: 99px;
     height: calc(100vw * 0.56);
     width: 100vw;
   }
   .search-bar input {
     width: 700px;
     margin-left: 80px;
+  }
+  .character-combo {
+    article {
+      margin-top: calc((100vw * 0.56) + 100px);
+    }
   }
 }

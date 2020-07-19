@@ -16,12 +16,12 @@ export function CharacterCombo() {
         <h1>Peach</h1>
       </header>
       <iframe
+        title="down tilt ground float nair"
         width="560"
         height="315"
         src="https://www.youtube.com/embed/01nFQmMcVlc?autoplay=1&start=438&mute=1"
         frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
       />
       <article>
         <header>
@@ -134,49 +134,49 @@ export function CharacterCombo() {
         <section className="matchup">
           <h4>Good</h4>
           <div className="bg-green">
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
+            <img src={peachMatchup} alt="peach match up" />
           </div>
         </section>
         <section className="matchup">
           <h4>Bad</h4>
           <div className="bg-red">
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
-            <img src={peachMatchup} />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
+            <img src={peachMatchup} alt="peach-matchup" />
           </div>
         </section>
         <section className="notes">
