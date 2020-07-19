@@ -1,0 +1,83 @@
+@import url('https://use.typekit.net/cvn7tao.css');
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: white;
+}
+
+.character-header h1 {
+  font-size: 1.2rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+.small-text {
+  font-size: 0.7rem;
+}
+
+.black-text {
+  color: black;
+}
+
+.white-text {
+  color: white;
+}
+
+button,
+.tag {
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+nav button {
+  font-size: 0.8rem;
+}
+
+input[type='text']::placeholder,
+input[type='password']::placeholder {
+  color: black;
+  opacity: 50%;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+input[type='text'] {
+  color: black;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.character-combo {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+  h5 {
+    font-size: 0.9rem;
+  }
+}
+
+.difficulty-button {
+  h3 {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: white;
+  }
+}

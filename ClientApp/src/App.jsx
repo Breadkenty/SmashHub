@@ -1,8 +1,9 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
 
-import './custom.scss'
-import './typeface.css'
+import './theme/typeface.scss'
+import './theme/transform.scss'
+import './theme/colors.scss'
 
 import { TopNav } from './components/TopNav'
 

@@ -52,9 +52,9 @@ export function Character() {
               <Link to="/characters/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
-              <button className="bg-pink button-small text-white small-text">
-                Hard
-              </button>
+              <div className="difficulty-button bg-pink">
+                <h3>Hard</h3>
+              </div>
             </header>
             <div className="combo-inputs">
               <div
