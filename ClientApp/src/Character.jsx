@@ -13,7 +13,7 @@ export function Character() {
           backgroundImage: `url(${peach})`,
         }}
       >
-        <h1>PeachHH</h1>
+        <h1>Peach</h1>
       </header>
       <div className="search-bar bg-lightblack">
         <input className="bg-yellow" type="text" placeholder="Search" />

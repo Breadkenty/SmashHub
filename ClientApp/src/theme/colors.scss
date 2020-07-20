@@ -83,6 +83,12 @@ nav {
   background-color: black;
 }
 
+textarea {
+  background-color: black;
+
+  color: white;
+}
+
 .character-combo {
   color: white;
   fill: white;
@@ -92,7 +98,13 @@ nav {
     background-color: var(--lightblack);
   }
 
-  .comments {
+  .comment {
     background-color: var(--lightblack);
+    border-color: black;
+  }
+
+  .add-comment {
+    background-color: var(--lightblack);
+    border-color: black;
   }
 }

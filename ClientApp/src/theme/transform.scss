@@ -327,7 +327,6 @@ nav > div button {
     margin: 0;
     display: flex;
     align-items: center;
-
     h4 {
       min-width: 71px;
       padding: 10px;
@@ -348,6 +347,7 @@ nav > div button {
   }
 
   .notes {
+    border-top: 10px solid var(--lightblack);
     padding: 16px;
 
     h4 {
@@ -355,10 +355,28 @@ nav > div button {
     }
   }
 
+  .add-comment {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid;
+
+    textarea {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      width: calc(100vw - 32px);
+    }
+    button {
+      margin-top: 16px;
+      float: right;
+    }
+  }
+
   .comment {
     display: flex;
     padding: 24px 16px 24px 0;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid;
 
     h5 {
       margin-bottom: 16px;

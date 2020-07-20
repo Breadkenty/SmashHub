@@ -19,9 +19,10 @@ export function CharacterCombo() {
         title="down tilt ground float nair"
         width="560"
         height="315"
-        src="https://www.youtube.com/embed/01nFQmMcVlc?autoplay=1&start=438&mute=1"
+        src="https://www.youtube.com/embed/01nFQmMcVlc?autoplay=1&start=438&mute=1&playsinline=1"
         frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        donotallowfullscreen
       />
       <article>
         <header>
@@ -186,6 +187,14 @@ export function CharacterCombo() {
             mind, when doing the nair, you have to release the direction as soon
             as you get the momentum of going forward.
           </p>
+        </section>
+        <section className="add-comment">
+          <form>
+            <textarea placeholder="Add a comment" />
+            <button className="bg-yellow button" type="submit">
+              Submit
+            </button>
+          </form>
         </section>
         <section className="comments ">
           <div className="comment">
