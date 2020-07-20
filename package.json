@@ -1,4 +1,5 @@
 {
   "name": "Smash_Combos",
-  "private": "true"
+  "private": "true",
+  "dependencies": {}
 }

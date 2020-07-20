@@ -1,0 +1,46 @@
+.button {
+  max-width: 200px;
+  border: none;
+  border-radius: 2px;
+  padding: 7px 15px;
+}
+
+.button-blank {
+  background: none;
+  border: none;
+  padding: 7px 15px;
+}
+
+.button-small {
+  height: 20px;
+  border: none;
+  border-radius: 2px;
+  padding: 2px 12px;
+  display: flex;
+  align-items: center;
+}
+
+input {
+  height: 40px;
+  border: none;
+  border-radius: 0px;
+  padding: 10px;
+}
+
+.tag {
+  height: 20px;
+  width: 70px;
+
+  border-radius: 2px;
+
+  padding: 5px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}

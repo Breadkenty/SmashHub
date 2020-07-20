@@ -1,0 +1,20 @@
+input[type='text'],
+input[type='password'] {
+  padding: 10px;
+
+  border: none;
+  border-radius: 0px;
+
+  color: black;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+input[type='text']::placeholder,
+input[type='password']::placeholder,
+input[type='number']::placeholder {
+  color: black;
+  opacity: 50%;
+  font-weight: 800;
+  letter-spacing: 1px;
+}

@@ -1,0 +1,9 @@
+@mixin flexCenter() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin transition() {
+  transition: (all 0.15s ease-out 0s);
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import character from './graphics/characters/Peach/Peach-1.png'
+import character from '../graphics/characters/Peach/Peach-1.png'
 export function Characters() {
   return (
     <div className="character-select header-space">

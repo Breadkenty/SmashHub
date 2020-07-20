@@ -1,0 +1,235 @@
+.submit-combo {
+  padding-top: 50px;
+  header {
+    padding: 24px;
+  }
+
+  section {
+    fieldset {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    label {
+      margin-top: 24px;
+      text-align: center;
+
+      width: 100%;
+    }
+
+    .select-character {
+      .character {
+        padding: 24px;
+
+        background-repeat: no-repeat;
+        background-position: -20% 20%;
+      }
+    }
+
+    .title {
+      input {
+        width: 100%;
+      }
+    }
+
+    .video {
+      input {
+        width: 100%;
+      }
+    }
+
+    // Duration
+
+    .duration {
+      display: flex;
+      justify-content: center;
+
+      fieldset {
+        width: 175px;
+
+        margin-right: 8px;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        label {
+          padding: 0;
+          text-align: center;
+        }
+
+        div {
+          display: flex;
+          align-items: center;
+
+          input {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    // Difficulty
+
+    .difficulty {
+      div {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 8px;
+
+        button {
+          max-width: none;
+        }
+      }
+    }
+
+    // True combo
+
+    .true-combo {
+      width: 100%;
+
+      div {
+        display: flex;
+        justify-content: center;
+
+        button {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    // Damage
+    .damage {
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input {
+          width: 60px;
+          height: 100px;
+
+          font-size: 2rem;
+        }
+      }
+    }
+
+    // Combo Input
+
+    .combo-input {
+      .combo-input-container {
+        padding: 16px 24px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .combo-inputs {
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      .input-categories {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+        button {
+          padding: 8px 4px;
+          background: none;
+          border: 1px solid black;
+
+          color: white;
+          font-weight: 800;
+          font-size: 0.8rem;
+          text-transform: uppercase;
+        }
+      }
+
+      .input-controller {
+        height: 450px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .controller-buttons {
+          margin-top: 48px;
+
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 20px;
+          grid-template-row: 1fr 1fr 1fr;
+
+          .combo-input {
+            width: 100px;
+            height: 100px;
+
+            border: none;
+
+            background-color: black;
+            background-position: center;
+            background-size: cover;
+          }
+        }
+      }
+    }
+
+    .notes {
+      div {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        textarea {
+          width: 100%;
+          height: 200px;
+          margin-bottom: 24px;
+
+          background-color: black;
+          border: none;
+          border-radius: 5px;
+
+          padding: 16px;
+        }
+
+        button {
+          // align-self: flex-end;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .submit-combo {
+    padding: 50px 400px;
+
+    section {
+      .select-character {
+        .character {
+          background-position: 100% 20%;
+
+          select {
+            padding-left: 100px;
+            color: white;
+            background-color: black;
+
+            border: none;
+
+            font-size: 1.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+          }
+        }
+      }
+    }
+  }
+}

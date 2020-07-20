@@ -1,51 +1,64 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Route, Switch } from 'react-router'
 
-import './theme/typeface.scss'
-import './theme/transform.scss'
-import './theme/colors.scss'
+import './style/main.scss'
 
 import { TopNav } from './components/TopNav'
 
-import { LandingPage } from './LandingPage'
+import { LandingPage } from './pages/LandingPage'
 
-import { SignUp } from './SignUp'
-import { LogIn } from './LogIn'
+import { SignUp } from './pages/SignUp'
+import { LogIn } from './pages/LogIn'
 
-import { Character } from './Character'
-import { Characters } from './Characters'
+import { Character } from './pages/Character'
+import { Characters } from './pages/Characters'
 
-import { CharacterCombo } from './CharacterCombo'
+import { CharacterCombo } from './pages/CharacterCombo'
 
-import { SubmitCombo } from './SubmitCombo'
+import { SubmitCombo } from './pages/SubmitCombo'
+
+import { SideNav } from './components/SideNav'
 
 export function App() {
+  const [sideNavDisplay, setSideNavDisplay] = useState(false)
+
+  const handleSideBar = () => {
+    if (sideNavDisplay) {
+      setSideNavDisplay(false)
+    } else {
+      setSideNavDisplay(true)
+    }
+  }
+
   return (
     <>
-      <TopNav />
-      <Switch>
-        <Route exact path="/signup">
-          <SignUp />
-        </Route>
-        <Route exact path="/login">
-          <LogIn />
-        </Route>
-        <Route exact path="/">
-          <LandingPage />
-        </Route>
-        <Route exact path="/characters">
-          <Characters />
-        </Route>
-        <Route exact path="/characters/peach">
-          <Character />
-        </Route>
-        <Route exact path="/characters/peach/2">
-          <CharacterCombo />
-        </Route>
-        <Route exact path="/submit">
-          <SubmitCombo />
-        </Route>
-      </Switch>
+      <SideNav handleSideBar={handleSideBar} sideNavDisplay={sideNavDisplay} />
+      <div className={sideNavDisplay ? 'blur' : 'none'}>
+        <TopNav handleSideBar={handleSideBar} />
+        <Switch>
+          <Route exact path="/signup">
+            <SignUp />
+          </Route>
+          <Route exact path="/login">
+            <LogIn />
+          </Route>
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
+          <Route exact path="/characters">
+            <Characters />
+          </Route>
+          <Route exact path="/characters/peach">
+            <Character />
+          </Route>
+          <Route exact path="/characters/peach/2">
+            <CharacterCombo />
+          </Route>
+          <Route exact path="/submit">
+            <SubmitCombo />
+          </Route>
+        </Switch>
+      </div>
     </>
   )
 }

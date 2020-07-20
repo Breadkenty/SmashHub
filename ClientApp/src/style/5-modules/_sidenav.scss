@@ -1,0 +1,38 @@
+.side-nav {
+  position: fixed;
+  z-index: 2;
+
+  @include transition();
+  height: 100vh;
+  padding: 16px;
+
+  background-color: black;
+
+  display: flex;
+  flex-direction: column;
+
+  i {
+    align-self: flex-end;
+  }
+
+  img {
+    padding: 16px 0;
+    width: 100px;
+    align-self: center;
+  }
+  ul {
+    border-top: 1px solid $grey;
+    margin-top: 24px;
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-top: 16px;
+    }
+  }
+}
+
+.blur {
+  background-color: black;
+  opacity: 0.2;
+}

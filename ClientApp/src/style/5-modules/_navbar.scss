@@ -1,0 +1,31 @@
+nav {
+  background-color: $grey;
+
+  padding: 16px;
+
+  width: 100vw;
+  height: 50px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: fixed;
+  z-index: 1;
+  i {
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  img {
+    height: 40px;
+  }
+
+  button {
+    margin-right: 8px;
+  }
+}
+
+.header-space {
+  padding-top: 55px;
+}

@@ -1,0 +1,162 @@
+.character-combo {
+  .character-header {
+    position: fixed;
+    z-index: 0;
+
+    margin: 50px 0px 0px 0px;
+    padding-left: 16px;
+
+    height: 80px;
+    width: 100%;
+
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: 175% 20%;
+    background-size: 75%;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .video-container {
+    background-color: $grey;
+
+    iframe {
+      position: fixed;
+      margin-top: 130px;
+      height: calc(100vw * 0.56);
+      width: 100vw;
+    }
+  }
+
+  article {
+    padding-top: calc((100vw * 0.56) + 150px);
+
+    header {
+      display: flex;
+
+      .vote {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+
+        svg {
+          fill: white;
+        }
+
+        h3 {
+          color: white;
+        }
+      }
+
+      .detail {
+        padding: 16px;
+      }
+      .detail > div {
+        width: 250px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    .combo-inputs {
+      padding: 24px 16px;
+    }
+
+    .notes {
+      padding: 24px 16px;
+
+      h4 {
+        margin-bottom: 8px;
+      }
+    }
+
+    .add-comment {
+      width: 100vw;
+
+      padding: 16px;
+
+      display: flex;
+      flex-direction: column;
+
+      textarea {
+        margin-bottom: 16px;
+        padding: 8px;
+
+        background-color: black;
+        border: none;
+      }
+
+      button {
+        align-self: flex-end;
+      }
+    }
+
+    .comment {
+      display: flex;
+      border-bottom: 1px solid $grey;
+
+      .vote {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          fill: white;
+        }
+
+        h3 {
+          color: white;
+        }
+      }
+
+      .body {
+        padding: 16px 16px 24px 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .character-combo {
+    .character-header {
+      padding-left: 20vw;
+
+      height: 80px;
+
+      background-position: 90% 20%;
+      background-size: 25%;
+    }
+
+    .video-container {
+      position: fixed;
+
+      margin-top: 130px;
+
+      width: 100vw;
+      height: calc(50vw * 0.56);
+
+      background-color: $grey;
+
+      display: flex;
+      justify-content: center;
+
+      iframe {
+        position: fixed;
+
+        margin-top: 0px;
+
+        height: calc(50vw * 0.56);
+        width: 50%;
+      }
+    }
+
+    article {
+      padding-top: calc((50vw * 0.56) + 150px);
+    }
+  }
+}

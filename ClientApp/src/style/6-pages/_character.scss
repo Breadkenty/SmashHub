@@ -1,0 +1,310 @@
+.character-combos {
+  padding-top: 50px;
+
+  .character-header {
+    position: fixed;
+    z-index: 1;
+
+    padding: 0px 0px 0px 30px;
+
+    height: 150px;
+    width: 100%;
+
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: 175% 20%;
+    background-size: 75%;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .search-container {
+    position: fixed;
+    z-index: 1;
+    padding: 8px 0;
+    margin-top: 150px;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    input {
+      width: 90vw;
+      margin-bottom: 8px;
+    }
+
+    button {
+      margin-right: 8px;
+    }
+  }
+
+  section {
+    padding-top: 250px;
+    .combo {
+      display: flex;
+      border-bottom: 1px solid $grey;
+
+      .vote {
+        padding: 16px 8px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .information {
+        width: 100%;
+        padding: 16px;
+        background-color: black;
+
+        display: flex;
+        flex-direction: column;
+
+        header {
+          width: 100%;
+          padding-left: 0px;
+
+          display: flex;
+          justify-content: space-between;
+          h3 {
+            margin-bottom: 8px;
+          }
+        }
+
+        footer {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .character-combos {
+    .character-header {
+      background-position: 100% 20%;
+      background-size: initial;
+      padding-left: 300px;
+    }
+
+    .search-container {
+      padding: 16px 24px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+
+      input {
+        width: 400px;
+        margin: 0 16px;
+      }
+
+      button {
+        margin-right: 8px;
+      }
+    }
+
+    section {
+      padding-top: 220px;
+      .information {
+        header {
+          flex-direction: row;
+        }
+      }
+    }
+  }
+}
+
+// .character-combos {
+//   .character-header-large {
+//     background-color: black;
+//     width: 100vw;
+//     position: fixed;
+//     z-index: 0;
+//     height: 150px;
+//     background-position: 175% 20%;
+//     background-size: 75%;
+
+//     display: flex;
+//     align-items: center;
+//     padding-left: 48px;
+//   }
+
+// }
+
+// .search-bar {
+//   width: 100%;
+//   position: fixed;
+//   padding: 162px 10px 12px;
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+// .search-bar > div {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .search-bar button {
+//   height: 30px;
+//   padding: 5px;
+//   margin: 5px;
+//   display: flex;
+// }
+
+// .search-bar input {
+//   width: 175px;
+// }
+
+// .character-combos section {
+//   padding-top: 214px;
+// }
+
+// .character-combos-combo {
+//   display: flex;
+// }
+
+// .vote-container {
+//   padding: 10px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .vote {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+// .character-combos-combo-information {
+//   height: 100%;
+//   width: 100%;
+//   padding: 24px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+// }
+
+// .character-combos-combo-information header {
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+// .character-combos-combo-information footer {
+//   display: flex;
+//   justify-content: flex-end;
+// }
+
+// .difficulty-button {
+//   height: 25px;
+//   width: 70px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 10px;
+//   padding: 5px 10px;
+//   border-radius: 2px;
+// }
+
+// .vote {
+//   padding: 0 20px;
+// }
+
+// .character-combo {
+//   .vote {
+//     svg {
+//       fill: white;
+//     }
+//     h3 {
+//       color: white;
+//     }
+//   }
+//   article {
+//     margin-top: calc((100vw * 0.56) + 50px);
+
+//     header {
+//       display: flex;
+//       align-items: center;
+//       padding: 24px 0;
+
+//       .character-combo-detail {
+//         display: flex;
+//         align-items: center;
+//       }
+//     }
+//   }
+
+//   .combo-inputs {
+//     margin: 0;
+//     padding: 24px 24px;
+//     display: flex;
+//     flex-wrap: wrap;
+//   }
+
+//   .matchup {
+//     margin: 0;
+//     display: flex;
+//     align-items: center;
+//     h4 {
+//       min-width: 71px;
+//       padding: 10px;
+//       margin: 0;
+//       text-align: center;
+//     }
+//     div {
+//       width: 100%;
+//       min-height: 38px;
+//       display: flex;
+//       align-items: center;
+//       flex-wrap: wrap;
+//       padding: 8px;
+//       img {
+//         height: 25px;
+//       }
+//     }
+//   }
+
+//   .notes {
+//     border-top: 10px solid var(--lightblack);
+//     padding: 16px;
+
+//     h4 {
+//       margin-bottom: 16px;
+//     }
+//   }
+
+//   .add-comment {
+//     padding: 16px;
+//     display: flex;
+//     justify-content: center;
+//     border-bottom: 1px solid;
+
+//     textarea {
+//       padding: 8px;
+//       border-radius: 5px;
+//       border: none;
+//       width: calc(100vw - 32px);
+//     }
+//     button {
+//       margin-top: 16px;
+//       float: right;
+//     }
+//   }
+
+//   .comment {
+//     display: flex;
+//     padding: 24px 16px 24px 0;
+//     border-bottom: 1px solid;
+
+//     h5 {
+//       margin-bottom: 16px;
+//     }
+//   }
+// }
