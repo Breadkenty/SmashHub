@@ -13,7 +13,7 @@ export function CharacterCombo() {
           backgroundImage: `url(${peach})`,
         }}
       >
-        <h1>Peach</h1>
+        <h1>Peachhh</h1>
       </header>
       <iframe
         title="down tilt ground float nair"
