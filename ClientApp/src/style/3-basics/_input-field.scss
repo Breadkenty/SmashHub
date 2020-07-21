@@ -1,5 +1,6 @@
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+input[type='search'] {
   padding: 10px;
 
   border: none;
@@ -12,7 +13,8 @@ input[type='password'] {
 
 input[type='text']::placeholder,
 input[type='password']::placeholder,
-input[type='number']::placeholder {
+input[type='number']::placeholder,
+input[type='search']::placeholder {
   color: black;
   opacity: 50%;
   font-weight: 800;

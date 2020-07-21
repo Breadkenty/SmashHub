@@ -45,7 +45,7 @@ export function App() {
           <Route exact path="/">
             <Characters />
           </Route>
-          <Route exact path="/peach">
+          <Route exact path="/:character">
             <Character />
           </Route>
           <Route exact path="/peach/2">

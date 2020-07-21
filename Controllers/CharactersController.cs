@@ -31,11 +31,17 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Characters
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters(string filter)
         {
-            // Uses the database context in `_context` to request all of the Characters and
-            // return them as a JSON array.
-            return await _context.Characters.ToListAsync();
+            if (filter == null)
+            {
+                return await _context.Characters.ToListAsync();
+
+            }
+            else
+            {
+                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter)).ToListAsync();
+            }
         }
 
         // GET: api/Characters/5
