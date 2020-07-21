@@ -13,7 +13,9 @@ export function Character() {
   const id = params.characterId
 
   const [character, setCharacter] = useState({})
+  const [combos, setCombos] = useState([])
 
+  console.log(combos)
   // Set with example inputs
   const [inputs, setInputs] = useState(
     'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional jabBasic thenConditional releaseConditional'
@@ -26,7 +28,7 @@ export function Character() {
       .then(response => response.json())
       .then(apiData => {
         setCharacter(apiData)
-        console.log(apiData)
+        setCombos(apiData.combos)
       })
   }
 
@@ -54,53 +56,57 @@ export function Character() {
       </div>
 
       <section className="combos">
-        <div className="combo">
-          <div className="vote bg-yellow">
-            <svg
-              aria-hidden="true"
-              className="m0 svg-icon iconArrowUpLg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-            >
-              <path d="M2 26h32L18 10 2 26z"></path>
-            </svg>
-            <h3 className="black-text">42</h3>
-            <svg
-              aria-hidden="true"
-              className="m0 svg-icon iconArrowDownLg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-            >
-              <path d="M2 10h32L18 26 2 10z"></path>
-            </svg>
-          </div>
-
-          <div className="information">
-            <header>
-              <Link to={`/character/${id}/1`}>
-                <h3>Down-tilt Ground Float Nair</h3>
-              </Link>
-              <div className="tag bg-pink white-text">Hard</div>
-            </header>
-
-            <div className="combo-inputs">
-              {inputsAsArray.map(input => (
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
+        {combos.map(combo => (
+          <div className="combo">
+            <div className="vote bg-yellow">
+              <svg
+                aria-hidden="true"
+                className="m0 svg-icon iconArrowUpLg"
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+              >
+                <path d="M2 26h32L18 10 2 26z"></path>
+              </svg>
+              <h3 className="black-text">{combo.netVote}</h3>
+              <svg
+                aria-hidden="true"
+                className="m0 svg-icon iconArrowDownLg"
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+              >
+                <path d="M2 10h32L18 26 2 10z"></path>
+              </svg>
             </div>
 
-            <footer>
-              <p className="white-text">Posted by Breadkenty 2 hours ago</p>
-            </footer>
+            <div className="information">
+              <header>
+                <Link to={`/character/${id}/1`}>
+                  <h3>{combo.title}</h3>
+                </Link>
+                <div className="tag bg-pink white-text">{combo.difficulty}</div>
+              </header>
+
+              <div className="combo-inputs">
+                {combo.comboInput.split(' ').map(input => (
+                  <div
+                    className="combo-input"
+                    style={{
+                      backgroundImage: `url(${allComboInputs[input]})`,
+                    }}
+                  ></div>
+                ))}
+              </div>
+
+              <footer>
+                <p className="white-text">
+                  Posted by Breadkenty {combo.datePosted}
+                </p>
+              </footer>
+            </div>
           </div>
-        </div>
+        ))}
       </section>
     </div>
   )

@@ -408,7 +408,7 @@ VALUES
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
 VALUES
-  ('14', '2020-07-20', 'Down throw bair', 'HO3gLgWx_i4', '115', '116', 'grabBasic thenConditional downThrow thenCondtional shortHop backAerial', true, 'easy', 13, 'This gombo is great', 22);
+  ('14', '2020-07-20', 'Down throw bair', 'HO3gLgWx_i4', '115', '116', 'grabBasic thenConditional downThrow thenConditional shortHop backAerial', true, 'easy', 13, 'This gombo is great', 22);
 
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
@@ -418,7 +418,7 @@ VALUES
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
 VALUES
-  ('14', '2020-07-12', 'Ground Float Nair', 'HO3gLgWx_i4', '0', '2', 'forwardFlick thenConditional holdConditional downMove andConditional fullHop thenConditional flickForward neutralAerial', true, 'hard', 8, 'This combo is phenomenal', 2);
+  ('14', '2020-07-12', 'Ground Float Nair', 'HO3gLgWx_i4', '0', '2', 'forwardFlick thenConditional holdConditional downMove andConditional fullHop thenConditional forwardFlick neutralAerial', true, 'hard', 8, 'This combo is phenomenal', 2);
 
 
 
@@ -430,7 +430,7 @@ VALUES
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
 VALUES
-  ('8', '2020-05-21', 'Some Fox Combo 2', 'HO3gLgWx_i4', '109', '111', 'flickForward thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
+  ('8', '2020-05-21', 'Some Fox Combo 2', 'HO3gLgWx_i4', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
 
 
             
