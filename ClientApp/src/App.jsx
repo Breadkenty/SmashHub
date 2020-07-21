@@ -5,8 +5,6 @@ import './style/main.scss'
 
 import { TopNav } from './components/TopNav'
 
-import { LandingPage } from './pages/LandingPage'
-
 import { SignUp } from './pages/SignUp'
 import { LogIn } from './pages/LogIn'
 
@@ -43,15 +41,12 @@ export function App() {
             <LogIn />
           </Route>
           <Route exact path="/">
-            <LandingPage />
-          </Route>
-          <Route exact path="/characters">
             <Characters />
           </Route>
-          <Route exact path="/characters/peach">
+          <Route exact path="/peach">
             <Character />
           </Route>
-          <Route exact path="/characters/peach/2">
+          <Route exact path="/peach/2">
             <CharacterCombo />
           </Route>
           <Route exact path="/submit">

@@ -9,100 +9,100 @@ export function Characters() {
           <input className="bg-yellow" type="text" placeholder="Search" />
         </header>
         <div className="characters">
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
-          <Link to="/characters/peach">
+          <Link to="/peach">
             <img src={character} alt="peach's portrait" />
           </Link>
         </div>

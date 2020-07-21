@@ -50,7 +50,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
@@ -155,7 +155,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
@@ -260,7 +260,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
@@ -365,7 +365,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
@@ -470,7 +470,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
@@ -575,7 +575,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
@@ -680,7 +680,7 @@ export function Character() {
 
           <div className="information">
             <header>
-              <Link to="/characters/peach/2">
+              <Link to="/peach/2">
                 <h3>Down-tilt Ground Float Nair</h3>
               </Link>
               <div className="tag bg-pink white-text">Hard</div>
