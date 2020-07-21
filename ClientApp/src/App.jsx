@@ -45,10 +45,10 @@ export function App() {
           <Route exact path="/">
             <Characters />
           </Route>
-          <Route exact path="/:character">
+          <Route exact path="/character/:characterId">
             <Character />
           </Route>
-          <Route exact path="/peach/2">
+          <Route exact path="/character/:characterId/:comboId">
             <CharacterCombo />
           </Route>
           <Route exact path="/submit">

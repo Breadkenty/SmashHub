@@ -40,7 +40,7 @@ namespace Smash_Combos.Controllers
             }
             else
             {
-                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter)).ToListAsync();
+                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter) || character.VariableName.ToLower().Contains(filter)).ToListAsync();
             }
         }
 

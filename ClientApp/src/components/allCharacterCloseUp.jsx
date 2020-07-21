@@ -78,7 +78,7 @@ import Terry from '../graphics/characters/Terry/Terry-1.png'
 import Byleth from '../graphics/characters/Byleth/Byleth-1.png'
 import MinMin from '../graphics/characters/MinMin/MinMin-1.png'
 
-export const allCharacters = {
+export const allCharacterCloseUp = {
   Mario,
   DonkeyKong,
   Link,

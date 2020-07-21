@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import { allCharacters } from '../components/allCharacters'
+import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 
 export function Characters() {
   let [characters, setCharacters] = useState([])
@@ -46,9 +46,9 @@ export function Characters() {
       <h3>Choose your character</h3>
       <div className="characters">
         {characters.map(character => (
-          <Link to={`/${character.variableName}`}>
+          <Link to={`/character/${character.id}`}>
             <img
-              src={allCharacters[character.variableName]}
+              src={allCharacterCloseUp[character.variableName]}
               alt={`${character.name}'s portrait`}
             />
           </Link>

@@ -4,7 +4,7 @@ RESTART IDENTITY;
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
 VALUES
-  ('Mario', 'Mario', '20');
+  ('Mario', 'Mario', '30');
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")

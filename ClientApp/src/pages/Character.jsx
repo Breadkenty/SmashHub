@@ -1,21 +1,42 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import peach from '../graphics/characters/Luigi/Luigi-5.png'
 import input from '../graphics/inputs/png/aerial/back-aerial.png'
+import { useParams } from 'react-router'
+
+import { allCharacterPortrait } from '../components/allCharacterPortrait'
 
 export function Character() {
+  const params = useParams()
+  const id = params.characterId
+
+  const [character, setCharacter] = useState({})
+
+  function getCharacters() {
+    fetch(`/api/Characters/${id}`)
+      .then(response => response.json())
+      .then(apiData => {
+        setCharacter(apiData)
+        console.log(apiData)
+      })
+  }
+
+  // console.log(characters)
+
+  useEffect(getCharacters, [])
+
   return (
     <div className="character-combos">
       <header
         className="character-header"
         style={{
-          backgroundImage: `url(${peach})`,
+          backgroundImage: `url(${allCharacterPortrait[character.name]})`,
           // Change position Y to match the character portrait
-          backgroundPositionY: `20%`,
+          backgroundPositionY: `${character.yPosition}%`,
         }}
       >
-        <h1>Peach</h1>
+        <h1>{character.name}</h1>
       </header>
 
       <div className="search-container bg-grey">
