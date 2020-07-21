@@ -1,20 +1,51 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import peach from '../graphics/characters/PacMan/PacMan-5.png'
 import input from '../graphics/inputs/png/aerial/back-aerial.png'
+import { useParams } from 'react-router'
+
+import { allCharacterPortrait } from '../components/allCharacterPortrait'
+import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 
 export function CharacterCombo() {
+  const params = useParams()
+
+  const characterId = params.characterId
+  const comboId = params.comboId
+
+  const [character, setCharacter] = useState({})
+
+  // Set with example inputs
+  const [inputs, setInputs] = useState(
+    'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional jabBasic thenConditional releaseConditional'
+  )
+  // Converts string of inputs into an array used to map
+  const inputsAsArray = inputs.split(' ')
+
+  function getCharacter() {
+    fetch(`/api/Characters/${characterId}`)
+      .then(response => response.json())
+      .then(apiData => {
+        setCharacter(apiData)
+      })
+  }
+
+  useEffect(getCharacter, [])
+
   return (
     <div className="character-combo">
+      {/* Character image header */}
       <header
         className="character-header"
         style={{
-          backgroundPositionY: `20%`,
-          backgroundImage: `url(${peach})`,
+          backgroundImage: `url(${allCharacterPortrait[character.name]})`,
+          backgroundPositionY: `${character.yPosition}%`,
         }}
       >
-        <h1>Peach</h1>
+        <h1>{character.name}</h1>
       </header>
+
+      {/* Video */}
       <div className="video-container">
         <iframe
           title="down tilt ground float nair"
@@ -28,6 +59,7 @@ export function CharacterCombo() {
       </div>
       <article>
         <header>
+          {/* Combo Votes */}
           <div className="vote">
             <svg
               aria-hidden="true"
@@ -49,6 +81,8 @@ export function CharacterCombo() {
               <path d="M2 10h32L18 26 2 10z"></path>
             </svg>
           </div>
+
+          {/* Combo detail */}
           <div className="detail">
             <h5>Posted by Breadkenty 2 hours ago</h5>
             <h2>Down-Tilt Ground Float Nair</h2>
@@ -61,75 +95,19 @@ export function CharacterCombo() {
           </div>
         </header>
 
+        {/* Combo inputs */}
         <section className="bg-grey combo-inputs">
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
-          <div
-            className="combo-input"
-            style={{
-              backgroundImage: `url(${input})`,
-            }}
-          />
+          {inputsAsArray.map(input => (
+            <div
+              className="combo-input"
+              style={{
+                backgroundImage: `url(${allComboInputs[input]})`,
+              }}
+            ></div>
+          ))}
         </section>
 
+        {/* Combo Notes */}
         <section className="notes">
           <h4>Notes:</h4>
           <p>
@@ -146,6 +124,7 @@ export function CharacterCombo() {
           </button>
         </section>
 
+        {/* Comment section */}
         <section className="comments">
           <div className="comment">
             <div className="vote">
