@@ -14,6 +14,7 @@ namespace Smash_Combos.Models
         private static bool LOG_SQL_STATEMENTS_IN_DEVELOPMENT = false;
 
         public DbSet<Character> Characters { get; set; }
+        public DbSet<Combo> Combos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

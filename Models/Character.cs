@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Smash_Combos.Models
 {
     public class Character
@@ -6,5 +8,7 @@ namespace Smash_Combos.Models
         public string Name { get; set; }
         public string VariableName { get; set; }
         public int YPosition { get; set; }
+
+        public List<Combo> Combos { get; set; }
     }
 }
