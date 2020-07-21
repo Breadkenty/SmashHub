@@ -1,5 +1,5 @@
 TRUNCATE TABLE "Characters"
-RESTART IDENTITY;
+, "Combos" RESTART IDENTITY;
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
@@ -58,7 +58,7 @@ VALUES
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
 VALUES
-  ('Captain Falcon', 'CaptainFalcon', '10');
+  ('Captain Falcon', 'CaptainFalcon', '20');
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
@@ -395,3 +395,42 @@ INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
 VALUES
   ('Min Min', 'MinMin', '20');
+
+
+
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
+VALUES
+  ('14', '2020-07-21', 'Down Tilt Ground Float Nair', 'HO3gLgWx_i4', '115', '116', 'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial', true, 'very hard', 26, 'This combo is best used against fast falling characters. Keep in
+            mind, when doing the nair, you have to release the direction as soon
+            as you get the momentum of going forward.', 43);
+
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
+VALUES
+  ('14', '2020-07-20', 'Down throw bair', 'HO3gLgWx_i4', '115', '116', 'grabBasic thenConditional downThrow thenCondtional shortHop backAerial', true, 'easy', 13, 'This gombo is great', 22);
+
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
+VALUES
+  ('14', '2020-07-19', 'Dair float to fair', 'HO3gLgWx_i4', '116', '121', 'downAerial thenConditional holdConditional downMove andConditional fullHop thenConditional forwardMove thenConditional forwardAerial', true, 'medium', 21, 'This combo is awesome', 12);
+
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
+VALUES
+  ('14', '2020-07-12', 'Ground Float Nair', 'HO3gLgWx_i4', '0', '2', 'forwardFlick thenConditional holdConditional downMove andConditional fullHop thenConditional flickForward neutralAerial', true, 'hard', 8, 'This combo is phenomenal', 2);
+
+
+
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
+VALUES
+  ('8', '2020-06-21', 'Some Fox Combo 1', 'HO3gLgWx_i4', '217', '220', 'downAerial thenConditional upSmash', true, 'medium', 25, 'This combo is outstanding', 41);
+
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
+VALUES
+  ('8', '2020-05-21', 'Some Fox Combo 2', 'HO3gLgWx_i4', '109', '111', 'flickForward thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
+
+
+            

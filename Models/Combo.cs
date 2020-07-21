@@ -18,6 +18,12 @@ namespace Smash_Combos.Models
         public string VideoId { get; set; }
 
         [Required]
+        public int VideoStartTime { get; set; }
+
+        [Required]
+        public int VideoEndTime { get; set; }
+
+        [Required]
         public string ComboInput { get; set; }
 
         [Required]

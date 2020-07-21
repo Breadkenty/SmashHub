@@ -17,7 +17,7 @@ export function CharacterCombo() {
 
   // Set with example inputs
   const [inputs, setInputs] = useState(
-    'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional jabBasic thenConditional releaseConditional thenConditional upTilt andConditional jabBasic'
+    'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial'
   )
   // Converts string of inputs into an array used to map
   const inputsAsArray = inputs.split(' ')
