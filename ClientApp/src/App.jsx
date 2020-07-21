@@ -61,6 +61,19 @@ export function App() {
             <EditCharacter />
           </Route>
         </Switch>
+        <footer className="bottom-footer">
+          <p>
+            Made with love by <a href="#">Kento Kawakami</a>
+          </p>
+          <div>
+            <a href="https://github.com/Breadkenty">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/kento.kawakami/">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </footer>
       </div>
     </>
   )
