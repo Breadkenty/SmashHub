@@ -1,8 +1,7 @@
 import React from 'react'
 
-import peach from '../graphics/characters/Peach/Peach-5.png'
+import peach from '../graphics/characters/PacMan/PacMan-5.png'
 import input from '../graphics/inputs/png/aerial/back-aerial.png'
-import peachMatchup from '../graphics/characters/Peach/Peach-8.png'
 
 export function CharacterCombo() {
   return (
@@ -10,6 +9,7 @@ export function CharacterCombo() {
       <header
         className="character-header"
         style={{
+          backgroundPositionY: `20%`,
           backgroundImage: `url(${peach})`,
         }}
       >

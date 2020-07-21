@@ -1,7 +1,5 @@
 import React from 'react'
 
-import peach from '../graphics/characters/Peach/Peach-5.png'
-
 import { Basic } from '../components/combo-inputs/Basic'
 import { Move } from '../components/combo-inputs/Move'
 import { Flick } from '../components/combo-inputs/Flick'
@@ -76,6 +74,8 @@ import forwardThrow from '../graphics/inputs/png/throw/forward-throw.png'
 import downThrow from '../graphics/inputs/png/throw/down-throw.png'
 import backThrow from '../graphics/inputs/png/throw/back-throw.png'
 
+import peach from '../graphics/characters/Mario/Mario-5.png'
+
 export function SubmitCombo() {
   return (
     <div className="submit-combo">
@@ -90,6 +90,7 @@ export function SubmitCombo() {
             <div
               style={{
                 backgroundImage: `url(${peach})`,
+                backgroundPositionY: `30%`,
               }}
               className="character bg-black"
             >

@@ -11,8 +11,9 @@
 
     background-color: black;
     background-repeat: no-repeat;
-    background-position: 175% 20%;
-    background-size: 75%;
+    background-position-x: 110%;
+
+    background-size: 60%;
 
     display: flex;
     align-items: center;
@@ -124,12 +125,12 @@
 @media screen and (min-width: 800px) {
   .character-combo {
     .character-header {
-      padding-left: 20vw;
+      padding-left: 36vw;
 
       height: 80px;
 
-      background-position: 90% 20%;
-      background-size: 25%;
+      background-position-x: 70%;
+      background-size: 30%;
     }
 
     .video-container {

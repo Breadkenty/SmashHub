@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import peach from '../graphics/characters/Peach/Peach-5.png'
+import peach from '../graphics/characters/Luigi/Luigi-5.png'
 import input from '../graphics/inputs/png/aerial/back-aerial.png'
 
 export function Character() {
@@ -11,6 +11,8 @@ export function Character() {
         className="character-header"
         style={{
           backgroundImage: `url(${peach})`,
+          // Change position Y to match the character portrait
+          backgroundPositionY: `20%`,
         }}
       >
         <h1>Peach</h1>

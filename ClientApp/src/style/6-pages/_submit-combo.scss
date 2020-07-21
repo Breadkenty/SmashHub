@@ -23,7 +23,8 @@
         padding: 24px;
 
         background-repeat: no-repeat;
-        background-position: -20% 20%;
+        background-position-x: 100%;
+        background-size: calc(30% * 2);
       }
     }
 
@@ -214,7 +215,7 @@
     section {
       .select-character {
         .character {
-          background-position: 100% 20%;
+          background-position-x: 100%;
 
           select {
             padding-left: 100px;

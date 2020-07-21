@@ -12,8 +12,8 @@
 
     background-color: black;
     background-repeat: no-repeat;
-    background-position: 175% 20%;
-    background-size: 75%;
+    background-position-x: calc(80% + 20%);
+    background-size: calc(30% * 2);
 
     display: flex;
     align-items: center;
@@ -86,9 +86,9 @@
 @media screen and (min-width: 800px) {
   .character-combos {
     .character-header {
-      background-position: 100% 20%;
-      background-size: initial;
       padding-left: 300px;
+      background-position-x: 80%;
+      background-size: 30%;
     }
 
     .search-container {
