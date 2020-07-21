@@ -15,14 +15,16 @@
     align-self: flex-end;
   }
 
-  img {
-    padding: 16px 0;
-    width: 100px;
-    align-self: center;
+  a {
+    display: flex;
+    justify-content: center;
+    img {
+      height: 50px;
+    }
   }
   ul {
     border-top: 1px solid $grey;
-    margin-top: 24px;
+    margin-top: 16px;
     list-style: none;
     padding: 0;
 

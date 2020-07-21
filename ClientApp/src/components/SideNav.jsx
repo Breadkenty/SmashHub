@@ -17,7 +17,9 @@ export function SideNav(props) {
       }
     >
       <i class="fas fa-times" onClick={props.handleSideBar}></i>
-      <img src={logo} alt="Smash combos logo" />
+      <Link to="/">
+        <img src={logo} alt="Smash combos logo" />
+      </Link>
       <ul>
         <li>
           <Link to="/submit">
@@ -26,6 +28,26 @@ export function SideNav(props) {
               onClick={props.handleSideBar}
             >
               Submit a combo
+            </button>
+          </Link>
+        </li>
+        <li>
+          <Link to="/add">
+            <button
+              className="bg-yellow button black-text"
+              onClick={props.handleSideBar}
+            >
+              Add a Character
+            </button>
+          </Link>
+        </li>
+        <li>
+          <Link to="/edit">
+            <button
+              className="bg-yellow button black-text"
+              onClick={props.handleSideBar}
+            >
+              Edit a Character
             </button>
           </Link>
         </li>
