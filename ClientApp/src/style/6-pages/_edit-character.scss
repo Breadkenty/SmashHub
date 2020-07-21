@@ -1,0 +1,32 @@
+.edit-character {
+  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .characters {
+    // border: 1px solid red;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .character {
+      width: 100px;
+      height: 100px;
+
+      background-size: cover;
+      border: 4px solid $grey;
+    }
+  }
+
+  .update-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    fieldset {
+      margin: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

@@ -16,6 +16,8 @@ import { CharacterCombo } from './pages/CharacterCombo'
 import { SubmitCombo } from './pages/SubmitCombo'
 
 import { SideNav } from './components/SideNav'
+import { AddCharacter } from './pages/AddCharacter'
+import { EditCharacter } from './pages/EditCharacter'
 
 export function App() {
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
@@ -51,6 +53,12 @@ export function App() {
           </Route>
           <Route exact path="/submit">
             <SubmitCombo />
+          </Route>
+          <Route exact path="/add">
+            <AddCharacter />
+          </Route>
+          <Route exact path="/edit">
+            <EditCharacter />
           </Route>
         </Switch>
       </div>
