@@ -8,22 +8,17 @@ import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { returnDifficulty } from '../components/returnDifficulty'
 import { returnTrueCombo } from '../components/returnTrueCombo'
+import { SortController } from './SortController'
 
 export function CharacterCombo() {
   const params = useParams()
-
   const characterId = params.characterId
   const comboId = params.comboId
 
   const [character, setCharacter] = useState({})
   const [combo, setCombo] = useState({})
-
-  // Set with example inputs
-  const [inputs, setInputs] = useState(
-    'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial forwardDashBasic backDashBasic'
-  )
-  // Converts string of inputs into an array used to map
-  const inputsAsArray = inputs.split(' ')
+  const [comments, setComments] = useState([])
+  let [sortType, setSortType] = useState('best')
 
   function getCharacter() {
     fetch(`/api/Characters/${characterId}`)
@@ -38,11 +33,9 @@ export function CharacterCombo() {
       .then(response => response.json())
       .then(apiData => {
         setCombo(apiData)
-        console.log(apiData)
+        setComments(apiData.comments)
       })
   }
-
-  console.log(`${combo.comboInput}`.split(' '))
 
   useEffect(getCharacter, [])
   useEffect(getCombo, [])
@@ -58,14 +51,9 @@ export function CharacterCombo() {
   }
 
   function onStateChange(state) {
-    console.log(state.target.getDuration())
     if (state.data === 0) {
       state.target.seekTo(combo.videoStartTime)
     }
-  }
-
-  function currentDuration(event) {
-    console.log(event)
   }
 
   return (
@@ -166,232 +154,46 @@ export function CharacterCombo() {
           </button>
         </section>
 
-        {/* Comment section */}
+        <section className="sort">
+          <SortController setSortType={setSortType} />
+        </section>
+
         <section className="comments">
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
+          {comments.map(comment => (
+            <div className="comment">
+              <div className="vote">
+                <svg
+                  aria-hidden="true"
+                  className="m0 svg-icon iconArrowUpLg"
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                >
+                  <path d="M2 26h32L18 10 2 26z"></path>
+                </svg>
+                <h3 className="black-text">{comment.netVote}</h3>
+                <svg
+                  aria-hidden="true"
+                  className="m0 svg-icon iconArrowDownLg"
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                >
+                  <path d="M2 10h32L18 26 2 10z"></path>
+                </svg>
+              </div>
 
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
+              <div className="body">
+                <h5>
+                  Posted by Tacotastic{' '}
+                  {moment(comment.datePosted)
+                    .startOf('hour')
+                    .fromNow()}
+                </h5>
+                <p>{comment.body}</p>
+              </div>
             </div>
-          </div>
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
-
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
-            </div>
-          </div>
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
-
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
-            </div>
-          </div>
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
-
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
-            </div>
-          </div>
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
-
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
-            </div>
-          </div>
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
-
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
-            </div>
-          </div>
-          <div className="comment">
-            <div className="vote">
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 26h32L18 10 2 26z"></path>
-              </svg>
-              <h3 className="black-text">42</h3>
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
-                <path d="M2 10h32L18 26 2 10z"></path>
-              </svg>
-            </div>
-
-            <div className="body">
-              <h5>Posted by Tacotastic 1 hour ago</h5>
-              <p>
-                This is a really good find, ground float to nair is too strong!
-                I'm gonna try to practice this when I get home. Thanks for
-                sharing, this is extremely helpful in learning peach!
-              </p>
-            </div>
-          </div>
+          ))}
         </section>
       </article>
     </div>

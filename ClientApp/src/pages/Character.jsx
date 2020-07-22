@@ -5,6 +5,7 @@ import { useParams } from 'react-router'
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { returnDifficulty } from '../components/returnDifficulty'
+import { SortController } from './SortController'
 
 import moment from 'moment'
 
@@ -15,6 +16,7 @@ export function Character() {
   const [character, setCharacter] = useState({})
   const [combos, setCombos] = useState([])
   let [filterText, setFilterText] = useState('')
+  let [sortType, setSortType] = useState('best')
 
   function getCharacters() {
     fetch(`/api/Characters/${characterId}`)
@@ -65,7 +67,8 @@ export function Character() {
           placeholder="Search"
           onChange={event => setFilterText(event.target.value)}
         />
-        <div>
+        <SortController setSortType={setSortType} />
+        {/* <div>
           <button
             className="bg-red button white-text"
             // onClick={() => {
@@ -80,9 +83,8 @@ export function Character() {
           >
             Newest
           </button>
-        </div>
+        </div> */}
       </div>
-
       <section className="combos">
         {combos
           .filter(combo =>

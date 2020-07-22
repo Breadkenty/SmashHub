@@ -1,7 +1,7 @@
 .character-combo {
   .character-header {
     position: fixed;
-    z-index: 0;
+    z-index: 1;
 
     margin: 50px 0px 0px 0px;
     padding-left: 16px;
@@ -20,6 +20,7 @@
   }
 
   > div {
+    z-index: 1;
     position: fixed;
     margin-top: 130px;
 
@@ -71,6 +72,11 @@
       h4 {
         margin-bottom: 8px;
       }
+    }
+
+    .sort {
+      width: 190px;
+      padding: 16px;
     }
 
     .add-comment {
