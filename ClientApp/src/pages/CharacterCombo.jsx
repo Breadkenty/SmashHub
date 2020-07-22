@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import moment from 'moment'
 
 import peach from '../graphics/characters/PacMan/PacMan-5.png'
 import input from '../graphics/inputs/png/aerial/back-aerial.png'
@@ -6,6 +7,8 @@ import { useParams } from 'react-router'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
+import { returnDifficulty } from '../components/returnDifficulty'
+import { returnTrueCombo } from '../components/returnTrueCombo'
 
 export function CharacterCombo() {
   const params = useParams()
@@ -14,6 +17,7 @@ export function CharacterCombo() {
   const comboId = params.comboId
 
   const [character, setCharacter] = useState({})
+  const [combo, setCombo] = useState({})
 
   // Set with example inputs
   const [inputs, setInputs] = useState(
@@ -30,7 +34,19 @@ export function CharacterCombo() {
       })
   }
 
+  function getCombo() {
+    fetch(`/api/Combos/${comboId}`)
+      .then(response => response.json())
+      .then(apiData => {
+        setCombo(apiData)
+        console.log(apiData)
+      })
+  }
+
+  console.log(`${combo.comboInput}`.split(' '))
+
   useEffect(getCharacter, [])
+  useEffect(getCombo, [])
 
   return (
     <div className="character-combo">
@@ -48,10 +64,10 @@ export function CharacterCombo() {
       {/* Video */}
       <div className="video-container">
         <iframe
-          title="down tilt ground float nair"
+          title={combo.title}
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/01nFQmMcVlc?autoplay=1&start=438&mute=1&playsinline=1"
+          src={`https://www.youtube.com/embed/${combo.videoId}?autoplay=1&start=${combo.videoStartTime}&mute=1&playsinline=1`}
           frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           donotallowfullscreen
@@ -70,7 +86,7 @@ export function CharacterCombo() {
             >
               <path d="M2 26h32L18 10 2 26z"></path>
             </svg>
-            <h3 className="black-text">42</h3>
+            <h3 className="black-text">{combo.netVote}</h3>
             <svg
               aria-hidden="true"
               className="m0 svg-icon iconArrowDownLg"
@@ -84,20 +100,25 @@ export function CharacterCombo() {
 
           {/* Combo detail */}
           <div className="detail">
-            <h5>Posted by Breadkenty 2 hours ago</h5>
-            <h2>Down-Tilt Ground Float Nair</h2>
+            <h5>
+              Posted by Breadkenty{' '}
+              {moment(combo.datePosted)
+                .startOf('hour')
+                .fromNow()}
+            </h5>
+            <h2>{combo.title}</h2>
 
             <div>
-              <div className="tag bg-pink white-text">Hard</div>
-              <div className="tag bg-green white-text">True</div>
-              <h3>~56%</h3>
+              {returnDifficulty(combo.difficulty)}
+              {returnTrueCombo(combo.trueCombo)}
+              <h3>{combo.damage}%</h3>
             </div>
           </div>
         </header>
 
         {/* Combo inputs */}
         <section className="bg-grey combo-inputs">
-          {inputsAsArray.map(input => (
+          {`${combo.comboInput}`.split(' ').map(input => (
             <div
               className="combo-input"
               style={{
@@ -110,11 +131,7 @@ export function CharacterCombo() {
         {/* Combo Notes */}
         <section className="notes">
           <h4>Notes:</h4>
-          <p>
-            This combo is best used against fast falling characters. Keep in
-            mind, when doing the nair, you have to release the direction as soon
-            as you get the momentum of going forward.
-          </p>
+          <p>{combo.notes}</p>
         </section>
 
         <section className="add-comment bg-grey">

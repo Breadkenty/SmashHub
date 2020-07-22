@@ -10,7 +10,7 @@ import moment from 'moment'
 
 export function Character() {
   const params = useParams()
-  const id = params.characterId
+  const characterId = params.characterId
 
   const [character, setCharacter] = useState({})
   const [combos, setCombos] = useState([])
@@ -24,7 +24,7 @@ export function Character() {
   const inputsAsArray = inputs.split(' ')
 
   function getCharacters() {
-    fetch(`/api/Characters/${id}`)
+    fetch(`/api/Characters/${characterId}`)
       .then(response => response.json())
       .then(apiData => {
         setCharacter(apiData)
@@ -82,7 +82,7 @@ export function Character() {
 
             <div className="information">
               <header>
-                <Link to={`/character/${id}/1`}>
+                <Link to={`/character/${characterId}/${combo.id}`}>
                   <h3>{combo.title}</h3>
                 </Link>
                 {returnDifficulty(combo.difficulty)}

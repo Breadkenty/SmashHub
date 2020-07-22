@@ -425,12 +425,12 @@ VALUES
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
 VALUES
-  ('8', '2020-06-21', 'Some Fox Combo 1', 'HO3gLgWx_i4', '217', '220', 'downAerial thenConditional upSmash', true, 'medium', 25, 'This combo is outstanding', 41);
+  ('8', '2020-06-21', 'Some Fox Combo 1', 'cLbQpJiufLs', '217', '220', 'downAerial thenConditional upSmash', true, 'medium', 25, 'This combo is outstanding', 41);
 
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
 VALUES
-  ('8', '2020-05-21', 'Some Fox Combo 2', 'HO3gLgWx_i4', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
+  ('8', '2020-05-21', 'Some Fox Combo 2', 'cLbQpJiufLs', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
 
 
             

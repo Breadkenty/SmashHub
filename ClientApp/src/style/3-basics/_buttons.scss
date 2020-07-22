@@ -52,7 +52,9 @@ input {
 
   background-color: $blue;
 
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
 
@@ -66,7 +68,9 @@ input {
 
   background-color: $green;
 
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
 
@@ -80,7 +84,9 @@ input {
 
   background-color: $yellow;
 
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
 
@@ -94,13 +100,16 @@ input {
 
   background-color: $pink;
 
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
 
   font-weight: 600;
   text-transform: uppercase;
 }
+
 .very-hard {
   padding: 3px 10px;
 
@@ -108,7 +117,45 @@ input {
 
   background-color: $red;
 
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.true-combo {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $green;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.not-true-combo {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $red;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
 
