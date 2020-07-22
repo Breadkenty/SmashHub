@@ -33,9 +33,7 @@ namespace Smash_Combos.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Combo>>> GetCombos()
         {
-            // Uses the database context in `_context` to request all of the Combos and
-            // return them as a JSON array.
-            return await _context.Combos.ToListAsync();
+            return await _context.Combos.Include(combo => combo.Comments).ToListAsync();
         }
 
         // GET: api/Combos/5
@@ -47,10 +45,8 @@ namespace Smash_Combos.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Combo>> GetCombo(int id)
         {
-            // Find the combo in the database using `FindAsync` to look it up by id
-            var combo = await _context.Combos.FindAsync(id);
+            var combo = await _context.Combos.Where(combo => combo.Id == id).Include(combo => combo.Comments).FirstOrDefaultAsync();
 
-            // If we didn't find anything, we receive a `null` in return
             if (combo == null)
             {
                 // Return a `404` response to the client indicating we could not find a combo with this id
