@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
-import peach from '../graphics/characters/Luigi/Luigi-5.png'
-import input from '../graphics/inputs/png/aerial/back-aerial.png'
 import { useParams } from 'react-router'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
+import { returnDifficulty } from '../components/returnDifficulty'
+
+import moment from 'moment'
 
 export function Character() {
   const params = useParams()
@@ -85,7 +85,7 @@ export function Character() {
                 <Link to={`/character/${id}/1`}>
                   <h3>{combo.title}</h3>
                 </Link>
-                <div className="tag bg-pink white-text">{combo.difficulty}</div>
+                {returnDifficulty(combo.difficulty)}
               </header>
 
               <div className="combo-inputs">
@@ -101,7 +101,10 @@ export function Character() {
 
               <footer>
                 <p className="white-text">
-                  Posted by Breadkenty {combo.datePosted}
+                  Posted by Breadkenty{' '}
+                  {moment(combo.datePosted)
+                    .startOf('hour')
+                    .fromNow()}
                 </p>
               </footer>
             </div>

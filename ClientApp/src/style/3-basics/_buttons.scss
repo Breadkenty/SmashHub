@@ -44,3 +44,74 @@ input {
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+.very-easy {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $blue;
+
+  display: inline-block;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.easy {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $green;
+
+  display: inline-block;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.medium {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $yellow;
+
+  display: inline-block;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.hard {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $pink;
+
+  display: inline-block;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.very-hard {
+  padding: 3px 10px;
+
+  border-radius: 2px;
+
+  background-color: $red;
+
+  display: inline-block;
+
+  color: white;
+
+  font-weight: 600;
+  text-transform: uppercase;
+}
