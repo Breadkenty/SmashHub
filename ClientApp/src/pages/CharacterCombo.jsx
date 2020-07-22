@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
+import YouTube from 'react-youtube'
 
-import peach from '../graphics/characters/PacMan/PacMan-5.png'
-import input from '../graphics/inputs/png/aerial/back-aerial.png'
 import { useParams } from 'react-router'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
@@ -48,6 +47,29 @@ export function CharacterCombo() {
   useEffect(getCharacter, [])
   useEffect(getCombo, [])
 
+  const opts = {
+    height: '390',
+    width: '640',
+
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      start: combo.videoStartTime,
+      end: combo.videoEndTime,
+    },
+  }
+
+  function onStateChange(state) {
+    console.log(state.target.getDuration())
+    if (state.data === 0) {
+      state.target.seekTo(combo.videoStartTime)
+    }
+  }
+
+  function currentDuration(event) {
+    console.log(event)
+  }
+
   return (
     <div className="character-combo">
       {/* Character image header */}
@@ -63,7 +85,15 @@ export function CharacterCombo() {
 
       {/* Video */}
       <div className="video-container">
-        <iframe
+        <div id="player"></div>
+
+        <YouTube
+          videoId={`${combo.videoId}`}
+          opts={opts}
+          onStateChange={onStateChange}
+          currentDuration={currentDuration()}
+        />
+        {/* <iframe
           title={combo.title}
           width="560"
           height="315"
@@ -71,7 +101,7 @@ export function CharacterCombo() {
           frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           donotallowfullscreen
-        />
+        /> */}
       </div>
       <article>
         <header>
