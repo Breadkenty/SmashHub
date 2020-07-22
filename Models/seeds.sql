@@ -1,5 +1,5 @@
 TRUNCATE TABLE "Characters"
-, "Combos" RESTART IDENTITY;
+, "Combos", "Comments" RESTART IDENTITY;
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
@@ -433,4 +433,41 @@ VALUES
   ('8', '2020-05-21', 'Some Fox Combo 2', 'cLbQpJiufLs', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
 
 
-            
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('1', '2020-07-22', 'Uhm this combo is great wtf', 45);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('1', '2020-02-21', 'How did you figure this out!', 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('1', '2020-05-22', 'Awesome!', 21);
+
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('5', '2020-07-22', 'Nice fox lol', 45);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('5', '2020-02-21', 'cool', 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('5', '2020-05-22', 'pls teach me fox ty', 21);
+
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('3', '2019-07-22', 'This is so hard', 45);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('2', '2017-02-21', 'idgi this is great tho', 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote")
+VALUES
+  ('2', '2018-05-22', 'lol', 21);
