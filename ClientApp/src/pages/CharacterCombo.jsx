@@ -20,7 +20,7 @@ export function CharacterCombo() {
 
   // Set with example inputs
   const [inputs, setInputs] = useState(
-    'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial'
+    'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial forwardDashBasic backDashBasic'
   )
   // Converts string of inputs into an array used to map
   const inputsAsArray = inputs.split(' ')
@@ -48,12 +48,10 @@ export function CharacterCombo() {
   useEffect(getCombo, [])
 
   const opts = {
-    height: '390',
-    width: '640',
-
     playerVars: {
       autoplay: 1,
       mute: 1,
+      playsinline: 1,
       start: combo.videoStartTime,
       end: combo.videoEndTime,
     },
@@ -84,16 +82,13 @@ export function CharacterCombo() {
       </header>
 
       {/* Video */}
-      <div className="video-container">
-        <div id="player"></div>
-
-        <YouTube
-          videoId={`${combo.videoId}`}
-          opts={opts}
-          onStateChange={onStateChange}
-          currentDuration={currentDuration()}
-        />
-        {/* <iframe
+      {/* <div className="video-container"> */}
+      <YouTube
+        videoId={`${combo.videoId}`}
+        opts={opts}
+        onStateChange={onStateChange}
+      />
+      {/* <iframe
           title={combo.title}
           width="560"
           height="315"
@@ -102,7 +97,7 @@ export function CharacterCombo() {
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           donotallowfullscreen
         /> */}
-      </div>
+      {/* </div> */}
       <article>
         <header>
           {/* Combo Votes */}

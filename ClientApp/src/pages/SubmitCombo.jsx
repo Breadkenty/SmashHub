@@ -15,6 +15,8 @@ import { Throw } from '../components/combo-inputs/Throw'
 import jabBasic from '../graphics/inputs/png/basic/jab-basic.png'
 import grabBasic from '../graphics/inputs/png/basic/grab-basic.png'
 import shieldBasic from '../graphics/inputs/png/basic/shield-basic.png'
+import forwardDashBasic from '../graphics/inputs/png/basic/forwardDash-basic.png'
+import backDashBasic from '../graphics/inputs/png/basic/backDash-basic.png'
 
 // Move
 import upMove from '../graphics/inputs/png/move/up-move.png'
@@ -440,7 +442,7 @@ export function SubmitCombo() {
             </div>
 
             <div className="input-controller bg-black">
-              {/* <Basic /> */}
+              <Basic />
               {/* <Move /> */}
               {/* <Flick /> */}
               {/* <Hop /> */}
@@ -449,7 +451,7 @@ export function SubmitCombo() {
               {/* <Aerial /> */}
               {/* <Smash /> */}
               {/* <Special /> */}
-              <Throw />
+              {/* <Throw /> */}
             </div>
           </fieldset>
 

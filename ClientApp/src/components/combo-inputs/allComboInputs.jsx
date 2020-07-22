@@ -1,6 +1,8 @@
 import jabBasic from '../../graphics/inputs/png/basic/jab-basic.png'
 import grabBasic from '../../graphics/inputs/png/basic/grab-basic.png'
 import shieldBasic from '../../graphics/inputs/png/basic/shield-basic.png'
+import forwardDashBasic from '../../graphics/inputs/png/basic/forwardDash-basic.png'
+import backDashBasic from '../../graphics/inputs/png/basic/backDash-basic.png'
 
 import upMove from '../../graphics/inputs/png/move/up-move.png'
 import forwardMove from '../../graphics/inputs/png/move/forward-move.png'
@@ -55,6 +57,8 @@ export const allComboInputs = {
   jabBasic,
   grabBasic,
   shieldBasic,
+  forwardDashBasic,
+  backDashBasic,
 
   upMove,
   forwardMove,

@@ -19,12 +19,11 @@
     align-items: center;
   }
 
-  .video-container {
-    background-color: $grey;
+  > div {
+    position: fixed;
+    margin-top: 130px;
 
     iframe {
-      position: fixed;
-      margin-top: 130px;
       height: calc(100vw * 0.56);
       width: 100vw;
     }
@@ -133,24 +132,20 @@
       background-size: 30%;
     }
 
-    .video-container {
+    > div {
       position: fixed;
 
       margin-top: 130px;
 
+      background-color: $grey;
+
       width: 100vw;
       height: calc(50vw * 0.56);
-
-      background-color: $grey;
 
       display: flex;
       justify-content: center;
 
       iframe {
-        position: fixed;
-
-        margin-top: 0px;
-
         height: calc(50vw * 0.56);
         width: 50%;
       }
