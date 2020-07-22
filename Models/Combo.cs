@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Smash_Combos.Models
@@ -36,6 +37,8 @@ namespace Smash_Combos.Models
         public int Damage { get; set; }
 
         public string Notes { get; set; }
+
+        public List<Comment> Comments { get; set; }
 
         public int NetVote { get; private set; } = 0;
         public void VoteUp()
