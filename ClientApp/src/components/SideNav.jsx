@@ -18,7 +18,7 @@ export function SideNav(props) {
     >
       <i class="fas fa-times" onClick={props.handleSideBar}></i>
       <Link to="/">
-        <img src={logo} alt="Smash combos logo" />
+        <img src={logo} alt="Smash combos logo" onClick={props.handleSideBar} />
       </Link>
       <ul>
         <li>
