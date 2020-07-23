@@ -8,7 +8,11 @@ import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { returnDifficulty } from '../components/returnDifficulty'
 import { returnTrueCombo } from '../components/returnTrueCombo'
-import { SortController } from './SortController'
+
+import { SortController } from '../components/SortController'
+import { sortingFunctions } from '../components/sortingFunctions'
+
+import { Comment } from './Comment'
 
 export function CharacterCombo() {
   const params = useParams()
@@ -56,6 +60,8 @@ export function CharacterCombo() {
     }
   }
 
+  const sortedComments = comments.sort(sortingFunctions[sortType])
+
   return (
     <div className="character-combo">
       {/* Character image header */}
@@ -70,22 +76,12 @@ export function CharacterCombo() {
       </header>
 
       {/* Video */}
-      {/* <div className="video-container"> */}
       <YouTube
         videoId={`${combo.videoId}`}
         opts={opts}
         onStateChange={onStateChange}
       />
-      {/* <iframe
-          title={combo.title}
-          width="560"
-          height="315"
-          src={`https://www.youtube.com/embed/${combo.videoId}?autoplay=1&start=${combo.videoStartTime}&mute=1&playsinline=1`}
-          frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          donotallowfullscreen
-        /> */}
-      {/* </div> */}
+
       <article>
         <header>
           {/* Combo Votes */}
@@ -155,44 +151,12 @@ export function CharacterCombo() {
         </section>
 
         <section className="sort">
-          <SortController setSortType={setSortType} />
+          <SortController sortType={sortType} setSortType={setSortType} />
         </section>
 
         <section className="comments">
           {comments.map(comment => (
-            <div className="comment">
-              <div className="vote">
-                <svg
-                  aria-hidden="true"
-                  className="m0 svg-icon iconArrowUpLg"
-                  width="36"
-                  height="36"
-                  viewBox="0 0 36 36"
-                >
-                  <path d="M2 26h32L18 10 2 26z"></path>
-                </svg>
-                <h3 className="black-text">{comment.netVote}</h3>
-                <svg
-                  aria-hidden="true"
-                  className="m0 svg-icon iconArrowDownLg"
-                  width="36"
-                  height="36"
-                  viewBox="0 0 36 36"
-                >
-                  <path d="M2 10h32L18 26 2 10z"></path>
-                </svg>
-              </div>
-
-              <div className="body">
-                <h5>
-                  Posted by Tacotastic{' '}
-                  {moment(comment.datePosted)
-                    .startOf('hour')
-                    .fromNow()}
-                </h5>
-                <p>{comment.body}</p>
-              </div>
-            </div>
+            <Comment comment={comment} />
           ))}
         </section>
       </article>

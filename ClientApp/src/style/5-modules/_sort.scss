@@ -8,10 +8,16 @@
     display: flex;
     justify-content: space-between;
 
+    .sort-controller-active {
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
     span {
       color: white;
       margin-right: 16px;
     }
+
     button {
       color: white;
 
@@ -36,9 +42,12 @@
     border-radius: 2px;
 
     display: flex;
+
     flex-direction: column;
 
     button {
+      margin-right: 0px;
+
       padding: 8px 14px;
     }
 

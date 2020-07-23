@@ -5,7 +5,9 @@ import { useParams } from 'react-router'
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { returnDifficulty } from '../components/returnDifficulty'
-import { SortController } from './SortController'
+
+import { SortController } from '../components/SortController'
+import { sortingFunctions } from '../components/sortingFunctions'
 
 import moment from 'moment'
 
@@ -29,23 +31,7 @@ export function Character() {
 
   useEffect(getCharacters, [])
 
-  // let [sortComboBy, setSortComboBy] = useState('')
-  // function sortedCombo() {
-  //   if (sortComboBy === undefined) {
-  //     return combos.reverse()
-  //   } else if (sortComboBy === 'popular') {
-  //     return combos.sort((a, b) => (a.netVote > b.netVote ? 1 : -1)).reverse()
-  //   } else if (sortComboBy === 'newest') {
-  //     return combos
-  //       .sort((a, b) => (a.datePosted > b.datePosted ? 1 : -1))
-  //       .reverse()
-  //   }
-  // }
-  // useEffect(sortedCombo, [sortComboBy])
-
-  // function sortCombosByPopularity() {
-  //   setCombos(combos.sort((a, b) => (a.netVote > b.netVote ? 1 : -1)).reverse())
-  // }
+  const sortedCombos = combos.sort(sortingFunctions[sortType])
 
   return (
     <div className="character-combos">
@@ -67,26 +53,11 @@ export function Character() {
           placeholder="Search"
           onChange={event => setFilterText(event.target.value)}
         />
-        <SortController setSortType={setSortType} />
-        {/* <div>
-          <button
-            className="bg-red button white-text"
-            // onClick={() => {
-            //   sortCombosByPopularity()
-            // }}
-          >
-            Popular
-          </button>
-          <button
-            className="bg-red button white-text"
-            // onClick={setSortComboBy('newest')}
-          >
-            Newest
-          </button>
-        </div> */}
+
+        <SortController sortType={sortType} setSortType={setSortType} />
       </div>
       <section className="combos">
-        {combos
+        {sortedCombos
           .filter(combo =>
             combo.title.toLowerCase().includes(filterText.toLowerCase())
           )

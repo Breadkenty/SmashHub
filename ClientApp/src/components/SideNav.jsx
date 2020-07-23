@@ -1,10 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../graphics/logo/logo-on-black.png'
+import useOnClickOutside from 'use-onclickoutside'
 
 export function SideNav(props) {
+  const ref = React.useRef(null)
+
+  useOnClickOutside(ref, () => {
+    if (props.sideNavDisplay) {
+      props.handleSideBar()
+    }
+  })
+
   return (
     <div
+      ref={ref}
       className="side-nav"
       style={
         props.sideNavDisplay

@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import useOnClickOutside from 'use-onclickoutside'
 
 export function SortController(props) {
+  const ref = React.useRef(null)
+
   let [sortButtonActive, setSortButtonActive] = useState(false)
 
   function handleSortButton() {
@@ -15,16 +18,23 @@ export function SortController(props) {
     props.setSortType(event.target.value)
   }
 
+  useOnClickOutside(ref, () => {
+    if (sortButtonActive) {
+      handleSortButton()
+    }
+  })
+
   return (
     <div className="sort-controller">
       <div>
         <span>Sort by</span>
-        <button onClick={handleSortButton}>
-          Best
+        <button className="sort-controller-active" onClick={handleSortButton}>
+          {props.sortType}
           <i class="fas fa-caret-down"></i>
         </button>
       </div>
       <div
+        ref={ref}
         className="pop-up-box"
         style={
           sortButtonActive

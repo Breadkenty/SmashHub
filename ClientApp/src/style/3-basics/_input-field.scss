@@ -16,7 +16,7 @@ input[type='password']::placeholder,
 input[type='number']::placeholder,
 input[type='search']::placeholder {
   color: black;
-  opacity: 50%;
+  opacity: 0.5;
   font-weight: 800;
   letter-spacing: 1px;
 }

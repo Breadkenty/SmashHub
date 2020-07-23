@@ -12,17 +12,25 @@ nav {
 
   position: fixed;
   z-index: 1;
-  i {
-    font-size: 1.5rem;
-    color: white;
+
+  button {
+    height: 50px;
+    width: 50px;
+
+    background: none;
+    border: none;
+
+    i {
+      font-size: 1.5rem;
+      color: white;
+    }
+  }
+  button:hover {
+    background-color: black;
   }
 
   img {
     height: 40px;
-  }
-
-  button {
-    margin-right: 8px;
   }
 }
 
