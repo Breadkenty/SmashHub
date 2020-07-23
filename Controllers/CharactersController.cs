@@ -50,11 +50,11 @@ namespace Smash_Combos.Controllers
         // URL. In the sample URL above it is the `5`.  The "{id}" in the [HttpGet("{id}")] is what tells dotnet
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacter(int id)
+        [HttpGet("{variableName}")]
+        public async Task<ActionResult<Character>> GetCharacter(string variableName)
         {
             // Find the character in the database using `FindAsync` to look it up by id
-            var character = await _context.Characters.Where(character => character.Id == id).Include(character => character.Combos).FirstOrDefaultAsync();
+            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).FirstOrDefaultAsync();
 
             // If we didn't find anything, we receive a `null` in return
             if (character == null)
@@ -78,11 +78,11 @@ namespace Smash_Combos.Controllers
         // supplies to the names of the attributes of our Character POCO class. This represents the
         // new values for the record.
         //
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        [HttpPut("{variableName}")]
+        public async Task<IActionResult> PutCharacter(string variableName, Character character)
         {
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (id != character.Id)
+            if (variableName != character.VariableName)
             {
                 return BadRequest();
             }
@@ -100,7 +100,7 @@ namespace Smash_Combos.Controllers
             {
                 // Ooops, looks like there was an error, so check to see if the record we were
                 // updating no longer exists.
-                if (!CharacterExists(id))
+                if (!CharacterExists(variableName))
                 {
                     // If the record we tried to update was already deleted by someone else,
                     // return a `404` not found
@@ -140,7 +140,7 @@ namespace Smash_Combos.Controllers
 
             // Return a response that indicates the object was created (status code `201`) and some additional
             // headers with details of the newly created object.
-            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
+            return CreatedAtAction("GetCharacter", new { variableName = character.VariableName }, character);
         }
 
         // DELETE: api/Characters/5
@@ -149,11 +149,11 @@ namespace Smash_Combos.Controllers
         // In the sample URL above it is the `5`. The "{id} in the [HttpDelete("{id}")] is what tells dotnet
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCharacter(int id)
+        [HttpDelete("{variableName}")]
+        public async Task<IActionResult> DeleteCharacter(string variableName)
         {
             // Find this character by looking for the specific id
-            var character = await _context.Characters.FindAsync(id);
+            var character = await _context.Characters.FindAsync(variableName);
             if (character == null)
             {
                 // There wasn't a character with that id so return a `404` not found
@@ -175,9 +175,9 @@ namespace Smash_Combos.Controllers
         }
 
         // Private helper method that looks up an existing character by the supplied id
-        private bool CharacterExists(int id)
+        private bool CharacterExists(string variableName)
         {
-            return _context.Characters.Any(character => character.Id == id);
+            return _context.Characters.Any(character => character.VariableName == variableName);
         }
     }
 }

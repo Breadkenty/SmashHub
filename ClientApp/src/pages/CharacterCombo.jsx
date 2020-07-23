@@ -16,7 +16,7 @@ import { Comment } from './Comment'
 
 export function CharacterCombo() {
   const params = useParams()
-  const characterId = params.characterId
+  const characterVariableName = params.characterVariableName
   const comboId = params.comboId
 
   const [character, setCharacter] = useState({})
@@ -25,7 +25,7 @@ export function CharacterCombo() {
   let [sortType, setSortType] = useState('best')
 
   function getCharacter() {
-    fetch(`/api/Characters/${characterId}`)
+    fetch(`/api/Characters/${characterVariableName}`)
       .then(response => response.json())
       .then(apiData => {
         setCharacter(apiData)
