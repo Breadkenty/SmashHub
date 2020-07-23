@@ -90,7 +90,8 @@
     .true-combo {
       width: 100%;
       background-color: $grey;
-      o div {
+
+      > div {
         display: flex;
         justify-content: center;
 
