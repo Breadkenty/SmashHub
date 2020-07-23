@@ -68,7 +68,9 @@ export function CharacterCombo() {
       <header
         className="character-header"
         style={{
-          backgroundImage: `url(${allCharacterPortrait[character.name]})`,
+          backgroundImage: `url(${
+            allCharacterPortrait[character.variableName]
+          })`,
           backgroundPositionY: `${character.yPosition}%`,
         }}
       >

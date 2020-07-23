@@ -38,7 +38,9 @@ export function Character() {
       <header
         className="character-header"
         style={{
-          backgroundImage: `url(${allCharacterPortrait[character.name]})`,
+          backgroundImage: `url(${
+            allCharacterPortrait[character.variableName]
+          })`,
           // Change position Y to match the character portrait
           backgroundPositionY: `${character.yPosition}%`,
         }}
