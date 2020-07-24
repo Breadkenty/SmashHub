@@ -162,3 +162,22 @@ input {
   font-weight: 600;
   text-transform: uppercase;
 }
+
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 3px $yellow;
+  }
+  50% {
+    box-shadow: 0 0 10px $yellow;
+  }
+  100% {
+    box-shadow: 0 0 3px $yellow;
+  }
+}
+.active-button {
+  animation: glowing 1300ms infinite;
+}
+
+button:focus {
+  outline: none;
+}

@@ -5,7 +5,7 @@ import shieldBasic from '../../graphics/inputs/png/basic/shield-basic.png'
 import forwardDashBasic from '../../graphics/inputs/png/basic/forwardDash-basic.png'
 import backDashBasic from '../../graphics/inputs/png/basic/backDash-basic.png'
 
-export function Basic() {
+export function Basic(props) {
   return (
     <>
       <h3> Basic</h3>
@@ -15,6 +15,8 @@ export function Basic() {
           style={{
             backgroundImage: `url(${shieldBasic})`,
           }}
+          value="shieldBasic"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -22,12 +24,16 @@ export function Basic() {
           style={{
             backgroundImage: `url(${grabBasic})`,
           }}
+          value="grabBasic"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${backDashBasic})`,
           }}
+          value="backDashBasic"
+          onClick={props.addInput}
         />
 
         <button
@@ -35,12 +41,16 @@ export function Basic() {
           style={{
             backgroundImage: `url(${jabBasic})`,
           }}
+          value="jabBasic"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${forwardDashBasic})`,
           }}
+          value="forwardDashBasic"
+          onClick={props.addInput}
         />
       </div>
     </>

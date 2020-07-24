@@ -38,7 +38,7 @@ namespace Smash_Combos.Models
 
         public string Notes { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<Comment> Comments { get; private set; }
 
         public int NetVote { get; private set; } = 0;
         public void VoteUp()

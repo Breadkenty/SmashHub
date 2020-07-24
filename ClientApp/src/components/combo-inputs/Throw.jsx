@@ -4,7 +4,7 @@ import forwardThrow from '../../graphics/inputs/png/throw/forward-throw.png'
 import downThrow from '../../graphics/inputs/png/throw/down-throw.png'
 import backThrow from '../../graphics/inputs/png/throw/back-throw.png'
 
-export function Throw() {
+export function Throw(props) {
   return (
     <>
       <h3>Throw</h3>
@@ -15,6 +15,8 @@ export function Throw() {
           style={{
             backgroundImage: `url(${upThrow})`,
           }}
+          value="upThrow"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -22,6 +24,8 @@ export function Throw() {
           style={{
             backgroundImage: `url(${backThrow})`,
           }}
+          value="backThrow"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -29,6 +33,8 @@ export function Throw() {
           style={{
             backgroundImage: `url(${forwardThrow})`,
           }}
+          value="forwardThrow"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -36,6 +42,8 @@ export function Throw() {
           style={{
             backgroundImage: `url(${downThrow})`,
           }}
+          value="downThrow"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
       </div>

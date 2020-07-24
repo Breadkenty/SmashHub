@@ -23,8 +23,8 @@
         padding: 24px;
 
         background-repeat: no-repeat;
-        background-position-x: -150%;
-        background-size: initial;
+        background-position-x: 90%;
+        background-size: 30%;
       }
     }
 
@@ -164,7 +164,7 @@
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           gap: 20px;
-          grid-template-row: 1fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr 1fr;
 
           .combo-input {
             width: 100px;
@@ -216,7 +216,7 @@
     section {
       .select-character {
         .character {
-          background-position-x: 100%;
+          // background-position-x: 100%;
 
           select {
             padding-left: 100px;

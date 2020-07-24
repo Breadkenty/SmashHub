@@ -24,3 +24,7 @@ input[type='search']::placeholder {
 textarea {
   color: white;
 }
+
+input:focus {
+  outline: none;
+}

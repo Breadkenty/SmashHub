@@ -6,7 +6,7 @@ import releaseConditional from '../../graphics/inputs/png/conditional/release-co
 import startRepeatConditional from '../../graphics/inputs/png/conditional/startrepeat-conditional.png'
 import endRepeatConditional from '../../graphics/inputs/png/conditional/endrepeat-conditional.png'
 
-export function Conditional() {
+export function Conditional(props) {
   return (
     <>
       <h3>Conditional</h3>
@@ -16,36 +16,48 @@ export function Conditional() {
           style={{
             backgroundImage: `url(${andConditional})`,
           }}
+          value="andConditional"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${thenConditional})`,
           }}
+          value="thenConditional"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${holdConditional})`,
           }}
+          value="holdConditional"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${releaseConditional})`,
           }}
+          value="releaseConditional"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${startRepeatConditional})`,
           }}
+          value="startRepeatConditional"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${endRepeatConditional})`,
           }}
+          value="endRepeatConditional"
+          onClick={props.addInput}
         />
       </div>
     </>

@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { allCharacterPortrait } from '../components/allCharacterPortrait'
+import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 
 import { Basic } from '../components/combo-inputs/Basic'
 import { Move } from '../components/combo-inputs/Move'
@@ -11,74 +14,220 @@ import { Smash } from '../components/combo-inputs/Smash'
 import { Special } from '../components/combo-inputs/Special'
 import { Throw } from '../components/combo-inputs/Throw'
 
-// Basic
-import jabBasic from '../graphics/inputs/png/basic/jab-basic.png'
-import grabBasic from '../graphics/inputs/png/basic/grab-basic.png'
-import shieldBasic from '../graphics/inputs/png/basic/shield-basic.png'
-import forwardDashBasic from '../graphics/inputs/png/basic/forwardDash-basic.png'
-import backDashBasic from '../graphics/inputs/png/basic/backDash-basic.png'
-
-// Move
-import upMove from '../graphics/inputs/png/move/up-move.png'
-import forwardMove from '../graphics/inputs/png/move/forward-move.png'
-import downMove from '../graphics/inputs/png/move/down-move.png'
-import backMove from '../graphics/inputs/png/move/back-move.png'
-
-// Flick
-import upFlick from '../graphics/inputs/png/flick/up-flick.png'
-import forwardFlick from '../graphics/inputs/png/flick/forward-flick.png'
-import downFlick from '../graphics/inputs/png/flick/down-flick.png'
-import backFlick from '../graphics/inputs/png/flick/back-flick.png'
-
-// Hop
-import shortHop from '../graphics/inputs/png/hop/short-hop.png'
-import mediumHop from '../graphics/inputs/png/hop/medium-hop.png'
-import fullHop from '../graphics/inputs/png/hop/full-hop.png'
-
-// Conditional
-import andConditional from '../graphics/inputs/png/conditional/and-conditional.png'
-import thenConditional from '../graphics/inputs/png/conditional/then-conditional.png'
-import holdConditional from '../graphics/inputs/png/conditional/hold-conditional.png'
-import releaseConditional from '../graphics/inputs/png/conditional/release-conditional.png'
-import startRepeatConditional from '../graphics/inputs/png/conditional/startrepeat-conditional.png'
-import endRepeatConditional from '../graphics/inputs/png/conditional/endrepeat-conditional.png'
-
-// Tilt
-import upTilt from '../graphics/inputs/png/tilt/up-tilt.png'
-import forwardTilt from '../graphics/inputs/png/tilt/forward-tilt.png'
-import downTilt from '../graphics/inputs/png/tilt/down-tilt.png'
-import backTilt from '../graphics/inputs/png/tilt/back-tilt.png'
-
-// Aerial
-import upAerial from '../graphics/inputs/png/aerial/up-aerial.png'
-import forwardAerial from '../graphics/inputs/png/aerial/forward-aerial.png'
-import downAerial from '../graphics/inputs/png/aerial/down-aerial.png'
-import backAerial from '../graphics/inputs/png/aerial/back-aerial.png'
-import zAerial from '../graphics/inputs/png/aerial/z-aerial.png'
-import neutralAerial from '../graphics/inputs/png/aerial/neutral-aerial.png'
-
-// Smash
-import upSmash from '../graphics/inputs/png/smash/up-smash.png'
-import forwardSmash from '../graphics/inputs/png/smash/forward-smash.png'
-import downSmash from '../graphics/inputs/png/smash/down-smash.png'
-import backSmash from '../graphics/inputs/png/smash/back-smash.png'
-
-// Special
-import upSpecial from '../graphics/inputs/png/special/up-special.png'
-import forwardSpecial from '../graphics/inputs/png/special/forward-special.png'
-import downSpecial from '../graphics/inputs/png/special/down-special.png'
-import backSpecial from '../graphics/inputs/png/special/back-special.png'
-import neutralSpecial from '../graphics/inputs/png/special/neutral-special.png'
-
-// Throw
-import upThrow from '../graphics/inputs/png/throw/up-throw.png'
-import forwardThrow from '../graphics/inputs/png/throw/forward-throw.png'
-import downThrow from '../graphics/inputs/png/throw/down-throw.png'
-import backThrow from '../graphics/inputs/png/throw/back-throw.png'
-
-import peach from '../graphics/characters/Mario/Mario-5.png'
-
 export function SubmitCombo() {
+  let [startMinutes, setStartMinutes] = useState(0)
+  let [startSeconds, setStartSeconds] = useState(0)
+  let [endMinutes, setEndMinutes] = useState(0)
+  let [endSeconds, setEndSeconds] = useState(0)
+  const [characters, setCharacters] = useState([])
+  let [selectedDifficulty, setSelectedDifficulty] = useState('very easy')
+  let [trueCombo, setTrueCombo] = useState('true')
+  let [inputCategory, setInputCategory] = useState('Basic')
+
+  function addInput(event) {
+    event.preventDefault()
+    if (inputs.length === 0) {
+      setInputs(inputs + event.target.value)
+    } else {
+      setInputs(inputs + ' ' + event.target.value)
+    }
+  }
+
+  function removeInput() {
+    const lastIndex = inputs.lastIndexOf(' ')
+    setInputs(inputs.substring(0, lastIndex))
+  }
+
+  let [inputs, setInputs] = useState('')
+
+  const inputCategories = [
+    'Basic',
+    'Move',
+    'Flick',
+    'Hop',
+    'Conditional',
+    'Tilt',
+    'Aerial',
+    'Smash',
+    'Special',
+    'Throw',
+  ]
+
+  const [characterSelected, setCharacterSelected] = useState({
+    variableName: 'Mario',
+    yPosition: 30,
+  })
+
+  const [newCombo, setNewCombo] = useState({
+    characterId: 0,
+    title: '',
+    videoId: '',
+    videoStartTime: 0,
+    videoEndTime: 0,
+    comboInput: '',
+    trueCombo: true,
+    difficulty: '',
+    damage: 0,
+    notes: '',
+  })
+
+  function handleVideoDuration() {
+    setNewCombo({
+      ...newCombo,
+      videoStartTime: startMinutes * 60 + startSeconds,
+      videoEndTime: endMinutes * 60 + endSeconds,
+    })
+  }
+
+  const handleFieldChange = event => {
+    event.preventDefault()
+    const value = event.target.value
+    const id = event.target.id
+
+    if (id === 'difficulty') {
+      setSelectedDifficulty(value)
+      setNewCombo({
+        ...newCombo,
+        [id]: value,
+      })
+    } else if (id === 'trueCombo' && value === 'true') {
+      setTrueCombo(true)
+      setNewCombo({
+        ...newCombo,
+        trueCombo: true,
+      })
+    } else if (id === 'trueCombo' && value === 'false') {
+      setTrueCombo(false)
+      setNewCombo({
+        ...newCombo,
+        trueCombo: false,
+      })
+    } else if (id === 'damage') {
+      setNewCombo({
+        ...newCombo,
+        [id]: parseInt(value),
+      })
+    } else {
+      setNewCombo({
+        ...newCombo,
+        [id]: value,
+      })
+    }
+  }
+
+  const changeCharacterPortrait = event => {
+    const foundCharacterById = characters.find(
+      character => character.id === parseInt(event.target.value)
+    )
+
+    setCharacterSelected({
+      ...characterSelected,
+      variableName: foundCharacterById.variableName,
+      yPosition: foundCharacterById.yPosition,
+    })
+
+    console.log(characterSelected.variableName)
+  }
+
+  function getCharacters() {
+    fetch('/api/Characters')
+      .then(response => response.json())
+      .then(apiData => {
+        setCharacters(apiData)
+      })
+  }
+
+  function renderInputCategoryComponents() {
+    switch (inputCategory) {
+      case 'Basic':
+        return (
+          <>
+            <Basic addInput={addInput} />
+          </>
+        )
+        break
+      case 'Move':
+        return (
+          <>
+            <Move addInput={addInput} />
+          </>
+        )
+        break
+      case 'Flick':
+        return (
+          <>
+            <Flick addInput={addInput} />
+          </>
+        )
+        break
+      case 'Hop':
+        return (
+          <>
+            <Hop addInput={addInput} />
+          </>
+        )
+        break
+      case 'Conditional':
+        return (
+          <>
+            <Conditional addInput={addInput} />
+          </>
+        )
+        break
+      case 'Tilt':
+        return (
+          <>
+            <Tilt addInput={addInput} />
+          </>
+        )
+        break
+      case 'Aerial':
+        return (
+          <>
+            <Aerial addInput={addInput} />
+          </>
+        )
+        break
+      case 'Smash':
+        return (
+          <>
+            <Smash addInput={addInput} />
+          </>
+        )
+        break
+      case 'Special':
+        return (
+          <>
+            <Special addInput={addInput} />
+          </>
+        )
+        break
+      case 'Throw':
+        return (
+          <>
+            <Throw addInput={addInput} />
+          </>
+        )
+        break
+    }
+  }
+
+  useEffect(() => {
+    setNewCombo({
+      ...newCombo,
+      comboInput: inputs,
+    })
+  }, [inputs])
+
+  useEffect(handleVideoDuration, [
+    startMinutes,
+    startSeconds,
+    endMinutes,
+    endSeconds,
+  ])
+
+  useEffect(getCharacters, [])
+
   return (
     <div className="submit-combo">
       <header>
@@ -91,18 +240,24 @@ export function SubmitCombo() {
             <label for="select-character">Choose a character</label>
             <div
               style={{
-                backgroundImage: `url(${peach})`,
-                backgroundPositionY: `30%`,
+                backgroundImage: `url(${
+                  allCharacterPortrait[characterSelected.variableName]
+                })`,
+                backgroundPositionY: `${characterSelected.yPosition}%`,
               }}
               className="character bg-black"
             >
-              <select name="select-character">
-                <option value="peach">Peach</option>
-                <option value="bayonetta">Bayonetta</option>
-                <option value="luigi">Luigi</option>
-                <option value="minmin">Min Min</option>
-                <option value="link">Link</option>
-                <option value="wolf">Wolf</option>
+              <select
+                name="select-character"
+                id="characterId"
+                onChange={event => {
+                  handleFieldChange(event)
+                  changeCharacterPortrait(event)
+                }}
+              >
+                {characters.map(character => (
+                  <option value={character.id}>{character.name}</option>
+                ))}
               </select>
             </div>
           </fieldset>
@@ -114,6 +269,7 @@ export function SubmitCombo() {
               id="title"
               type="text"
               placeholder="eg. Down-throw bair"
+              onChange={handleFieldChange}
             />
           </fieldset>
 
@@ -121,13 +277,14 @@ export function SubmitCombo() {
             <label for="video-id">Youtube video ID</label>
             <input
               className="bg-yellow"
-              id="video-id"
+              id="videoId"
               type="text"
               placeholder="eg. IE1lyGZgLOs"
+              onChange={handleFieldChange}
             />
           </fieldset>
 
-          <div className="duration ">
+          {/* <div className="duration ">
             <fieldset>
               <label for="video-start">Start time in video</label>
               <div className="bg-yellow">
@@ -136,17 +293,43 @@ export function SubmitCombo() {
                   type="number"
                   max="60"
                   min="0"
-                  id="video-start"
+                  id="startMinutes"
                   placeholder="00"
+                  value={startMinutes}
+                  onChange={event => {
+                    if (event.target.value > 60) {
+                      setStartMinutes(60)
+                    }
+                    // else if (!event.target.value) {
+                    //   setStartMinutes(0)
+                    // }
+                    else {
+                      setStartMinutes(parseInt(event.target.value))
+                    }
+                  }}
                 />
                 <span>:</span>
                 <input
                   className="bg-yellow"
                   type="number"
+                  s
                   max="60"
                   min="0"
-                  id="video-start"
+                  id="startSeconds"
                   placeholder="00"
+                  value={startSeconds}
+                  onChange={event => {
+                    if (event.target.value > 60) {
+                      setStartSeconds(60)
+                    }
+                    // else if (!event.target.value) {
+                    //   setStartSeconds(0)
+                    // }
+                    else {
+                      event.target.value.substr(1)
+                      setStartSeconds(parseInt(event.target.value))
+                    }
+                  }}
                 />
               </div>
             </fieldset>
@@ -173,31 +356,98 @@ export function SubmitCombo() {
                 />
               </div>
             </fieldset>
-          </div>
+          </div> */}
 
           <fieldset className="difficulty">
             <label>Difficulty</label>
             <div>
-              <button className="button bg-blue">Very Easy</button>
-              <button className="button bg-green">Easy</button>
-              <button className="button bg-yellow">Medium</button>
-              <button className="button bg-pink">Hard</button>
-              <button className="button bg-red">Very Hard</button>
+              <button
+                className={`button bg-blue ${
+                  selectedDifficulty === 'very easy' ? 'active-button' : ''
+                }`}
+                id="difficulty"
+                value="very easy"
+                onClick={handleFieldChange}
+              >
+                Very Easy
+              </button>
+              <button
+                className={`button bg-green ${
+                  selectedDifficulty === 'easy' ? 'active-button' : ''
+                }`}
+                id="difficulty"
+                value="easy"
+                onClick={handleFieldChange}
+              >
+                Easy
+              </button>
+              <button
+                className={`button bg-yellow ${
+                  selectedDifficulty === 'medium' ? 'active-button' : ''
+                }`}
+                id="difficulty"
+                value="medium"
+                onClick={handleFieldChange}
+              >
+                Medium
+              </button>
+              <button
+                className={`button bg-pink ${
+                  selectedDifficulty === 'hard' ? 'active-button' : ''
+                }`}
+                id="difficulty"
+                value="hard"
+                onClick={handleFieldChange}
+              >
+                Hard
+              </button>
+              <button
+                className={`button bg-red ${
+                  selectedDifficulty === 'very hard' ? 'active-button' : ''
+                }`}
+                id="difficulty"
+                value="very hard"
+                onClick={handleFieldChange}
+              >
+                Very Hard
+              </button>
             </div>
           </fieldset>
 
           <fieldset className="true-combo">
             <label>True Combo</label>
             <div>
-              <button className="button bg-green">Yes</button>
-              <button className="button bg-red">No</button>
+              <button
+                className={`button bg-green ${
+                  trueCombo ? 'active-button' : ''
+                }`}
+                id="trueCombo"
+                value="true"
+                onClick={handleFieldChange}
+              >
+                Yes
+              </button>
+              <button
+                className={`button bg-red ${!trueCombo ? 'active-button' : ''}`}
+                id="trueCombo"
+                value="false"
+                onClick={handleFieldChange}
+              >
+                No
+              </button>
             </div>
           </fieldset>
 
           <fieldset className="damage">
             <label>Damage</label>
             <div className="container bg-yellow">
-              <input className="bg-yellow" type="number" placeholder="0" />
+              <input
+                className="bg-yellow"
+                type="number"
+                placeholder="0"
+                id="damage"
+                onChange={handleFieldChange}
+              />
               <span className="bg-yellow">%</span>
             </div>
           </fieldset>
@@ -205,260 +455,48 @@ export function SubmitCombo() {
           <fieldset className="combo-input">
             <label>Combo input</label>
 
-            <div className="combo-input-container bg-black">
+            <div
+              className="combo-input-container bg-black"
+              onClick={removeInput}
+            >
               <div className="combo-inputs">
-                <div
-                  className="combo-input"
-                  style={{
-                    // backgroundColor: `red`,
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${forwardAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${backAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${zAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${neutralAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${upAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
-                <div
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${downAerial})`,
-                  }}
-                />
+                {inputs.split(' ').map(input => (
+                  <div
+                    className="combo-input"
+                    style={{
+                      backgroundImage: `url(${allComboInputs[input]})`,
+                    }}
+                  />
+                ))}
               </div>
               <p>*Click this area to go back one input*</p>
             </div>
             <div className="input-categories">
-              <button>Basic</button>
-              <button>Move</button>
-              <button>Flick</button>
-              <button>Hop</button>
-              <button>Cond.</button>
-              <button>Tilt</button>
-              <button>Aerial</button>
-              <button>Smash</button>
-              <button>Special</button>
-              <button>Throw</button>
+              {inputCategories.map(inputCategory => (
+                <button
+                  onClick={event => {
+                    event.preventDefault()
+                    setInputCategory(inputCategory)
+                  }}
+                >
+                  {inputCategory}
+                </button>
+              ))}
             </div>
 
             <div className="input-controller bg-black">
-              <Basic />
-              {/* <Move /> */}
-              {/* <Flick /> */}
-              {/* <Hop /> */}
-              {/* <Conditional /> */}
-              {/* <Tilt /> */}
-              {/* <Aerial /> */}
-              {/* <Smash /> */}
-              {/* <Special /> */}
-              {/* <Throw /> */}
+              {renderInputCategoryComponents()}
             </div>
           </fieldset>
 
           <fieldset className="notes">
             <label for="notes">Notes</label>
             <div>
-              <textarea placeholder="Additional notes" />
+              <textarea
+                placeholder="Additional notes"
+                id="notes"
+                onChange={handleFieldChange}
+              />
               <button type="submit" className="button bg-yellow black-text">
                 Submit
               </button>

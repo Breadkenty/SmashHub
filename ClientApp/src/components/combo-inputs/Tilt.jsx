@@ -4,7 +4,7 @@ import forwardTilt from '../../graphics/inputs/png/tilt/forward-tilt.png'
 import downTilt from '../../graphics/inputs/png/tilt/down-tilt.png'
 import backTilt from '../../graphics/inputs/png/tilt/back-tilt.png'
 
-export function Tilt() {
+export function Tilt(props) {
   return (
     <>
       <h3>Tilt</h3>
@@ -15,6 +15,8 @@ export function Tilt() {
           style={{
             backgroundImage: `url(${upTilt})`,
           }}
+          value="upTilt"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -22,6 +24,8 @@ export function Tilt() {
           style={{
             backgroundImage: `url(${backTilt})`,
           }}
+          value="backTilt"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -29,6 +33,8 @@ export function Tilt() {
           style={{
             backgroundImage: `url(${forwardTilt})`,
           }}
+          value="forwardTilt"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -36,6 +42,8 @@ export function Tilt() {
           style={{
             backgroundImage: `url(${downTilt})`,
           }}
+          value="downTilt"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
       </div>

@@ -7,14 +7,6 @@ export function Characters() {
   let [characters, setCharacters] = useState([])
   const [filterText, setFilterText] = useState('')
 
-  // function getCharacters() {
-  //   fetch('/api/Characters')
-  //     .then(response => response.json())
-  //     .then(apiData => {
-  //       setCharacters(apiData)
-  //     })
-  // }
-
   function getCharacters() {
     const url =
       filterText.length === 0
@@ -28,9 +20,6 @@ export function Characters() {
   }
 
   useEffect(getCharacters, [filterText])
-  // characters.map(character => {
-  //   console.log(character.name)
-  // })
 
   return (
     <div className="character-select">

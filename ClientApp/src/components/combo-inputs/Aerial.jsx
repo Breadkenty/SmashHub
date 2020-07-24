@@ -6,7 +6,7 @@ import backAerial from '../../graphics/inputs/png/aerial/back-aerial.png'
 import zAerial from '../../graphics/inputs/png/aerial/z-aerial.png'
 import neutralAerial from '../../graphics/inputs/png/aerial/neutral-aerial.png'
 
-export function Aerial() {
+export function Aerial(props) {
   return (
     <>
       <h3>Aerial</h3>
@@ -17,30 +17,40 @@ export function Aerial() {
           style={{
             backgroundImage: `url(${upAerial})`,
           }}
+          value="upAerial"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${zAerial})`,
           }}
+          value="zAerial"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${backAerial})`,
           }}
+          value="backAerial"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${neutralAerial})`,
           }}
+          value="neutralAerial"
+          onClick={props.addInput}
         />
         <button
           className="combo-input"
           style={{
             backgroundImage: `url(${forwardAerial})`,
           }}
+          value="forwardAerial"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
         <button
@@ -48,6 +58,8 @@ export function Aerial() {
           style={{
             backgroundImage: `url(${downAerial})`,
           }}
+          value="downAerial"
+          onClick={props.addInput}
         />
         <div className="blank-input-space" />
       </div>
