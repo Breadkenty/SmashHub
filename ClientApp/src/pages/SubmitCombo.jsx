@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -14,11 +15,38 @@ import { Smash } from '../components/combo-inputs/Smash'
 import { Special } from '../components/combo-inputs/Special'
 import { Throw } from '../components/combo-inputs/Throw'
 
+export default function ErrroMessage({ error }) {
+  if (error) {
+    switch (error.type) {
+      case 'required':
+        return <p>This is required</p>
+      case 'minLength':
+        return <p>Your last name need minmium 2 charcaters</p>
+      case 'pattern':
+        return <p>Enter a valid email address</p>
+      case 'min':
+        return <p>Minmium age is 18</p>
+      case 'validate':
+        return <p>Username is already used</p>
+      default:
+        return null
+    }
+  }
+
+  return null
+}
+
 export function SubmitCombo() {
-  let [startMinutes, setStartMinutes] = useState(0)
-  let [startSeconds, setStartSeconds] = useState(0)
-  let [endMinutes, setEndMinutes] = useState(0)
-  let [endSeconds, setEndSeconds] = useState(0)
+  const { register, handleSubmit, errors } = useForm()
+
+  const onSubmit = data => {
+    console.log(data)
+  }
+
+  let [startMinutes, setStartMinutes] = useState()
+  let [startSeconds, setStartSeconds] = useState()
+  let [endMinutes, setEndMinutes] = useState()
+  let [endSeconds, setEndSeconds] = useState()
   const [characters, setCharacters] = useState([])
   let [selectedDifficulty, setSelectedDifficulty] = useState('very easy')
   let [trueCombo, setTrueCombo] = useState('true')
@@ -142,73 +170,73 @@ export function SubmitCombo() {
       case 'Basic':
         return (
           <>
-            <Basic addInput={addInput} />
+            <Basic key={inputCategories['Basic']} addInput={addInput} />
           </>
         )
-        break
       case 'Move':
         return (
           <>
-            <Move addInput={addInput} />
+            <Move key={inputCategories['Move']} addInput={addInput} />
           </>
         )
-        break
       case 'Flick':
         return (
           <>
-            <Flick addInput={addInput} />
+            <Flick key={inputCategories['Flick']} addInput={addInput} />
           </>
         )
-        break
+
       case 'Hop':
         return (
           <>
-            <Hop addInput={addInput} />
+            <Hop key={inputCategories['Hop']} addInput={addInput} />
           </>
         )
-        break
+
       case 'Conditional':
         return (
           <>
-            <Conditional addInput={addInput} />
+            <Conditional
+              key={inputCategories['Conditional']}
+              addInput={addInput}
+            />
           </>
         )
-        break
+
       case 'Tilt':
         return (
           <>
-            <Tilt addInput={addInput} />
+            <Tilt key={inputCategories['Tilt']} addInput={addInput} />
           </>
         )
-        break
+
       case 'Aerial':
         return (
           <>
-            <Aerial addInput={addInput} />
+            <Aerial key={inputCategories['Aerial']} addInput={addInput} />
           </>
         )
-        break
+
       case 'Smash':
         return (
           <>
-            <Smash addInput={addInput} />
+            <Smash key={inputCategories['Smash']} addInput={addInput} />
           </>
         )
-        break
+
       case 'Special':
         return (
           <>
-            <Special addInput={addInput} />
+            <Special key={inputCategories['Special']} addInput={addInput} />
           </>
         )
-        break
+
       case 'Throw':
         return (
           <>
-            <Throw addInput={addInput} />
+            <Throw key={inputCategories['Throw']} addInput={addInput} />
           </>
         )
-        break
     }
   }
 
@@ -235,9 +263,9 @@ export function SubmitCombo() {
       </header>
 
       <section className="bg-grey">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset className="select-character">
-            <label for="select-character">Choose a character</label>
+            <label htmlFor="select-character">Choose a character</label>
             <div
               style={{
                 backgroundImage: `url(${
@@ -254,39 +282,46 @@ export function SubmitCombo() {
                   handleFieldChange(event)
                   changeCharacterPortrait(event)
                 }}
+                ref={register({ required: true })}
               >
                 {characters.map(character => (
-                  <option value={character.id}>{character.name}</option>
+                  <option key={character.id} value={character.id}>
+                    {character.name}
+                  </option>
                 ))}
               </select>
             </div>
           </fieldset>
 
           <fieldset className="title">
-            <label for="title">Title</label>
+            <label htmlFor="title">Title</label>
             <input
+              name="title"
               className="bg-yellow"
               id="title"
               type="text"
               placeholder="eg. Down-throw bair"
               onChange={handleFieldChange}
+              ref={register({ required: true, maxLength: 70 })}
             />
+            {errors.title && <p>This is required</p>}
           </fieldset>
 
           <fieldset className="video">
-            <label for="video-id">Youtube video ID</label>
+            <label htmlFor="video-id">Youtube video ID</label>
             <input
               className="bg-yellow"
               id="videoId"
               type="text"
               placeholder="eg. IE1lyGZgLOs"
               onChange={handleFieldChange}
+              ref={register({ required: true })}
             />
           </fieldset>
 
-          {/* <div className="duration ">
+          <div className="duration ">
             <fieldset>
-              <label for="video-start">Start time in video</label>
+              <label htmlFor="video-start">Start time in video</label>
               <div className="bg-yellow">
                 <input
                   className="bg-yellow"
@@ -297,45 +332,37 @@ export function SubmitCombo() {
                   placeholder="00"
                   value={startMinutes}
                   onChange={event => {
-                    if (event.target.value > 60) {
-                      setStartMinutes(60)
-                    }
-                    // else if (!event.target.value) {
-                    //   setStartMinutes(0)
-                    // }
-                    else {
+                    if (event.target.value > 59) {
+                      setStartMinutes(59)
+                    } else {
                       setStartMinutes(parseInt(event.target.value))
                     }
                   }}
+                  ref={register({ required: true })}
                 />
                 <span>:</span>
                 <input
                   className="bg-yellow"
                   type="number"
-                  s
                   max="60"
                   min="0"
                   id="startSeconds"
                   placeholder="00"
                   value={startSeconds}
                   onChange={event => {
-                    if (event.target.value > 60) {
-                      setStartSeconds(60)
-                    }
-                    // else if (!event.target.value) {
-                    //   setStartSeconds(0)
-                    // }
-                    else {
-                      event.target.value.substr(1)
+                    if (event.target.value > 59) {
+                      setStartSeconds(59)
+                    } else {
                       setStartSeconds(parseInt(event.target.value))
                     }
                   }}
+                  ref={register({ required: true })}
                 />
               </div>
             </fieldset>
-
+            {/* 
             <fieldset>
-              <label for="video-end">End time in video</label>
+              <label htmlFor="video-end">End time in video</label>
               <div className="bg-yellow">
                 <input
                   className="bg-yellow"
@@ -355,8 +382,8 @@ export function SubmitCombo() {
                   placeholder="00"
                 />
               </div>
-            </fieldset>
-          </div> */}
+            </fieldset> */}
+          </div>
 
           <fieldset className="difficulty">
             <label>Difficulty</label>
@@ -447,6 +474,7 @@ export function SubmitCombo() {
                 placeholder="0"
                 id="damage"
                 onChange={handleFieldChange}
+                ref={register({ required: true })}
               />
               <span className="bg-yellow">%</span>
             </div>
@@ -462,6 +490,7 @@ export function SubmitCombo() {
               <div className="combo-inputs">
                 {inputs.split(' ').map(input => (
                   <div
+                    key={input}
                     className="combo-input"
                     style={{
                       backgroundImage: `url(${allComboInputs[input]})`,
@@ -474,6 +503,7 @@ export function SubmitCombo() {
             <div className="input-categories">
               {inputCategories.map(inputCategory => (
                 <button
+                  key={inputCategory}
                   onClick={event => {
                     event.preventDefault()
                     setInputCategory(inputCategory)
@@ -490,7 +520,7 @@ export function SubmitCombo() {
           </fieldset>
 
           <fieldset className="notes">
-            <label for="notes">Notes</label>
+            <label htmlFor="notes">Notes</label>
             <div>
               <textarea
                 placeholder="Additional notes"

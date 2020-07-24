@@ -30,7 +30,7 @@ export function SortController(props) {
         <span>Sort by</span>
         <button className="sort-controller-active" onClick={handleSortButton}>
           {props.sortType}
-          <i class="fas fa-caret-down"></i>
+          <i className="fas fa-caret-down"></i>
         </button>
       </div>
       <div
