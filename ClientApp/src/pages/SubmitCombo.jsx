@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -15,58 +15,24 @@ import { Smash } from '../components/combo-inputs/Smash'
 import { Special } from '../components/combo-inputs/Special'
 import { Throw } from '../components/combo-inputs/Throw'
 
-export default function ErrroMessage({ error }) {
-  if (error) {
-    switch (error.type) {
-      case 'required':
-        return <p>This is required</p>
-      case 'minLength':
-        return <p>Your last name need minmium 2 charcaters</p>
-      case 'pattern':
-        return <p>Enter a valid email address</p>
-      case 'min':
-        return <p>Minmium age is 18</p>
-      case 'validate':
-        return <p>Username is already used</p>
-      default:
-        return null
-    }
-  }
-
-  return null
-}
-
 export function SubmitCombo() {
-  const { register, handleSubmit, errors } = useForm()
+  const history = useHistory()
 
-  const onSubmit = data => {
-    console.log(data)
-  }
+  const [characters, setCharacters] = useState([])
+
+  const [characterSelected, setCharacterSelected] = useState({
+    variableName: 'Mario',
+    yPosition: 30,
+  })
 
   let [startMinutes, setStartMinutes] = useState()
   let [startSeconds, setStartSeconds] = useState()
   let [endMinutes, setEndMinutes] = useState()
   let [endSeconds, setEndSeconds] = useState()
-  const [characters, setCharacters] = useState([])
+
   let [selectedDifficulty, setSelectedDifficulty] = useState('very easy')
+
   let [trueCombo, setTrueCombo] = useState('true')
-  let [inputCategory, setInputCategory] = useState('Basic')
-
-  function addInput(event) {
-    event.preventDefault()
-    if (inputs.length === 0) {
-      setInputs(inputs + event.target.value)
-    } else {
-      setInputs(inputs + ' ' + event.target.value)
-    }
-  }
-
-  function removeInput() {
-    const lastIndex = inputs.lastIndexOf(' ')
-    setInputs(inputs.substring(0, lastIndex))
-  }
-
-  let [inputs, setInputs] = useState('')
 
   const inputCategories = [
     'Basic',
@@ -80,39 +46,33 @@ export function SubmitCombo() {
     'Special',
     'Throw',
   ]
-
-  const [characterSelected, setCharacterSelected] = useState({
-    variableName: 'Mario',
-    yPosition: 30,
-  })
+  let [inputCategory, setInputCategory] = useState('Basic')
+  let [inputs, setInputs] = useState('')
 
   const [newCombo, setNewCombo] = useState({
-    characterId: 0,
+    characterId: 1,
     title: '',
     videoId: '',
     videoStartTime: 0,
     videoEndTime: 0,
     comboInput: '',
     trueCombo: true,
-    difficulty: '',
+    difficulty: 'very easy',
     damage: 0,
     notes: '',
   })
-
-  function handleVideoDuration() {
-    setNewCombo({
-      ...newCombo,
-      videoStartTime: startMinutes * 60 + startSeconds,
-      videoEndTime: endMinutes * 60 + endSeconds,
-    })
-  }
 
   const handleFieldChange = event => {
     event.preventDefault()
     const value = event.target.value
     const id = event.target.id
 
-    if (id === 'difficulty') {
+    if (id === 'characterId') {
+      setNewCombo({
+        ...newCombo,
+        [id]: parseInt(value),
+      })
+    } else if (id === 'difficulty') {
       setSelectedDifficulty(value)
       setNewCombo({
         ...newCombo,
@@ -153,8 +113,20 @@ export function SubmitCombo() {
       variableName: foundCharacterById.variableName,
       yPosition: foundCharacterById.yPosition,
     })
+  }
 
-    console.log(characterSelected.variableName)
+  function addInput(event) {
+    event.preventDefault()
+    if (inputs.length === 0) {
+      setInputs(inputs + event.target.value)
+    } else {
+      setInputs(inputs + ' ' + event.target.value)
+    }
+  }
+
+  function removeInput() {
+    const lastIndex = inputs.lastIndexOf(' ')
+    setInputs(inputs.substring(0, lastIndex))
   }
 
   function getCharacters() {
@@ -240,6 +212,28 @@ export function SubmitCombo() {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    const comboToSubmit = {
+      ...newCombo,
+      videoStartTime:
+        parseInt(startMinutes || 0) * 60 + parseInt(startSeconds || 0),
+      videoEndTime: parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0),
+    }
+
+    console.log('Submit:')
+    console.log(JSON.stringify(comboToSubmit))
+    fetch('/api/Combos', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(comboToSubmit),
+    })
+      .then(response => response.json())
+      .then(history.push('/'))
+  }
+
+  // Set inputs when the input field changes
   useEffect(() => {
     setNewCombo({
       ...newCombo,
@@ -247,15 +241,10 @@ export function SubmitCombo() {
     })
   }, [inputs])
 
-  useEffect(handleVideoDuration, [
-    startMinutes,
-    startSeconds,
-    endMinutes,
-    endSeconds,
-  ])
-
+  // Get all characters from API
   useEffect(getCharacters, [])
 
+  console.log(newCombo)
   return (
     <div className="submit-combo">
       <header>
@@ -263,7 +252,7 @@ export function SubmitCombo() {
       </header>
 
       <section className="bg-grey">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit}>
           <fieldset className="select-character">
             <label htmlFor="select-character">Choose a character</label>
             <div
@@ -282,7 +271,7 @@ export function SubmitCombo() {
                   handleFieldChange(event)
                   changeCharacterPortrait(event)
                 }}
-                ref={register({ required: true })}
+                required
               >
                 {characters.map(character => (
                   <option key={character.id} value={character.id}>
@@ -302,9 +291,8 @@ export function SubmitCombo() {
               type="text"
               placeholder="eg. Down-throw bair"
               onChange={handleFieldChange}
-              ref={register({ required: true, maxLength: 70 })}
+              required
             />
-            {errors.title && <p>This is required</p>}
           </fieldset>
 
           <fieldset className="video">
@@ -315,7 +303,7 @@ export function SubmitCombo() {
               type="text"
               placeholder="eg. IE1lyGZgLOs"
               onChange={handleFieldChange}
-              ref={register({ required: true })}
+              required
             />
           </fieldset>
 
@@ -338,7 +326,6 @@ export function SubmitCombo() {
                       setStartMinutes(parseInt(event.target.value))
                     }
                   }}
-                  ref={register({ required: true })}
                 />
                 <span>:</span>
                 <input
@@ -356,11 +343,10 @@ export function SubmitCombo() {
                       setStartSeconds(parseInt(event.target.value))
                     }
                   }}
-                  ref={register({ required: true })}
                 />
               </div>
             </fieldset>
-            {/* 
+
             <fieldset>
               <label htmlFor="video-end">End time in video</label>
               <div className="bg-yellow">
@@ -371,6 +357,14 @@ export function SubmitCombo() {
                   min="0"
                   id="video-end"
                   placeholder="00"
+                  value={endMinutes}
+                  onChange={event => {
+                    if (event.target.value > 59) {
+                      setEndMinutes(59)
+                    } else {
+                      setEndMinutes(parseInt(event.target.value))
+                    }
+                  }}
                 />
                 <span>:</span>
                 <input
@@ -380,9 +374,17 @@ export function SubmitCombo() {
                   min="0"
                   id="video-end"
                   placeholder="00"
+                  value={endSeconds}
+                  onChange={event => {
+                    if (event.target.value > 59) {
+                      setEndSeconds(59)
+                    } else {
+                      setEndSeconds(parseInt(event.target.value))
+                    }
+                  }}
                 />
               </div>
-            </fieldset> */}
+            </fieldset>
           </div>
 
           <fieldset className="difficulty">
@@ -474,7 +476,7 @@ export function SubmitCombo() {
                 placeholder="0"
                 id="damage"
                 onChange={handleFieldChange}
-                ref={register({ required: true })}
+                required
               />
               <span className="bg-yellow">%</span>
             </div>
@@ -488,9 +490,9 @@ export function SubmitCombo() {
               onClick={removeInput}
             >
               <div className="combo-inputs">
-                {inputs.split(' ').map(input => (
+                {inputs.split(' ').map((input, index) => (
                   <div
-                    key={input}
+                    key={index}
                     className="combo-input"
                     style={{
                       backgroundImage: `url(${allComboInputs[input]})`,

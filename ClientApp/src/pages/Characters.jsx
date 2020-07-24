@@ -35,7 +35,7 @@ export function Characters() {
       <h3>Choose your character</h3>
       <div className="characters">
         {characters.map(character => (
-          <Link to={`/character/${character.variableName}`}>
+          <Link key={character.id} to={`/character/${character.variableName}`}>
             <img
               src={allCharacterCloseUp[character.variableName]}
               alt={`${character.name}'s portrait`}
