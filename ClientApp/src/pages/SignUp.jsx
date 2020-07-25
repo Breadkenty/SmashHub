@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router'
 
 export function SignUp() {
+  const history = useHistory()
+
   const [newUser, setNewUser] = useState({
     displayName: '',
     email: '',
