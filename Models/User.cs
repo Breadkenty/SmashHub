@@ -8,6 +8,8 @@ namespace Smash_Combos.Models
     {
         public int Id { get; set; }
 
+        public bool Admin { get; set; } = false;
+
         [Required]
         public string DisplayName { get; set; }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Smash_Combos.Models;
@@ -9,9 +10,10 @@ using Smash_Combos.Models;
 namespace Smash_Combos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200725220903_AddedAdminStatusOnUsers")]
+    partial class AddedAdminStatusOnUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,9 +130,6 @@ namespace Smash_Combos.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("Admin")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -141,6 +140,9 @@ namespace Smash_Combos.Migrations
 
                     b.Property<string>("HashedPassword")
                         .HasColumnType("text");
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

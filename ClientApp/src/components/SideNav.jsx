@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../graphics/logo/logo-on-black.png'
 import useOnClickOutside from 'use-onclickoutside'
-import { isLoggedIn, logout } from '../auth'
+import { isLoggedIn, logout, getUser } from '../auth'
 
 export function SideNav(props) {
   const ref = React.useRef(null)
@@ -17,6 +17,8 @@ export function SideNav(props) {
     logout()
     window.location = '/'
   }
+
+  const user = getUser()
 
   return (
     <div
@@ -50,7 +52,7 @@ export function SideNav(props) {
           </li>
         )}
 
-        {isLoggedIn() && (
+        {isLoggedIn() && user.admin === true && (
           <>
             <li>
               <Link to="/add">
