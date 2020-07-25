@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
@@ -8,13 +9,16 @@ namespace Smash_Combos.Models
     {
         public int Id { get; set; }
 
-        public bool Admin { get; set; } = false;
+        public bool Admin { get; private set; } = false;
 
         [Required]
         public string DisplayName { get; set; }
 
         [Required]
         public string Email { get; set; }
+
+        public List<Combo> Combos { get; private set; }
+        public List<Comment> Comments { get; private set; }
 
         [JsonIgnore]
         public string HashedPassword { get; set; }
@@ -33,5 +37,7 @@ namespace Smash_Combos.Models
 
             return passwordVerification == PasswordVerificationResult.Success;
         }
+
+
     }
 }
