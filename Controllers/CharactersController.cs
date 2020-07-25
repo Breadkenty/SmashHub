@@ -117,9 +117,9 @@ namespace Smash_Combos.Controllers
             // return NoContent to indicate the update was done. Alternatively you can use the
             // following to send back a copy of the updated data.
             //
-            // return Ok(character)
+            return Ok(character);
             //
-            return NoContent();
+            // return NoContent();
         }
 
         // POST: api/Characters
@@ -153,7 +153,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> DeleteCharacter(string variableName)
         {
             // Find this character by looking for the specific id
-            var character = await _context.Characters.FindAsync(variableName);
+            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).FirstOrDefaultAsync();
             if (character == null)
             {
                 // There wasn't a character with that id so return a `404` not found

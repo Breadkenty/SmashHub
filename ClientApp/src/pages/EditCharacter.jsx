@@ -1,321 +1,126 @@
-import React from 'react'
-import character from '../graphics/characters/Peach/Peach-1.png'
+import React, { useState, useEffect } from 'react'
+import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
+import { useHistory } from 'react-router'
 
 export function EditCharacter() {
-  return (
-    <div className="edit-character">
-      <div className="characters">
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
+  const history = useHistory()
+  const [characters, setCharacters] = useState([])
+  const [selectedCharacter, setSelectedCharacter] = useState({
+    id: '',
+    name: '',
+    variableName: '',
+    yPosition: 0,
+  })
+  const [
+    selectedCharacterVariableName,
+    setSelectedCharacterVariableName,
+  ] = useState('')
 
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
-        <div
-          className="character"
-          style={{ backgroundImage: `url(${character})` }}
-        />
+  function handleTextChange(event) {
+    setSelectedCharacter({
+      ...selectedCharacter,
+      [event.target.id]: event.target.value,
+    })
+  }
+
+  function handleNumberChange(event) {
+    setSelectedCharacter({
+      ...selectedCharacter,
+      [event.target.id]: parseInt(event.target.value) || null,
+    })
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    fetch(`/api/Characters/${selectedCharacterVariableName}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(selectedCharacter),
+    })
+      .then(response => response.json())
+      .then(history.push('/'))
+  }
+
+  function getCharacters() {
+    fetch('/api/Characters')
+      .then(response => response.json())
+      .then(apiData => {
+        setCharacters(apiData)
+      })
+  }
+
+  useEffect(getCharacters, [])
+
+  return (
+    <form className="edit-character" onSubmit={handleSubmit}>
+      <div className="characters">
+        {characters.map(character => (
+          <img
+            key={character.id}
+            className="character"
+            style={{
+              backgroundImage: `url(${
+                allCharacterCloseUp[character.variableName]
+              })`,
+            }}
+            onClick={() => {
+              setSelectedCharacter({
+                ...selectedCharacter,
+                id: character.id,
+                name: character.name,
+                variableName: character.variableName,
+                yPosition: character.yPosition,
+              })
+              setSelectedCharacterVariableName(character.variableName)
+            }}
+          />
+        ))}
       </div>
       <div className="update-field">
         <fieldset>
-          <label for="name">Name</label>
+          <label htmlFor="name">Name</label>
           <input
             className="bg-yellow"
             id="name"
             type="text"
             placeholder="Mario"
+            value={selectedCharacter.name}
+            onChange={handleTextChange}
+            required
           />
         </fieldset>
 
         <fieldset>
-          <label for="variable-name">VariableName</label>
+          <label htmlFor="variable-name">VariableName</label>
           <input
             className="bg-yellow"
-            id="variable-name"
+            id="variableName"
             type="text"
             placeholder="ZeroSuitSamus"
+            value={selectedCharacter.variableName}
+            onChange={handleTextChange}
+            required
           />
         </fieldset>
 
         <fieldset>
-          <label for="y-position">Y Position</label>
+          <label htmlFor="y-position">Y Position</label>
           <input
             className="bg-yellow"
-            id="y-position"
+            id="yPosition"
             type="text"
             placeholder="20"
+            value={selectedCharacter.yPosition}
+            onChange={handleNumberChange}
+            required
           />
         </fieldset>
 
-        <button className="button bg-yellow black-text">Submit</button>
+        <button className="button bg-yellow black-text" type="submit">
+          Submit
+        </button>
       </div>
-    </div>
+    </form>
   )
 }
