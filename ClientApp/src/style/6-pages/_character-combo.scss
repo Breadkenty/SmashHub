@@ -1,4 +1,7 @@
 .character-combo {
+  display: flex;
+  justify-content: center;
+
   .character-header {
     position: fixed;
     z-index: 1;
@@ -31,6 +34,9 @@
   }
 
   article {
+    width: 100vw;
+
+    max-width: 1000px;
     padding-top: calc((100vw * 0.56) + 150px);
 
     header {
@@ -80,7 +86,7 @@
     }
 
     .add-comment {
-      width: 100vw;
+      width: 100%;
 
       padding: 16px;
 
@@ -127,7 +133,7 @@
   }
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1000px) {
   .character-combo {
     .character-header {
       padding-left: 36vw;
@@ -143,7 +149,7 @@
 
       margin-top: 130px;
 
-      background-color: $grey;
+      // background-color: $grey;
 
       width: 100vw;
       height: calc(50vw * 0.56);
@@ -153,7 +159,8 @@
 
       iframe {
         height: calc(50vw * 0.56);
-        width: 50%;
+        width: 100%;
+        max-width: 1000px;
       }
     }
 

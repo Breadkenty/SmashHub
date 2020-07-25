@@ -1,5 +1,7 @@
 .character-combos {
   padding-top: 50px;
+  display: flex;
+  justify-content: center;
 
   .character-header {
     position: fixed;
@@ -39,6 +41,8 @@
 
   section {
     padding-top: 250px;
+    max-width: 1000px;
+    width: 100%;
     .combo {
       display: flex;
       border-bottom: 1px solid $grey;

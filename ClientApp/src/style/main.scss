@@ -35,3 +35,9 @@
 body {
   background-color: black;
 }
+
+.none {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

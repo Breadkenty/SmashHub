@@ -1,10 +1,14 @@
 .submit-combo {
   padding-top: 50px;
+  width: 100%;
+  max-width: 1000px;
+
   header {
     padding: 24px;
   }
 
   section {
+    padding: 16px;
     fieldset {
       width: 100%;
       display: flex;
@@ -103,16 +107,24 @@
 
     // Damage
     .damage {
+      width: 100%;
+
       .container {
         display: flex;
         justify-content: center;
         align-items: center;
 
-        input {
-          width: 60px;
-          height: 100px;
+        padding: 8px;
+        width: 120px;
 
+        input {
+          width: 80px;
+          height: 100%;
           font-size: 2rem;
+        }
+
+        span {
+          font-weight: 800;
         }
       }
     }
@@ -130,7 +142,7 @@
 
         .combo-inputs {
           display: flex;
-          justify-content: center;
+          // justify-content: center;
         }
       }
 
@@ -182,7 +194,6 @@
 
     .notes {
       div {
-        padding: 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -211,8 +222,6 @@
 
 @media screen and (min-width: 800px) {
   .submit-combo {
-    padding: 50px 400px;
-
     section {
       .select-character {
         .character {
