@@ -29,6 +29,19 @@ namespace Smash_Combos.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            var emailExists = _context.Users.Any(existingUser => existingUser.Email.ToLower() == user.Email.ToLower());
+            if (emailExists)
+            {
+                var response = new
+                {
+                    status = 400,
+                    errors = new List<string>() { "There's already an account with this email" }
+                };
+
+                return BadRequest(response);
+            }
+
+
             // Indicate to the database context we want to add this new record
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

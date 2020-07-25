@@ -25,7 +25,7 @@ export function SignUp() {
         if (apiResponse.status === 400) {
           setErrorMessage(Object.values(apiResponse.errors).join(' '))
         } else {
-          history.pushState('/')
+          history.push('/')
         }
       })
   }
