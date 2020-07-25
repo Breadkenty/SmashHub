@@ -26,7 +26,7 @@ export function EditCharacter() {
   function handleNumberChange(event) {
     setSelectedCharacter({
       ...selectedCharacter,
-      [event.target.id]: parseInt(event.target.value) || null,
+      [event.target.id]: parseInt(event.target.value) || 0,
     })
   }
 
