@@ -20,8 +20,15 @@ export function CharacterCombo() {
   const comboId = params.comboId
 
   const [character, setCharacter] = useState({})
+
   const [combo, setCombo] = useState({})
+
   const [comments, setComments] = useState([])
+  const [comment, setComment] = useState({
+    comboId: parseInt(comboId),
+    body: '',
+  })
+
   let [sortType, setSortType] = useState('best')
 
   function getCharacter() {
@@ -41,9 +48,6 @@ export function CharacterCombo() {
       })
   }
 
-  useEffect(getCharacter, [])
-  useEffect(getCombo, [])
-
   const opts = {
     playerVars: {
       autoplay: 1,
@@ -60,8 +64,23 @@ export function CharacterCombo() {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault()
+    fetch('/api/Comments', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(comment),
+    })
+      .then(response => response.json())
+      .then(getCombo)
+    setComment({ ...comment, body: '' })
+    setSortType('newest')
+  }
+
   const sortedComments = comments.sort(sortingFunctions[sortType])
 
+  useEffect(getCharacter, [])
+  useEffect(getCombo, [])
   return (
     <div className="character-combo">
       {/* Character image header */}
@@ -145,12 +164,18 @@ export function CharacterCombo() {
           <p>{combo.notes}</p>
         </section>
 
-        <section className="add-comment bg-grey">
-          <textarea placeholder="Add a comment" />
+        <form className="add-comment bg-grey" onSubmit={handleSubmit}>
+          <textarea
+            placeholder="Add a comment"
+            value={comment.body}
+            onChange={event => {
+              setComment({ ...comment, body: event.target.value })
+            }}
+          />
           <button className="bg-yellow button black-text" type="submit">
             Submit
           </button>
-        </section>
+        </form>
 
         <section className="sort">
           <SortController sortType={sortType} setSortType={setSortType} />
