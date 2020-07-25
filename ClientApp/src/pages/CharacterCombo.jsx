@@ -77,6 +77,15 @@ export function CharacterCombo() {
     setSortType('newest')
   }
 
+  function handleVote(event, voteType, id, upOrDown) {
+    event.preventDefault()
+
+    fetch(`/api/${voteType}/${id}/${upOrDown}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+    }).then(getCombo)
+  }
+
   const sortedComments = comments.sort(sortingFunctions[sortType])
 
   useEffect(getCharacter, [])
@@ -107,25 +116,41 @@ export function CharacterCombo() {
         <header>
           {/* Combo Votes */}
           <div className="vote">
-            <svg
-              aria-hidden="true"
-              className="m0 svg-icon iconArrowUpLg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
+            <button
+              className="button-blank"
+              onClick={event => {
+                handleVote(event, 'ComboVotes', comboId, 'upvote')
+              }}
             >
-              <path d="M2 26h32L18 10 2 26z"></path>
-            </svg>
+              <svg
+                aria-hidden="true"
+                className="m0 svg-icon iconArrowUpLg"
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+              >
+                <path d="M2 26h32L18 10 2 26z"></path>
+              </svg>
+            </button>
+
             <h3 className="black-text">{combo.netVote}</h3>
-            <svg
-              aria-hidden="true"
-              className="m0 svg-icon iconArrowDownLg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
+
+            <button
+              className="button-blank"
+              onClick={event => {
+                handleVote(event, 'ComboVotes', comboId, 'downvote')
+              }}
             >
-              <path d="M2 10h32L18 26 2 10z"></path>
-            </svg>
+              <svg
+                aria-hidden="true"
+                className="m0 svg-icon iconArrowDownLg"
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+              >
+                <path d="M2 10h32L18 26 2 10z"></path>
+              </svg>
+            </button>
           </div>
 
           {/* Combo detail */}
@@ -148,8 +173,9 @@ export function CharacterCombo() {
 
         {/* Combo inputs */}
         <section className="bg-grey combo-inputs">
-          {`${combo.comboInput}`.split(' ').map(input => (
+          {`${combo.comboInput}`.split(' ').map((input, index) => (
             <div
+              key={index}
               className="combo-input"
               style={{
                 backgroundImage: `url(${allComboInputs[input]})`,
@@ -183,7 +209,11 @@ export function CharacterCombo() {
 
         <section className="comments">
           {comments.map(comment => (
-            <Comment comment={comment} />
+            <Comment
+              key={comment.id}
+              handleVote={handleVote}
+              comment={comment}
+            />
           ))}
         </section>
       </article>

@@ -62,9 +62,11 @@
         padding: 16px;
       }
       .detail > div {
-        width: 250px;
         display: flex;
-        justify-content: space-between;
+
+        div {
+          margin-right: 8px;
+        }
       }
     }
 
