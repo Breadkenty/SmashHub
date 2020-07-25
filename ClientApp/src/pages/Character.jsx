@@ -20,6 +20,15 @@ export function Character() {
   let [filterText, setFilterText] = useState('')
   let [sortType, setSortType] = useState('best')
 
+  function handleVote(event, id, upOrDown) {
+    event.preventDefault()
+
+    fetch(`/api/ComboVotes/${id}/${upOrDown}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+    }).then(getCharacters)
+  }
+
   function getCharacters() {
     fetch(`/api/Characters/${characterVariableName}`)
       .then(response => response.json())
@@ -66,25 +75,39 @@ export function Character() {
           .map(combo => (
             <div className="combo">
               <div className="vote bg-yellow">
-                <svg
-                  aria-hidden="true"
-                  className="m0 svg-icon iconArrowUpLg"
-                  width="36"
-                  height="36"
-                  viewBox="0 0 36 36"
+                <button
+                  className="button-blank"
+                  onClick={event => {
+                    handleVote(event, combo.id, 'upvote')
+                  }}
                 >
-                  <path d="M2 26h32L18 10 2 26z"></path>
-                </svg>
+                  <svg
+                    aria-hidden="true"
+                    className="m0 svg-icon iconArrowUpLg"
+                    width="36"
+                    height="36"
+                    viewBox="0 0 36 36"
+                  >
+                    <path d="M2 26h32L18 10 2 26z"></path>
+                  </svg>
+                </button>
                 <h3 className="black-text">{combo.netVote}</h3>
-                <svg
-                  aria-hidden="true"
-                  className="m0 svg-icon iconArrowDownLg"
-                  width="36"
-                  height="36"
-                  viewBox="0 0 36 36"
+                <button
+                  className="button-blank"
+                  onClick={event => {
+                    handleVote(event, combo.id, 'downvote')
+                  }}
                 >
-                  <path d="M2 10h32L18 26 2 10z"></path>
-                </svg>
+                  <svg
+                    aria-hidden="true"
+                    className="m0 svg-icon iconArrowDownLg"
+                    width="36"
+                    height="36"
+                    viewBox="0 0 36 36"
+                  >
+                    <path d="M2 10h32L18 26 2 10z"></path>
+                  </svg>
+                </button>
               </div>
 
               <div className="information">
