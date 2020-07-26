@@ -35,7 +35,7 @@ namespace Smash_Combos.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Combo>>> GetCombos()
         {
-            return await _context.Combos.Include(combo => combo.Comments).ToListAsync();
+            return await _context.Combos.Include(combo => combo.User).Include(combo => combo.Comments).ToListAsync();
         }
 
         // GET: api/Combos/5
@@ -47,7 +47,7 @@ namespace Smash_Combos.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Combo>> GetCombo(int id)
         {
-            var combo = await _context.Combos.Where(combo => combo.Id == id).Include(combo => combo.Comments).FirstOrDefaultAsync();
+            var combo = await _context.Combos.Where(combo => combo.Id == id).Include(combo => combo.User).Include(combo => combo.Comments).ThenInclude(comment => comment.User).FirstOrDefaultAsync();
 
             if (combo == null)
             {

@@ -23,6 +23,7 @@ export function CharacterCombo() {
   const [character, setCharacter] = useState({})
 
   const [combo, setCombo] = useState({})
+  const [comboAuthor, setComboAuthor] = useState('')
 
   const [comments, setComments] = useState([])
   const [comment, setComment] = useState({
@@ -48,6 +49,7 @@ export function CharacterCombo() {
       .then(apiData => {
         setCombo(apiData)
         setComments(apiData.comments)
+        setComboAuthor(apiData.user.displayName)
       })
   }
 
@@ -109,6 +111,7 @@ export function CharacterCombo() {
 
   useEffect(getCharacter, [])
   useEffect(getCombo, [])
+
   return (
     <div className="character-combo">
       {/* Character image header */}
@@ -175,7 +178,7 @@ export function CharacterCombo() {
           {/* Combo detail */}
           <div className="detail">
             <h5>
-              Posted by Breadkenty{' '}
+              Posted by {comboAuthor}{' '}
               {moment(combo.datePosted)
                 .startOf('hour')
                 .fromNow()}

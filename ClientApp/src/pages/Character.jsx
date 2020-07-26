@@ -18,6 +18,7 @@ export function Character() {
 
   const [character, setCharacter] = useState({})
   const [combos, setCombos] = useState([])
+
   let [filterText, setFilterText] = useState('')
   let [sortType, setSortType] = useState('best')
 
@@ -134,7 +135,7 @@ export function Character() {
 
                 <footer>
                   <p className="white-text">
-                    Posted by Breadkenty{' '}
+                    Posted by {combo.user.displayName}{' '}
                     {moment(combo.datePosted)
                       .startOf('hour')
                       .fromNow()}

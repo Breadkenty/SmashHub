@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 
 export function Comment(props) {
+  console.log(props)
   return (
     <div className="comment">
       <div className="vote">
@@ -47,7 +48,7 @@ export function Comment(props) {
 
       <div className="body">
         <h5>
-          Posted by Tacotastic{' '}
+          Posted by {props.comment.user.displayName}{' '}
           {moment(props.comment.datePosted)
             .startOf('hour')
             .fromNow()}

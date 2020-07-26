@@ -26,6 +26,27 @@ namespace Smash_Combos.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(int id)
+        {
+            var user = await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                // Return a `404` response to the client indicating we could not find a combo with this id
+                return NotFound();
+            }
+
+            //  Return the combo as a JSON object.
+            return user;
+        }
+
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {

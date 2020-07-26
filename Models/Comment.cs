@@ -8,6 +8,7 @@ namespace Smash_Combos.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+        public User User { get; set; }
         public int ComboId { get; set; }
         public DateTime DatePosted { get; private set; } = DateTime.Now;
 
