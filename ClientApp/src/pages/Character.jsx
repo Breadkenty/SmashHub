@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router'
+import { authHeader } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -25,8 +26,10 @@ export function Character() {
 
     fetch(`/api/ComboVotes/${id}/${upOrDown}`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-    }).then(getCharacters)
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    }).then(() => {
+      getCharacters()
+    })
   }
 
   function getCharacters() {

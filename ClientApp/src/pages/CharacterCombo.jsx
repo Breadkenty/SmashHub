@@ -99,24 +99,10 @@ export function CharacterCombo() {
 
     fetch(`/api/${voteType}/${id}/${upOrDown}`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    }).then(() => {
+      getCombo()
     })
-      .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
-        } else {
-          return response.json()
-        }
-      })
-      .then(apiData => {
-        if (apiData.status === 400 || apiData.status === 401) {
-          console.log(Object.values(apiData.errors).join(' '))
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          getCombo()
-        }
-      })
   }
 
   const sortedComments = comments.sort(sortingFunctions[sortType])

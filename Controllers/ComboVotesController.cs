@@ -1,4 +1,7 @@
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Models;
@@ -17,8 +20,25 @@ namespace Smash_Combos.Controllers
         }
 
         [HttpPost("{id}/{upOrDown}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> PostComboVote(int id, string upOrDown)
         {
+            var voteExists = await _context.ComboVotes.AnyAsync(comboVote => comboVote.UserId == GetCurrentUserId() && comboVote.ComboId == id && comboVote.upOrDown == upOrDown);
+
+            if (voteExists)
+            {
+                _context.ComboVotes.Remove(_context.ComboVotes.Single(comboVote => comboVote.UserId == GetCurrentUserId() && comboVote.ComboId == id && comboVote.upOrDown != upOrDown));
+            }
+
+            var comboVote = new ComboVote
+            {
+                ComboId = id,
+                UserId = GetCurrentUserId(),
+                upOrDown = upOrDown
+            };
+            await _context.ComboVotes.AddAsync(comboVote);
+
             var combo = await _context.Combos.FindAsync(id);
 
             if (combo == null)
@@ -43,6 +63,11 @@ namespace Smash_Combos.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private int GetCurrentUserId()
+        {
+            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

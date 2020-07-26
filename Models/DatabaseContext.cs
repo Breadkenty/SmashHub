@@ -17,6 +17,8 @@ namespace Smash_Combos.Models
         public DbSet<Combo> Combos { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ComboVote> ComboVotes { get; set; }
+        public DbSet<CommentVote> CommentVotes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
