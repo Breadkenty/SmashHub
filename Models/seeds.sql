@@ -396,41 +396,50 @@ INSERT INTO "Characters"
 VALUES
   ('Min Min', 'MinMin', '23');
 
+INSERT INTO "Users"
+  ("DisplayName", "Email", "HashedPassword", "Admin")
+VALUES
+  ('Breadkenty', 'kawakamikento@gmail.com', "AQAAAAEAACcQAAAAELnyllU/dSbBi8scfIUQXNJO/FI3DlnFtGoXYU34FakP8Bbnw0vjr0912+MzQuTvDg==", true);
+
+INSERT INTO "Users"
+  ("DisplayName", "Email", "HashedPassword", "Admin")
+VALUES
+  ('Kento726', 'kento@suncoast.io', "AQAAAAEAACcQAAAAEJCmn4+fAuaVlUG9spZf6U8jbGk0OWEz7mT1DRxj9Le0T3YxHJHBFmGpdElaPDQJYg==", false);
 
 
--- INSERT INTO "Combos"
---   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
--- VALUES
---   ('14', '2020-07-21', 'Down Tilt Ground Float Nair', 'HO3gLgWx_i4', '115', '116', 'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial', true, 'very hard', 26, 'This combo is best used against fast falling characters. Keep in
---             mind, when doing the nair, you have to release the direction as soon
---             as you get the momentum of going forward.', 43);
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
+VALUES
+  ('14', '2020-07-21', 'Down Tilt Ground Float Nair', 'HO3gLgWx_i4', '115', '116', 'downTilt thenConditional forwardFlick thenConditional downMove andConditional holdConditional fullHop thenConditional neutralAerial', true, 'very hard', 26, 'This combo is best used against fast falling characters. Keep in
+            mind, when doing the nair, you have to release the direction as soon
+            as you get the momentum of going forward.', 43, 1);
 
--- INSERT INTO "Combos"
---   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
--- VALUES
---   ('14', '2020-07-20', 'Down throw bair', 'HO3gLgWx_i4', '115', '116', 'grabBasic thenConditional downThrow thenConditional shortHop backAerial', true, 'easy', 13, 'This gombo is great', 22);
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
+VALUES
+  ('14', '2020-07-20', 'Down throw bair', 'HO3gLgWx_i4', '115', '116', 'grabBasic thenConditional downThrow thenConditional shortHop backAerial', true, 'easy', 13, 'This gombo is great', 22, 1);
 
--- INSERT INTO "Combos"
---   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
--- VALUES
---   ('14', '2020-07-19', 'Dair float to fair', 'HO3gLgWx_i4', '116', '121', 'downAerial thenConditional holdConditional downMove andConditional fullHop thenConditional forwardMove thenConditional forwardAerial', true, 'medium', 21, 'This combo is awesome', 12);
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
+VALUES
+  ('14', '2020-07-19', 'Dair float to fair', 'HO3gLgWx_i4', '116', '121', 'downAerial thenConditional holdConditional downMove andConditional fullHop thenConditional forwardMove thenConditional forwardAerial', true, 'medium', 21, 'This combo is awesome', 12, 1);
 
--- INSERT INTO "Combos"
---   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
--- VALUES
---   ('14', '2020-07-12', 'Ground Float Nair', 'HO3gLgWx_i4', '0', '2', 'forwardFlick thenConditional holdConditional downMove andConditional fullHop thenConditional forwardFlick neutralAerial', true, 'hard', 8, 'This combo is phenomenal', 2);
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
+VALUES
+  ('14', '2020-07-12', 'Ground Float Nair', 'HO3gLgWx_i4', '0', '2', 'forwardFlick thenConditional holdConditional downMove andConditional fullHop thenConditional forwardFlick neutralAerial', true, 'hard', 8, 'This combo is phenomenal', 2, 1);
 
 
 
--- INSERT INTO "Combos"
---   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
--- VALUES
---   ('8', '2020-06-21', 'Some Fox Combo 1', 'cLbQpJiufLs', '217', '220', 'downAerial thenConditional upSmash', true, 'medium', 25, 'This combo is outstanding', 41);
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
+VALUES
+  ('8', '2020-06-21', 'Some Fox Combo 1', 'cLbQpJiufLs', '217', '220', 'downAerial thenConditional upSmash', true, 'medium', 25, 'This combo is outstanding', 41, 2);
 
--- INSERT INTO "Combos"
---   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote")
--- VALUES
---   ('8', '2020-05-21', 'Some Fox Combo 2', 'cLbQpJiufLs', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43);
+INSERT INTO "Combos"
+  ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
+VALUES
+  ('8', '2020-05-21', 'Some Fox Combo 2', 'cLbQpJiufLs', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43, 2);
 
 
 -- INSERT INTO "Comments"
