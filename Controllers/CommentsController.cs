@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -126,8 +128,11 @@ namespace Smash_Combos.Controllers
         // new values for the record.
         //
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
+            comment.UserId = GetCurrentUserId();
             // Indicate to the database context we want to add this new record
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
@@ -173,5 +178,12 @@ namespace Smash_Combos.Controllers
         {
             return _context.Comments.Any(comment => comment.Id == id);
         }
+
+        private int GetCurrentUserId()
+        {
+            // Get the User Id from the claim and then parse it as an integer.
+            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+        }
     }
 }
+

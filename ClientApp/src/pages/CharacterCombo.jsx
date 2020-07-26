@@ -3,6 +3,7 @@ import moment from 'moment'
 import YouTube from 'react-youtube'
 
 import { useParams } from 'react-router'
+import { authHeader } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -30,6 +31,8 @@ export function CharacterCombo() {
   })
 
   let [sortType, setSortType] = useState('best')
+
+  const [errorMessage, setErrorMessage] = useState()
 
   function getCharacter() {
     fetch(`/api/Characters/${characterVariableName}`)
@@ -68,13 +71,27 @@ export function CharacterCombo() {
     event.preventDefault()
     fetch('/api/Comments', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(comment),
     })
-      .then(response => response.json())
-      .then(getCombo)
-    setComment({ ...comment, body: '' })
-    setSortType('newest')
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Log in to comment' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          console.log(Object.values(apiData.errors).join(' '))
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          getCombo()
+          setComment({ ...comment, body: '' })
+          setSortType('newest')
+        }
+      })
   }
 
   function handleVote(event, voteType, id, upOrDown) {
@@ -83,7 +100,23 @@ export function CharacterCombo() {
     fetch(`/api/${voteType}/${id}/${upOrDown}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-    }).then(getCombo)
+    })
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Not Authorized' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          console.log(Object.values(apiData.errors).join(' '))
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          getCombo()
+        }
+      })
   }
 
   const sortedComments = comments.sort(sortingFunctions[sortType])
@@ -203,6 +236,11 @@ export function CharacterCombo() {
           </button>
         </form>
 
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            {errorMessage}
+          </div>
+        )}
         <section className="sort">
           <SortController sortType={sortType} setSortType={setSortType} />
         </section>

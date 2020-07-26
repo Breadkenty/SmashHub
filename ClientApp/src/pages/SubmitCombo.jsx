@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
+import { authHeader } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -61,6 +62,8 @@ export function SubmitCombo() {
     damage: 0,
     notes: '',
   })
+
+  const [errorMessage, setErrorMessage] = useState()
 
   const handleFieldChange = event => {
     event.preventDefault()
@@ -226,11 +229,25 @@ export function SubmitCombo() {
     console.log(JSON.stringify(comboToSubmit))
     fetch('/api/Combos', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(comboToSubmit),
     })
-      .then(response => response.json())
-      .then(history.push('/'))
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Not Authorized' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          console.log(Object.values(apiData.errors).join(' '))
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          history.push('/')
+        }
+      })
   }
 
   // Set inputs when the input field changes
@@ -529,6 +546,11 @@ export function SubmitCombo() {
                 id="notes"
                 onChange={handleFieldChange}
               />
+              {errorMessage && (
+                <div className="alert alert-danger" role="alert">
+                  {errorMessage}
+                </div>
+              )}
               <button type="submit" className="button bg-yellow black-text">
                 Submit
               </button>
