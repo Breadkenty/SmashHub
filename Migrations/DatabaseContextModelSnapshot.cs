@@ -94,8 +94,6 @@ namespace Smash_Combos.Migrations
 
                     b.HasIndex("CharacterId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Combos");
                 });
 
@@ -146,8 +144,6 @@ namespace Smash_Combos.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ComboId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -206,12 +202,6 @@ namespace Smash_Combos.Migrations
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Smash_Combos.Models.User", null)
-                        .WithMany("Combos")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Smash_Combos.Models.Comment", b =>
@@ -219,12 +209,6 @@ namespace Smash_Combos.Migrations
                     b.HasOne("Smash_Combos.Models.Combo", null)
                         .WithMany("Comments")
                         .HasForeignKey("ComboId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Smash_Combos.Models.User", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,5 +1,5 @@
 TRUNCATE TABLE "Characters"
-, "Combos", "Comments" RESTART IDENTITY;
+, "Combos", "Comments", "ComboVotes", "CommentVotes", "Users" RESTART IDENTITY;
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "YPosition")
@@ -396,15 +396,15 @@ INSERT INTO "Characters"
 VALUES
   ('Min Min', 'MinMin', '23');
 
-INSERT INTO "Users"
-  ("DisplayName", "Email", "HashedPassword", "Admin")
-VALUES
-  ('Breadkenty', 'kawakamikento@gmail.com', "AQAAAAEAACcQAAAAELnyllU/dSbBi8scfIUQXNJO/FI3DlnFtGoXYU34FakP8Bbnw0vjr0912+MzQuTvDg==", true);
+-- INSERT INTO "Users"
+--   ("DisplayName", "Email", "HashedPassword", "Admin")
+-- VALUES
+--   ('Breadkenty', 'kawakamikento@gmail.com', "AQAAAAEAACcQAAAAELnyllU/dSbBi8scfIUQXNJO/FI3DlnFtGoXYU34FakP8Bbnw0vjr0912+MzQuTvDg==", true);
 
-INSERT INTO "Users"
-  ("DisplayName", "Email", "HashedPassword", "Admin")
-VALUES
-  ('Kento726', 'kento@suncoast.io', "AQAAAAEAACcQAAAAEJCmn4+fAuaVlUG9spZf6U8jbGk0OWEz7mT1DRxj9Le0T3YxHJHBFmGpdElaPDQJYg==", false);
+-- INSERT INTO "Users"
+--   ("DisplayName", "Email", "HashedPassword", "Admin")
+-- VALUES
+--   ('Kento726', 'kento@suncoast.io', "AQAAAAEAACcQAAAAEJCmn4+fAuaVlUG9spZf6U8jbGk0OWEz7mT1DRxj9Le0T3YxHJHBFmGpdElaPDQJYg==", false);
 
 
 INSERT INTO "Combos"
@@ -442,41 +442,44 @@ VALUES
   ('8', '2020-05-21', 'Some Fox Combo 2', 'cLbQpJiufLs', '109', '111', 'forwardFlick thenConditional jabBasic thenConditional startRepeatConditional upTilt endRepeatConditional endRepeatConditional endRepeatConditional', true, 'hard', 26, 'This Combo is wow!', 43, 2);
 
 
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('1', '2020-07-22', 'Uhm this combo is great wtf', 45);
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('1', '2020-02-21', 'How did you figure this out!', 2);
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('1', '2020-05-22', 'Awesome!', 21);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('1', '2020-07-22', 'Uhm this combo is great wtf', 45, 1);
 
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('5', '2020-07-22', 'Nice fox lol', 45);
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('5', '2020-02-21', 'cool', 2);
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('5', '2020-05-22', 'pls teach me fox ty', 21);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('1', '2020-02-21', 'How did you figure this out!', 2, 1);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('1', '2020-05-22', 'Awesome!', 21, 2);
 
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('3', '2019-07-22', 'This is so hard', 45);
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('2', '2017-02-21', 'idgi this is great tho', 2);
--- INSERT INTO "Comments"
---   ("ComboId", "DatePosted", "Body", "NetVote")
--- VALUES
---   ('2', '2018-05-22', 'lol', 21);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('5', '2020-07-22', 'Nice fox lol', 45, 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('5', '2020-02-21', 'cool', 2, 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('5', '2020-05-22', 'pls teach me fox ty', 21, 2);
+
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('3', '2019-07-22', 'This is so hard', 45, 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('2', '2017-02-21', 'idgi this is great tho', 2, 2);
+INSERT INTO "Comments"
+  ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
+VALUES
+  ('2', '2018-05-22', 'lol', 21, 2);
+
+-- update "Users" set "Admin" = 'true' where "Id" = 1 

@@ -10,8 +10,8 @@ using Smash_Combos.Models;
 namespace Smash_Combos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200725221406_ChangedAdminVariable")]
-    partial class ChangedAdminVariable
+    [Migration("20200726060018_AllTables")]
+    partial class AllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,6 +79,9 @@ namespace Smash_Combos.Migrations
                     b.Property<bool>("TrueCombo")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("VideoEndTime")
                         .HasColumnType("integer");
 
@@ -94,6 +97,27 @@ namespace Smash_Combos.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("Combos");
+                });
+
+            modelBuilder.Entity("Smash_Combos.Models.ComboVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ComboId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("upOrDown")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ComboVotes");
                 });
 
             modelBuilder.Entity("Smash_Combos.Models.Comment", b =>
@@ -116,11 +140,35 @@ namespace Smash_Combos.Migrations
                     b.Property<int>("NetVote")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ComboId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Smash_Combos.Models.CommentVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("upOrDown")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CommentVotes");
                 });
 
             modelBuilder.Entity("Smash_Combos.Models.User", b =>
