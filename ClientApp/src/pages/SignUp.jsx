@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router'
+import { recordAuthentication } from '../auth'
 
 export function SignUp() {
   const history = useHistory()
@@ -25,7 +26,20 @@ export function SignUp() {
         if (apiResponse.status === 400) {
           setErrorMessage(Object.values(apiResponse.errors).join(' '))
         } else {
-          history.push('/')
+          fetch('api/Sessions', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(newUser),
+          })
+            .then(response => response.json())
+            .then(apiResponse => {
+              if (apiResponse.status === 400) {
+                setErrorMessage(Object.values(apiResponse.errors).join(' '))
+              } else {
+                recordAuthentication(apiResponse)
+                window.location = '/'
+              }
+            })
         }
       })
   }
