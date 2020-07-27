@@ -75,11 +75,11 @@ namespace Smash_Combos.Controllers
         // new values for the record.
         //
         [HttpPut("{id}")]
-        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutComment(int id, Comment comment)
         {
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (id != comment.Id)
+            if (id != comment.Id || comment.UserId != GetCurrentUserId())
             {
                 return BadRequest();
             }

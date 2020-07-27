@@ -6,9 +6,7 @@ import { getUserId } from '../auth'
 
 export function Comment(props) {
   console.log(props)
-  const [editedComment, setEditedComment] = useState({
-    body: props.comment.body,
-  })
+  const [editedComment, setEditedComment] = useState(props.comment)
 
   const [editingComment, setEditingComment] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
@@ -26,30 +24,31 @@ export function Comment(props) {
 
     fetch(`/api/Comments/${parseInt(props.comment.id)}`, {
       method: 'PUT',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(editedComment),
-    }).then(response => {
-      console.log(response)
-      // return response.json()
-      // if (response.status === 401) {
-      //   return { status: 401, errors: { login: 'Not Authorized' } }
-      // } else if (response.status === 404) {
-      //   // This one is for user doesn't match logged in user
-      //   return { status: 404, errors: { login: 'Not Authorized' } }
-      // } else {
-      //   return response.json()
-      // }
     })
-    //     .then(apiData => {
-    //       console.log(apiData)
-    //       if (apiData.errors) {
-    //         // const newMessage = Object.values(apiData.errors).join(' ')
-    //         // setErrorMessage(newMessage)
-    //         console.log(apiData.errors)
-    //       } else {
-    //         setEditingComment(false)
-    //       }
-    //     })
+      .then(response => {
+        console.log(response)
+        // return response.json()
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Not Authorized' } }
+        } else if (response.status === 404) {
+          // This one is for user doesn't match logged in user
+          return { status: 404, errors: { login: 'Not Authorized' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        console.log(apiData)
+        if (apiData.errors) {
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+          console.log(apiData.errors)
+        } else {
+          setEditingComment(false)
+        }
+      })
   }
   return (
     <div className="comment">
@@ -97,9 +96,7 @@ export function Comment(props) {
       <div className="body">
         <h5>
           Posted by {props.comment.user.displayName}{' '}
-          {moment(props.comment.datePosted)
-            .startOf('hour')
-            .fromNow()}
+          {moment(props.comment.datePosted).fromNow()}
           <button
             className="edit"
             onClick={() => {

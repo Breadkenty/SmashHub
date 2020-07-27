@@ -6,11 +6,15 @@ namespace Smash_Combos.Models
 {
     public class Comment
     {
+        public Comment()
+        {
+            this.DatePosted = DateTime.Now;
+        }
         public int Id { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
         public int ComboId { get; set; }
-        public DateTime DatePosted { get; private set; } = DateTime.Now;
+        public DateTime DatePosted { get; private set; }
 
         [Required]
         public string Body { get; set; }
