@@ -24,26 +24,47 @@ namespace Smash_Combos.Controllers
 
         public async Task<IActionResult> PostComboVote(int id, string upOrDown)
         {
-            var voteExists = await _context.ComboVotes.AnyAsync(comboVote => comboVote.UserId == GetCurrentUserId() && comboVote.ComboId == id && comboVote.upOrDown == upOrDown);
-
-            if (voteExists)
-            {
-                _context.ComboVotes.Remove(_context.ComboVotes.Single(comboVote => comboVote.UserId == GetCurrentUserId() && comboVote.ComboId == id && comboVote.upOrDown != upOrDown));
-            }
-
-            var comboVote = new ComboVote
-            {
-                ComboId = id,
-                UserId = GetCurrentUserId(),
-                upOrDown = upOrDown
-            };
-            await _context.ComboVotes.AddAsync(comboVote);
-
             var combo = await _context.Combos.FindAsync(id);
 
             if (combo == null)
             {
                 return NotFound();
+            }
+
+            var existingComboVote = await _context.ComboVotes.Where(comboVote => comboVote.UserId == GetCurrentUserId() && comboVote.ComboId == id).FirstOrDefaultAsync();
+
+            if (existingComboVote != null)
+            {
+                if (existingComboVote.upOrDown == upOrDown)
+                {
+                    return NoContent();
+                }
+
+                switch (existingComboVote.upOrDown)
+                {
+                    case "downvote":
+                        combo.VoteUp();
+                        break;
+                    case "upvote":
+                        combo.VoteDown();
+                        break;
+                    default:
+                        return BadRequest();
+                }
+
+                existingComboVote.upOrDown = upOrDown;
+                _context.Entry(existingComboVote).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                var comboVote = new ComboVote
+                {
+                    ComboId = id,
+                    UserId = GetCurrentUserId(),
+                    upOrDown = upOrDown
+                };
+                await _context.ComboVotes.AddAsync(comboVote);
             }
 
             switch (upOrDown)

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router'
 import { authHeader } from '../auth'
+import YouTube from 'react-youtube'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -48,6 +49,9 @@ export function EditCombo() {
   let [endMinutes, setEndMinutes] = useState()
   let [endSeconds, setEndSeconds] = useState()
 
+  let [startTime, setStartTime] = useState()
+  let [endTime, setEndTime] = useState()
+
   let [selectedDifficulty, setSelectedDifficulty] = useState('very easy')
 
   let [trueCombo, setTrueCombo] = useState('true')
@@ -66,6 +70,9 @@ export function EditCombo() {
   ]
   let [inputCategory, setInputCategory] = useState('Basic')
   let [inputs, setInputs] = useState('')
+
+  const [videoInformationById, setVideoInformationById] = useState({})
+  const [videoExists, setVideoExists] = useState(false)
 
   const [errorMessage, setErrorMessage] = useState()
 
@@ -269,6 +276,51 @@ export function EditCombo() {
       })
   }
 
+  function checkVideoExists(event) {
+    fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=AIzaSyC7vi2aj2dnzcyOtZ12wxuyy0-8dvJffZU`
+    )
+      .then(response => {
+        return response.json()
+      })
+      .then(apiData => {
+        if (apiData.items.length === 0) {
+          console.log('invalid id')
+          setVideoExists(false)
+        } else if (
+          apiData.items[0].snippet.title
+            .toLowerCase()
+            .includes(characterSelected.name.toLowerCase()) ||
+          apiData.items[0].snippet.description
+            .toLowerCase()
+            .includes(characterSelected.name.toLowerCase())
+        ) {
+          console.log('good video')
+          setVideoInformationById(apiData.items[0].snippet)
+          setVideoExists(true)
+        } else {
+          console.log('video is not related')
+          setVideoExists(false)
+        }
+      })
+  }
+
+  const opts = {
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      playsinline: 1,
+      start: startTime || 0,
+      end: endTime || 0,
+    },
+  }
+
+  function onStateChange(state) {
+    if (state.data === 0) {
+      state.target.seekTo(startTime || 0)
+    }
+  }
+
   // Set inputs when the input field changes
   useEffect(() => {
     setComboToEdit({
@@ -315,6 +367,14 @@ export function EditCombo() {
           </fieldset>
 
           <fieldset className="video">
+            {videoExists && (
+              <YouTube
+                videoId={`${comboToEdit.videoId}`}
+                opts={opts}
+                onStateChange={onStateChange}
+              />
+            )}
+
             <label htmlFor="video-id">Youtube video ID</label>
             <input
               className="bg-yellow"
@@ -325,6 +385,13 @@ export function EditCombo() {
               onChange={handleFieldChange}
               required
             />
+            {videoExists || (
+              <p>
+                Invalid video, please enter a valid ID that relates to your
+                selected character
+              </p>
+            )}
+            {videoExists && <p>Good video: {videoInformationById.title}</p>}
           </fieldset>
 
           <div className="duration ">
