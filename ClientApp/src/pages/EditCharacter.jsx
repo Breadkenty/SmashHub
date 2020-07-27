@@ -60,6 +60,32 @@ export function EditCharacter() {
       })
   }
 
+  function handleDelete(event) {
+    event.preventDefault()
+
+    fetch(`/api/Characters/${selectedCharacterVariableName}`, {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(setSelectedCharacter),
+    })
+      .then(response => {
+        console.log(response)
+        if (response.status === 400 || response.status === 401) {
+          return { status: 400, errors: { login: 'Not Authorized' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          history.push('/')
+        }
+      })
+  }
+
   function getCharacters() {
     fetch('/api/Characters')
       .then(response => response.json())
@@ -141,6 +167,9 @@ export function EditCharacter() {
         )}
         <button className="button bg-yellow black-text" type="submit">
           Submit
+        </button>
+        <button className="button bg-red white-text" onClick={handleDelete}>
+          Delete
         </button>
       </div>
     </form>

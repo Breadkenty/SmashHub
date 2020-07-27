@@ -166,8 +166,17 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpDelete("{variableName}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> DeleteCharacter(string variableName)
         {
+            var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
+            var userIsAdmin = getUserById.Admin == true;
+
+            if (!userIsAdmin)
+            {
+                return BadRequest();
+            }
             // Find this character by looking for the specific id
             var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).FirstOrDefaultAsync();
             if (character == null)
@@ -185,9 +194,9 @@ namespace Smash_Combos.Controllers
             // return NoContent to indicate the update was done. Alternatively you can use the
             // following to send back a copy of the deleted data.
             //
-            // return Ok(character)
+            return Ok(character);
             //
-            return NoContent();
+            // return NoContent();
         }
 
         // Private helper method that looks up an existing character by the supplied id
