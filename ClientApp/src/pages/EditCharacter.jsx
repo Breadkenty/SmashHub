@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { authHeader } from '../auth'
+
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 import { useHistory } from 'react-router'
 
@@ -36,12 +38,13 @@ export function EditCharacter() {
 
     fetch(`/api/Characters/${selectedCharacterVariableName}`, {
       method: 'PUT',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(selectedCharacter),
     })
       .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
+        console.log(response)
+        if (response.status === 400) {
+          return { status: 400, errors: { login: 'Not Authorized' } }
         } else {
           return response.json()
         }
@@ -131,7 +134,11 @@ export function EditCharacter() {
             required
           />
         </fieldset>
-
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            {errorMessage}
+          </div>
+        )}
         <button className="button bg-yellow black-text" type="submit">
           Submit
         </button>
