@@ -47,6 +47,7 @@ export function Comment(props) {
           console.log(apiData.errors)
         } else {
           setEditingComment(false)
+          props.getCombo()
         }
       })
   }

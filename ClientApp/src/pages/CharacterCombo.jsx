@@ -249,6 +249,7 @@ export function CharacterCombo() {
               key={comment.id}
               handleVote={handleVote}
               comment={comment}
+              getCombo={getCombo}
             />
           ))}
         </section>
