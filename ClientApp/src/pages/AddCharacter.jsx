@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router'
+import { authHeader } from '../auth'
 
 export function AddCharacter() {
   const history = useHistory()
@@ -9,6 +10,7 @@ export function AddCharacter() {
     variableName: '',
     yPosition: 0,
   })
+  const [errorMessage, setErrorMessage] = useState()
 
   function handleTextChange(event) {
     setNewCharacter({
@@ -28,11 +30,26 @@ export function AddCharacter() {
     event.preventDefault()
     fetch('/api/Characters', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(newCharacter),
     })
-      .then(response => response.json())
-      .then(history.push('/'))
+      .then(response => {
+        console.log(response)
+        if (response.status === 400) {
+          return { status: 400, errors: { login: 'Not Authorized' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          console.log(Object.values(apiData.errors).join(' '))
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          history.push('/')
+        }
+      })
   }
 
   return (
@@ -78,6 +95,12 @@ export function AddCharacter() {
           required
         />
       </fieldset>
+
+      {errorMessage && (
+        <div className="alert alert-danger" role="alert">
+          {errorMessage}
+        </div>
+      )}
 
       <button type="submit" className="button bg-yellow black-text">
         Submit

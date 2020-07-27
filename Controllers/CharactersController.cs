@@ -138,8 +138,18 @@ namespace Smash_Combos.Controllers
         // new values for the record.
         //
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
+            var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
+            var userIsAdmin = getUserById.Admin == true;
+
+            if (!userIsAdmin)
+            {
+                return BadRequest();
+            }
+
             // Indicate to the database context we want to add this new record
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
