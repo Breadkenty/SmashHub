@@ -136,9 +136,7 @@ export function Character() {
                 <footer>
                   <p className="white-text">
                     Posted by {combo.user.displayName}{' '}
-                    {moment(combo.datePosted)
-                      .startOf('hour')
-                      .fromNow()}
+                    {moment(combo.datePosted).fromNow()}
                   </p>
                 </footer>
               </div>

@@ -182,10 +182,7 @@ export function CharacterCombo() {
           {/* Combo detail */}
           <div className="detail">
             <h5>
-              Posted by {comboAuthor}{' '}
-              {moment(combo.datePosted)
-                .startOf('hour')
-                .fromNow()}
+              Posted by {comboAuthor} {moment(combo.datePosted).fromNow()}
               {loggedInUser === combo.userId && (
                 <Link
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
