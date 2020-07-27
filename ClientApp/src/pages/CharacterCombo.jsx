@@ -5,7 +5,7 @@ import moment from 'moment'
 import YouTube from 'react-youtube'
 
 import { useParams } from 'react-router'
-import { authHeader, isLoggedIn, getUserId } from '../auth'
+import { authHeader, getUserId } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -186,8 +186,7 @@ export function CharacterCombo() {
               {moment(combo.datePosted)
                 .startOf('hour')
                 .fromNow()}
-              {// isLoggedIn()
-              loggedInUser === combo.userId && (
+              {loggedInUser === combo.userId && (
                 <Link
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
                 >

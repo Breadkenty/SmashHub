@@ -75,6 +75,7 @@ namespace Smash_Combos.Controllers
         // new values for the record.
         //
         [HttpPut("{id}")]
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutComment(int id, Comment comment)
         {
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
@@ -113,9 +114,9 @@ namespace Smash_Combos.Controllers
             // return NoContent to indicate the update was done. Alternatively you can use the
             // following to send back a copy of the updated data.
             //
-            // return Ok(comment)
+            return Ok(comment);
             //
-            return NoContent();
+            // return NoContent();
         }
 
         // POST: api/Comments

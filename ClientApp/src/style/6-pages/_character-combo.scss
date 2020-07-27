@@ -137,7 +137,16 @@
       }
 
       .body {
+        width: 100%;
         padding: 16px 16px 24px 0;
+
+        textarea {
+          padding: 8px;
+          width: 100%;
+          background-color: $grey;
+          border: none;
+          border-radius: 2px;
+        }
       }
     }
   }
