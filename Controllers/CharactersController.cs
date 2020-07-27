@@ -84,8 +84,11 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCharacter(string variableName, Character character)
         {
+            var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
+            var userIsAdmin = getUserById.Admin == true;
+
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (variableName != character.VariableName)
+            if (variableName != character.VariableName || !userIsAdmin)
             {
                 return BadRequest();
             }
@@ -181,6 +184,12 @@ namespace Smash_Combos.Controllers
         private bool CharacterExists(string variableName)
         {
             return _context.Characters.Any(character => character.VariableName == variableName);
+        }
+
+        private int GetCurrentUserId()
+        {
+            // Get the User Id from the claim and then parse it as an integer.
+            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

@@ -52,7 +52,7 @@ export function EditCharacter() {
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
         } else {
-          // history.push('/')
+          history.push('/')
         }
       })
   }
