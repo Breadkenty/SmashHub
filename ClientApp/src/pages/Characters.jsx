@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getUser } from '../auth'
+import { getUser, isLoggedIn } from '../auth'
 
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 
@@ -35,7 +35,8 @@ export function Characters() {
           onChange={event => setFilterText(event.target.value)}
         />
       </header>
-      <h4>Welcome {user.displayName}</h4>
+
+      {isLoggedIn() && <h4>Welcome {user.displayName}</h4>}
       <h3>Choose your character</h3>
       <div className="characters">
         {characters.map(character => (

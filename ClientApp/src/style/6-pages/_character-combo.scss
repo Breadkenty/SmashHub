@@ -60,6 +60,14 @@
 
       .detail {
         padding: 16px;
+        width: 100%;
+
+        h5 {
+          width: 100%;
+          a {
+            float: right;
+          }
+        }
       }
       .detail > div {
         display: flex;

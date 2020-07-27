@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+
 import moment from 'moment'
 import YouTube from 'react-youtube'
 
 import { useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, isLoggedIn, getUserId } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -107,6 +109,8 @@ export function CharacterCombo() {
     })
   }
 
+  const loggedInUser = getUserId()
+
   const sortedComments = comments.sort(sortingFunctions[sortType])
 
   useEffect(getCharacter, [])
@@ -182,7 +186,16 @@ export function CharacterCombo() {
               {moment(combo.datePosted)
                 .startOf('hour')
                 .fromNow()}
+              {// isLoggedIn()
+              loggedInUser === combo.userId && (
+                <Link
+                  to={`/character/${characterVariableName}/${combo.id}/edit`}
+                >
+                  <h5>edit</h5>
+                </Link>
+              )}
             </h5>
+
             <h2>{combo.title}</h2>
 
             <div>

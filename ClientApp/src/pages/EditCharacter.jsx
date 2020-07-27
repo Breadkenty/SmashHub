@@ -5,6 +5,7 @@ import { useHistory } from 'react-router'
 export function EditCharacter() {
   const history = useHistory()
   const [characters, setCharacters] = useState([])
+  const [errorMessage, setErrorMessage] = useState()
   const [selectedCharacter, setSelectedCharacter] = useState({
     id: '',
     name: '',
@@ -38,8 +39,22 @@ export function EditCharacter() {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(selectedCharacter),
     })
-      .then(response => response.json())
-      .then(history.push('/'))
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Not Authorized' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          console.log(Object.values(apiData.errors).join(' '))
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          // history.push('/')
+        }
+      })
   }
 
   function getCharacters() {

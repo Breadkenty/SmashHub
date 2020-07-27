@@ -71,12 +71,20 @@ namespace Smash_Combos.Controllers
         // new values for the record.
         //
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCombo(int id, Combo combo)
         {
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
             if (id != combo.Id)
             {
                 return BadRequest();
+            }
+
+            var comboExists = await _context.Combos.Where(combo => combo.Id == id && combo.UserId == GetCurrentUserId()).AnyAsync();
+            if (!comboExists)
+            {
+
+                return NotFound();
             }
 
             // Tell the database to consider everything in combo to be _updated_ values. When
@@ -98,6 +106,7 @@ namespace Smash_Combos.Controllers
                     // return a `404` not found
                     return NotFound();
                 }
+
                 else
                 {
                     // Otherwise throw the error back, which will cause the request to fail
@@ -109,9 +118,9 @@ namespace Smash_Combos.Controllers
             // return NoContent to indicate the update was done. Alternatively you can use the
             // following to send back a copy of the updated data.
             //
-            // return Ok(combo)
+            return Ok(combo);
             //
-            return NoContent();
+            // return NoContent();
         }
 
         // POST: api/Combos
