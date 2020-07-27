@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { authHeader } from '../auth'
 
+import YouTube from 'react-youtube'
+
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 
@@ -22,6 +24,7 @@ export function SubmitCombo() {
   const [characters, setCharacters] = useState([])
 
   const [characterSelected, setCharacterSelected] = useState({
+    name: 'Mario',
     variableName: 'Mario',
     yPosition: 30,
   })
@@ -30,6 +33,9 @@ export function SubmitCombo() {
   let [startSeconds, setStartSeconds] = useState()
   let [endMinutes, setEndMinutes] = useState()
   let [endSeconds, setEndSeconds] = useState()
+
+  let [startTime, setStartTime] = useState()
+  let [endTime, setEndTime] = useState()
 
   let [selectedDifficulty, setSelectedDifficulty] = useState('very easy')
 
@@ -62,6 +68,9 @@ export function SubmitCombo() {
     damage: 0,
     notes: '',
   })
+
+  const [videoInformationById, setVideoInformationById] = useState({})
+  const [videoExists, setVideoExists] = useState(false)
 
   const [errorMessage, setErrorMessage] = useState()
 
@@ -113,6 +122,7 @@ export function SubmitCombo() {
 
     setCharacterSelected({
       ...characterSelected,
+      name: foundCharacterById.name,
       variableName: foundCharacterById.variableName,
       yPosition: foundCharacterById.yPosition,
     })
@@ -250,6 +260,51 @@ export function SubmitCombo() {
       })
   }
 
+  function checkVideoExists(event) {
+    fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=AIzaSyC7vi2aj2dnzcyOtZ12wxuyy0-8dvJffZU`
+    )
+      .then(response => {
+        return response.json()
+      })
+      .then(apiData => {
+        if (apiData.items.length === 0) {
+          console.log('invalid id')
+          setVideoExists(false)
+        } else if (
+          apiData.items[0].snippet.title
+            .toLowerCase()
+            .includes(characterSelected.name.toLowerCase()) ||
+          apiData.items[0].snippet.description
+            .toLowerCase()
+            .includes(characterSelected.name.toLowerCase())
+        ) {
+          console.log('good video')
+          setVideoInformationById(apiData.items[0].snippet)
+          setVideoExists(true)
+        } else {
+          console.log('video is not related')
+          setVideoExists(false)
+        }
+      })
+  }
+
+  const opts = {
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      playsinline: 1,
+      start: startTime || 0,
+      end: endTime || 0,
+    },
+  }
+
+  function onStateChange(state) {
+    if (state.data === 0) {
+      state.target.seekTo(startTime || 0)
+    }
+  }
+
   // Set inputs when the input field changes
   useEffect(() => {
     setNewCombo({
@@ -258,10 +313,15 @@ export function SubmitCombo() {
     })
   }, [inputs])
 
+  useEffect(() => {
+    setStartTime(parseInt(startMinutes || 0) * 60 + parseInt(startSeconds || 0))
+  }, [startMinutes, startSeconds])
+  useEffect(() => {
+    setEndTime(parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0))
+  }, [endMinutes, endSeconds])
+
   // Get all characters from API
   useEffect(getCharacters, [])
-
-  console.log(newCombo)
   return (
     <div className="submit-combo">
       <header>
@@ -313,15 +373,32 @@ export function SubmitCombo() {
           </fieldset>
 
           <fieldset className="video">
+            {videoExists && (
+              <YouTube
+                videoId={`${newCombo.videoId}`}
+                opts={opts}
+                onStateChange={onStateChange}
+              />
+            )}
             <label htmlFor="video-id">Youtube video ID</label>
             <input
               className="bg-yellow"
               id="videoId"
               type="text"
               placeholder="eg. IE1lyGZgLOs"
-              onChange={handleFieldChange}
+              onChange={event => {
+                handleFieldChange(event)
+                checkVideoExists(event)
+              }}
               required
             />
+            {videoExists || (
+              <p>
+                Invalid video, please enter a valid ID that relates to your
+                selected character
+              </p>
+            )}
+            {videoExists && <p>Good video: {videoInformationById.title}</p>}
           </fieldset>
 
           <div className="duration ">

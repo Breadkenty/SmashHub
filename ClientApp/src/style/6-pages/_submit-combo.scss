@@ -39,6 +39,13 @@
     }
 
     .video {
+      > div {
+        margin-top: 24px;
+        height: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
       input {
         width: 100%;
       }
