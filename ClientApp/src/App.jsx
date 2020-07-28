@@ -52,7 +52,7 @@ export function App() {
           <Route exact path="/character/:characterVariableName/:comboId">
             <CharacterCombo />
           </Route>
-          <Route exact path="/submit">
+          <Route exact path="/submit/:characterVariableName">
             <SubmitCombo />
           </Route>
           <Route exact path="/add">

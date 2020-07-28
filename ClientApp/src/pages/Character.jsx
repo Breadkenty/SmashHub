@@ -62,14 +62,22 @@ export function Character() {
       </header>
 
       <div className="search-container bg-grey">
-        <input
-          className="bg-yellow"
-          type="search"
-          placeholder="Search"
-          onChange={event => setFilterText(event.target.value)}
-        />
-
-        <SortController sortType={sortType} setSortType={setSortType} />
+        <div className="search-container-items">
+          <input
+            className="bg-yellow"
+            type="search"
+            placeholder="Search"
+            onChange={event => setFilterText(event.target.value)}
+          />
+          <div>
+            <SortController sortType={sortType} setSortType={setSortType} />
+            <Link to={`/submit/${characterVariableName}`}>
+              <button className="button bg-yellow black-text">
+                Submit a combo
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
       <section className="combos">
         {sortedCombos
