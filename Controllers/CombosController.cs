@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Smash_Combos.Models;
 
 namespace Smash_Combos.Controllers
@@ -20,12 +21,14 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly DatabaseContext _context;
+        private readonly string YOUTUBE_API_KEY;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CombosController(DatabaseContext context)
+        public CombosController(DatabaseContext context, IConfiguration config)
         {
             _context = context;
+            YOUTUBE_API_KEY = config["YOUTUBE_API_KEY"];
         }
 
         // GET: api/Combos
