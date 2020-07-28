@@ -21,14 +21,12 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly DatabaseContext _context;
-        private readonly string YOUTUBE_API_KEY;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CombosController(DatabaseContext context, IConfiguration config)
+        public CombosController(DatabaseContext context)
         {
             _context = context;
-            YOUTUBE_API_KEY = config["YOUTUBE_API_KEY"];
         }
 
         // GET: api/Combos

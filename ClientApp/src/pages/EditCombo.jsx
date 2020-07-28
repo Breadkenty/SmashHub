@@ -312,7 +312,7 @@ export function EditCombo() {
     const keyWords = ['super', 'smash', 'bros', 'ultimate', 'ssbu']
 
     fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=AIzaSyC7vi2aj2dnzcyOtZ12wxuyy0-8dvJffZU`
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=${process.env.REACT_APP_YOUTUBE_KEY}`
     )
       .then(response => {
         return response.json()
