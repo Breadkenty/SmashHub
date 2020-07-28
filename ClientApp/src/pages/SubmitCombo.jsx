@@ -261,6 +261,8 @@ export function SubmitCombo() {
   }
 
   function checkVideoExists(event) {
+    const keyWords = ['super', 'smash', 'bros', 'ultimate', 'ssbu']
+
     fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=AIzaSyC7vi2aj2dnzcyOtZ12wxuyy0-8dvJffZU`
     )
@@ -277,7 +279,13 @@ export function SubmitCombo() {
             .includes(characterSelected.name.toLowerCase()) ||
           apiData.items[0].snippet.description
             .toLowerCase()
-            .includes(characterSelected.name.toLowerCase())
+            .includes(characterSelected.name.toLowerCase()) ||
+          keyWords.some(keyWord =>
+            apiData.items[0].snippet.title.toLowerCase().includes(keyWord)
+          ) ||
+          keyWords.some(keyWord =>
+            apiData.items[0].snippet.description.toLowerCase().includes(keyWord)
+          )
         ) {
           console.log('good video')
           setVideoInformationById(apiData.items[0].snippet)
