@@ -74,6 +74,10 @@ export function EditCombo() {
   const [videoInformationById, setVideoInformationById] = useState({})
   const [videoExists, setVideoExists] = useState(true)
 
+  const [deleteMenuDisplay, setDeleteMenuDisplay] = useState(false)
+  const [deleteMenuInput, setDeleteMenuInput] = useState('')
+  const [invalidDeleteInput, setInvalidDeleteInput] = useState(false)
+
   const [errorMessage, setErrorMessage] = useState()
 
   const handleFieldChange = event => {
@@ -274,6 +278,34 @@ export function EditCombo() {
           history.push(`/character/${characterVariableName}/${comboId}`)
         }
       })
+  }
+
+  function handleDelete(event) {
+    event.preventDefault()
+
+    if (deleteMenuInput === comboToEdit.title) {
+      fetch(`/api/Combos/${comboId}`, {
+        method: 'DELETE',
+        headers: { ...authHeader() },
+      })
+        .then(response => {
+          if (response.status === 400 || response.status === 401) {
+            return { status: 400, errors: { login: 'Not Authorized' } }
+          } else {
+            return response.json()
+          }
+        })
+        .then(apiData => {
+          if (apiData.status === 400 || apiData.status === 401) {
+            const newMessage = Object.values(apiData.errors).join(' ')
+            setErrorMessage(newMessage)
+          } else {
+            history.push('/')
+          }
+        })
+    } else {
+      setInvalidDeleteInput(true)
+    }
   }
 
   function checkVideoExists(event) {
@@ -642,9 +674,49 @@ export function EditCombo() {
                   {errorMessage}
                 </div>
               )}
-              <button type="submit" className="button bg-yellow black-text">
-                Submit
-              </button>
+              <div className="submit-buttons">
+                <button type="submit" className="button bg-yellow black-text">
+                  Submit
+                </button>
+                <button
+                  className="button bg-red white-text"
+                  onClick={event => {
+                    event.preventDefault()
+                    setDeleteMenuDisplay(true)
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+              {deleteMenuDisplay && (
+                <div className="confirm-delete bg-black">
+                  <i
+                    className="fas fa-times"
+                    onClick={() => {
+                      setDeleteMenuDisplay(false)
+                    }}
+                  ></i>
+                  <label>
+                    type in <span>{comboToEdit.title}</span> to delete
+                  </label>
+                  <input
+                    type="text"
+                    className="bg-yellow black-text"
+                    placeholder={comboToEdit.title}
+                    onChange={event => {
+                      setDeleteMenuInput(event.target.value)
+                    }}
+                  />
+                  {invalidDeleteInput && <h5>Invalid input</h5>}
+                  <button
+                    type="submit"
+                    className="button bg-red white-text"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           </fieldset>
         </form>

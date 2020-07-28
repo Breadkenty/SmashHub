@@ -155,6 +155,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteCombo(int id)
         {
             // Find this combo by looking for the specific id
@@ -174,9 +175,9 @@ namespace Smash_Combos.Controllers
             // return NoContent to indicate the update was done. Alternatively you can use the
             // following to send back a copy of the deleted data.
             //
-            // return Ok(combo)
+            return Ok(combo);
             //
-            return NoContent();
+            // return NoContent();
         }
 
         // Private helper method that looks up an existing combo by the supplied id

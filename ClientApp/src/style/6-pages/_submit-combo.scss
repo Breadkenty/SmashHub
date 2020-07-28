@@ -219,8 +219,41 @@
         }
 
         button {
-          // align-self: flex-end;
+          margin: 24px;
           width: 100%;
+        }
+      }
+      .submit-buttons {
+        width: 100%;
+        // border: 1px solid red;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .confirm-delete {
+        padding: 16px;
+        width: 100%;
+        border-radius: 5px;
+
+        i {
+          align-self: flex-end;
+          color: white;
+        }
+
+        label {
+          margin-top: 0;
+        }
+
+        span {
+          color: $red;
+        }
+
+        input {
+          width: 300px;
+        }
+
+        button {
+          width: 300px;
         }
       }
     }
