@@ -98,14 +98,16 @@ export function Comment(props) {
         <h5>
           Posted by {props.comment.user.displayName}{' '}
           {moment(props.comment.datePosted).fromNow()}
-          <button
-            className="edit"
-            onClick={() => {
-              setEditingComment(true)
-            }}
-          >
-            edit
-          </button>
+          {props.loggedInUser === props.comment.userId && (
+            <button
+              className="edit"
+              onClick={() => {
+                setEditingComment(true)
+              }}
+            >
+              edit
+            </button>
+          )}
         </h5>
         {editingComment && (
           <form className="edit-comment" onSubmit={submitComment}>

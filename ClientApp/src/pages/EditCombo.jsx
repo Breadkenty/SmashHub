@@ -72,7 +72,7 @@ export function EditCombo() {
   let [inputs, setInputs] = useState('')
 
   const [videoInformationById, setVideoInformationById] = useState({})
-  const [videoExists, setVideoExists] = useState(false)
+  const [videoExists, setVideoExists] = useState(true)
 
   const [errorMessage, setErrorMessage] = useState()
 
@@ -277,6 +277,8 @@ export function EditCombo() {
   }
 
   function checkVideoExists(event) {
+    const keyWords = ['super', 'smash', 'bros', 'ultimate', 'ssbu']
+
     fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=AIzaSyC7vi2aj2dnzcyOtZ12wxuyy0-8dvJffZU`
     )
@@ -293,13 +295,20 @@ export function EditCombo() {
             .includes(characterSelected.name.toLowerCase()) ||
           apiData.items[0].snippet.description
             .toLowerCase()
-            .includes(characterSelected.name.toLowerCase())
+            .includes(characterSelected.name.toLowerCase()) ||
+          keyWords.some(keyWord =>
+            apiData.items[0].snippet.title.toLowerCase().includes(keyWord)
+          ) ||
+          keyWords.some(keyWord =>
+            apiData.items[0].snippet.description.toLowerCase().includes(keyWord)
+          )
         ) {
           console.log('good video')
           setVideoInformationById(apiData.items[0].snippet)
           setVideoExists(true)
         } else {
           console.log('video is not related')
+          console.log(apiData)
           setVideoExists(false)
         }
       })
@@ -328,6 +337,13 @@ export function EditCombo() {
       comboInput: inputs,
     })
   }, [inputs])
+
+  useEffect(() => {
+    setStartTime(parseInt(startMinutes || 0) * 60 + parseInt(startSeconds || 0))
+  }, [startMinutes, startSeconds])
+  useEffect(() => {
+    setEndTime(parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0))
+  }, [endMinutes, endSeconds])
 
   // Get all characters from API
   useEffect(getCombo, [])
@@ -382,7 +398,10 @@ export function EditCombo() {
               type="text"
               placeholder="eg. IE1lyGZgLOs"
               value={comboToEdit.videoId}
-              onChange={handleFieldChange}
+              onChange={event => {
+                handleFieldChange(event)
+                checkVideoExists(event)
+              }}
               required
             />
             {videoExists || (

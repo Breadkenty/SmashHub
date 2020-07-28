@@ -247,6 +247,7 @@ export function CharacterCombo() {
           {comments.map(comment => (
             <Comment
               key={comment.id}
+              loggedInUser={loggedInUser}
               handleVote={handleVote}
               comment={comment}
               getCombo={getCombo}
