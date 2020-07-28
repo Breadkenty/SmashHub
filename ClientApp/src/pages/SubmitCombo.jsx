@@ -353,8 +353,17 @@ export function SubmitCombo() {
                 name="select-character"
                 id="characterId"
                 onChange={event => {
-                  handleFieldChange(event)
                   changeCharacterPortrait(event)
+                  setVideoExists(false)
+                  setStartMinutes(0)
+                  setStartSeconds(0)
+                  setEndMinutes(0)
+                  setEndSeconds(0)
+                  setNewCombo({
+                    ...newCombo,
+                    characterId: parseInt(event.target.value),
+                    videoId: '',
+                  })
                 }}
                 required
               >
@@ -394,6 +403,7 @@ export function SubmitCombo() {
               id="videoId"
               type="text"
               placeholder="eg. IE1lyGZgLOs"
+              value={newCombo.videoId}
               onChange={event => {
                 handleFieldChange(event)
                 checkVideoExists(event)
