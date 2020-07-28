@@ -300,7 +300,7 @@ export function EditCombo() {
             const newMessage = Object.values(apiData.errors).join(' ')
             setErrorMessage(newMessage)
           } else {
-            history.push('/')
+            history.push(`/character/${characterVariableName}`)
           }
         })
     } else {
