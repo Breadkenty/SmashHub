@@ -289,14 +289,14 @@ export function EditCombo() {
         headers: { ...authHeader() },
       })
         .then(response => {
-          if (response.status === 400 || response.status === 401) {
-            return { status: 400, errors: { login: 'Not Authorized' } }
+          if (response.status === 404 || response.status === 401) {
+            return { status: 401, errors: { login: 'Not Authorized' } }
           } else {
             return response.json()
           }
         })
         .then(apiData => {
-          if (apiData.status === 400 || apiData.status === 401) {
+          if (apiData.status === 401) {
             const newMessage = Object.values(apiData.errors).join(' ')
             setErrorMessage(newMessage)
           } else {

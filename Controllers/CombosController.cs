@@ -159,7 +159,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> DeleteCombo(int id)
         {
             // Find this combo by looking for the specific id
-            var combo = await _context.Combos.FindAsync(id);
+            var combo = await _context.Combos.Where(combo => combo.Id == id && combo.UserId == GetCurrentUserId()).FirstOrDefaultAsync();
             if (combo == null)
             {
                 // There wasn't a combo with that id so return a `404` not found
