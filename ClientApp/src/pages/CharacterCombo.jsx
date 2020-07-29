@@ -5,7 +5,7 @@ import moment from 'moment'
 import YouTube from 'react-youtube'
 
 import { useParams } from 'react-router'
-import { authHeader, getUserId } from '../auth'
+import { authHeader, getUserId, isLoggedIn } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -220,18 +220,24 @@ export function CharacterCombo() {
           <p>{combo.notes}</p>
         </section>
 
-        <form className="add-comment bg-grey" onSubmit={handleSubmit}>
-          <textarea
-            placeholder="Add a comment"
-            value={comment.body}
-            onChange={event => {
-              setComment({ ...comment, body: event.target.value })
-            }}
-          />
-          <button className="bg-yellow button black-text" type="submit">
-            Submit
-          </button>
-        </form>
+        {(isLoggedIn() && (
+          <form className="add-comment bg-grey" onSubmit={handleSubmit}>
+            <textarea
+              placeholder="Add a comment"
+              value={comment.body}
+              onChange={event => {
+                setComment({ ...comment, body: event.target.value })
+              }}
+            />
+            <button className="bg-yellow button black-text" type="submit">
+              Submit
+            </button>
+          </form>
+        )) || (
+          <Link to="/login">
+            <h5 className="prevent-commenting">Please log in to comment</h5>
+          </Link>
+        )}
 
         {errorMessage && (
           <div className="alert alert-danger" role="alert">

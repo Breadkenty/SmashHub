@@ -121,6 +121,12 @@
     .combo:hover {
       background-color: $yellow;
       transform: scale(1.01);
+      svg {
+        fill: $black;
+      }
+      h3 {
+        color: $black;
+      }
       .information {
         background-color: $yellow;
         h3,
