@@ -31,7 +31,7 @@ namespace Smash_Combos.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginUser loginUser)
         {
-            var foundUser = await _context.Users.FirstOrDefaultAsync(user => user.Email == loginUser.Email);
+            var foundUser = await _context.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == loginUser.Email.ToLower());
             if (foundUser != null && foundUser.IsValidPassword(loginUser.Password))
             {
                 // create a custom response
@@ -43,6 +43,16 @@ namespace Smash_Combos.Controllers
                     user = foundUser
                 };
                 return Ok(response);
+            }
+            if (foundUser != null && !foundUser.IsValidPassword(loginUser.Password))
+            {
+                var response = new
+                {
+                    status = 400,
+                    errors = new List<string>() { $"Invalid password" }
+                };
+                // Return our error with the custom response
+                return BadRequest(response);
             }
             else
             {

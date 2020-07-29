@@ -51,12 +51,24 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<User>> PostUser(User user)
         {
             var emailExists = _context.Users.Any(existingUser => existingUser.Email.ToLower() == user.Email.ToLower());
+
             if (emailExists)
             {
                 var response = new
                 {
                     status = 400,
                     errors = new List<string>() { "There's already an account with this email" }
+                };
+
+                return BadRequest(response);
+            }
+
+            if (!user.PasswordMeetsCriteria)
+            {
+                var response = new
+                {
+                    status = 400,
+                    errors = new List<string>() { "Password must be at least 8 characters" }
                 };
 
                 return BadRequest(response);

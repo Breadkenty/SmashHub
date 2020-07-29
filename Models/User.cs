@@ -23,10 +23,14 @@ namespace Smash_Combos.Models
         [JsonIgnore]
         public string HashedPassword { get; set; }
 
+        [JsonIgnore]
+        public bool PasswordMeetsCriteria { get; set; }
+
         public string Password
         {
             set
             {
+                this.PasswordMeetsCriteria = value.Length >= 8;
                 this.HashedPassword = new PasswordHasher<User>().HashPassword(this, value);
             }
         }
