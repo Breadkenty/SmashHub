@@ -250,9 +250,6 @@ export function EditCombo() {
       videoEndTime: parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0),
     }
 
-    console.log('Submit:')
-    console.log(JSON.stringify(comboToSubmit))
-
     fetch(`/api/Combos/${comboId}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
@@ -269,11 +266,9 @@ export function EditCombo() {
         }
       })
       .then(apiData => {
-        console.log(apiData)
         if (apiData.errors) {
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
-          console.log(apiData)
         } else {
           history.push(`/character/${characterVariableName}/${comboId}`)
         }
@@ -319,7 +314,6 @@ export function EditCombo() {
       })
       .then(apiData => {
         if (apiData.items.length === 0) {
-          console.log('invalid id')
           setVideoExists(false)
         } else if (
           apiData.items[0].snippet.title
@@ -335,12 +329,9 @@ export function EditCombo() {
             apiData.items[0].snippet.description.toLowerCase().includes(keyWord)
           )
         ) {
-          console.log('good video')
           setVideoInformationById(apiData.items[0].snippet)
           setVideoExists(true)
         } else {
-          console.log('video is not related')
-          console.log(apiData)
           setVideoExists(false)
         }
       })

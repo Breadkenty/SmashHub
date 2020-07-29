@@ -85,7 +85,7 @@ export function Character() {
             combo.title.toLowerCase().includes(filterText.toLowerCase())
           )
           .map(combo => (
-            <div className="combo">
+            <div key={combo.id} className="combo">
               <div className="vote bg-yellow">
                 <button
                   className="button-blank"
@@ -131,8 +131,9 @@ export function Character() {
                 </header>
 
                 <div className="combo-inputs">
-                  {combo.comboInput.split(' ').map(input => (
+                  {combo.comboInput.split(' ').map((input, index) => (
                     <div
+                      key={index}
                       className="combo-input"
                       style={{
                         backgroundImage: `url(${allComboInputs[input]})`,

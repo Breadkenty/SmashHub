@@ -34,7 +34,6 @@ export function AddCharacter() {
       body: JSON.stringify(newCharacter),
     })
       .then(response => {
-        console.log(response)
         if (response.status === 400) {
           return { status: 400, errors: { login: 'Not Authorized' } }
         } else {
@@ -43,7 +42,6 @@ export function AddCharacter() {
       })
       .then(apiData => {
         if (apiData.status === 400 || apiData.status === 401) {
-          console.log(Object.values(apiData.errors).join(' '))
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
         } else {

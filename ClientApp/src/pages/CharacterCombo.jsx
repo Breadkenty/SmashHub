@@ -87,7 +87,6 @@ export function CharacterCombo() {
       })
       .then(apiData => {
         if (apiData.status === 400 || apiData.status === 401) {
-          console.log(Object.values(apiData.errors).join(' '))
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
         } else {

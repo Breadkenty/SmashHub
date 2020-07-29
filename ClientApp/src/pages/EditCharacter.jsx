@@ -42,7 +42,6 @@ export function EditCharacter() {
       body: JSON.stringify(selectedCharacter),
     })
       .then(response => {
-        console.log(response)
         if (response.status === 400) {
           return { status: 400, errors: { login: 'Not Authorized' } }
         } else {
@@ -51,7 +50,6 @@ export function EditCharacter() {
       })
       .then(apiData => {
         if (apiData.status === 400 || apiData.status === 401) {
-          console.log(Object.values(apiData.errors).join(' '))
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
         } else {
@@ -69,7 +67,6 @@ export function EditCharacter() {
       body: JSON.stringify(setSelectedCharacter),
     })
       .then(response => {
-        console.log(response)
         if (response.status === 400 || response.status === 401) {
           return { status: 400, errors: { login: 'Not Authorized' } }
         } else {

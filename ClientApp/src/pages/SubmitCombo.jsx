@@ -253,8 +253,6 @@ export function SubmitCombo() {
       videoEndTime: parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0),
     }
 
-    console.log('Submit:')
-    console.log(JSON.stringify(comboToSubmit))
     fetch('/api/Combos', {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
@@ -269,7 +267,6 @@ export function SubmitCombo() {
       })
       .then(apiData => {
         if (apiData.status === 400 || apiData.status === 401) {
-          console.log(Object.values(apiData.errors).join(' '))
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
         } else {
@@ -289,7 +286,6 @@ export function SubmitCombo() {
       })
       .then(apiData => {
         if (apiData.items.length === 0) {
-          console.log('invalid id')
           setVideoExists(false)
         } else if (
           apiData.items[0].snippet.title
@@ -305,11 +301,9 @@ export function SubmitCombo() {
             apiData.items[0].snippet.description.toLowerCase().includes(keyWord)
           )
         ) {
-          console.log('good video')
           setVideoInformationById(apiData.items[0].snippet)
           setVideoExists(true)
         } else {
-          console.log('video is not related')
           setVideoExists(false)
         }
       })

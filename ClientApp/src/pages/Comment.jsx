@@ -5,7 +5,6 @@ import { authHeader } from '../auth'
 import { getUserId } from '../auth'
 
 export function Comment(props) {
-  console.log(props)
   const [editedComment, setEditedComment] = useState(props.comment)
 
   const [editingComment, setEditingComment] = useState(false)
@@ -20,15 +19,12 @@ export function Comment(props) {
   function submitComment(event) {
     event.preventDefault()
 
-    console.log(editedComment)
-
     fetch(`/api/Comments/${parseInt(props.comment.id)}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(editedComment),
     })
       .then(response => {
-        console.log(response)
         // return response.json()
         if (response.status === 401) {
           return { status: 401, errors: { login: 'Not Authorized' } }
@@ -40,11 +36,9 @@ export function Comment(props) {
         }
       })
       .then(apiData => {
-        console.log(apiData)
         if (apiData.errors) {
           const newMessage = Object.values(apiData.errors).join(' ')
           setErrorMessage(newMessage)
-          console.log(apiData.errors)
         } else {
           setEditingComment(false)
           props.getCombo()
