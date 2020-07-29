@@ -13,6 +13,10 @@
   align-items: center;
   justify-content: center;
 
+  .search-bar {
+    background-color: $grey;
+  }
+
   header {
     margin-bottom: 24px;
     padding: 16px;

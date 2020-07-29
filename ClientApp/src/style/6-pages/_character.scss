@@ -33,6 +33,10 @@
       max-width: 1000px;
       width: 100%;
 
+      .search-bar {
+        margin-right: 16px;
+      }
+
       input {
         width: 100%;
         margin-right: 8px;
@@ -119,20 +123,11 @@
     }
 
     .combo:hover {
-      background-color: $yellow;
-      transform: scale(1.01);
-      svg {
-        fill: $black;
-      }
-      h3 {
-        color: $black;
-      }
+      background-color: $grey;
+      transform: scale(1.005);
+
       .information {
-        background-color: $yellow;
-        h3,
-        h5 {
-          color: black;
-        }
+        background-color: $grey;
       }
     }
 

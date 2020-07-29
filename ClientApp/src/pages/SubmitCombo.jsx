@@ -54,7 +54,7 @@ export function SubmitCombo() {
     'Special',
     'Throw',
   ]
-  let [inputCategory, setInputCategory] = useState('Basic')
+  let [inputCategorySelected, setInputCategorySelected] = useState('Basic')
   let [inputs, setInputs] = useState('')
 
   const [newCombo, setNewCombo] = useState({
@@ -169,7 +169,7 @@ export function SubmitCombo() {
   }
 
   function renderInputCategoryComponents() {
-    switch (inputCategory) {
+    switch (inputCategorySelected) {
       case 'Basic':
         return (
           <>
@@ -394,7 +394,6 @@ export function SubmitCombo() {
             <label htmlFor="title">Title</label>
             <input
               name="title"
-              className="bg-yellow"
               id="title"
               type="text"
               placeholder="eg. Down-throw bair"
@@ -413,7 +412,6 @@ export function SubmitCombo() {
             )}
             <label htmlFor="video-id">Youtube video ID</label>
             <input
-              className="bg-yellow"
               id="videoId"
               type="text"
               placeholder="eg. IE1lyGZgLOs"
@@ -658,10 +656,15 @@ export function SubmitCombo() {
             <div className="input-categories">
               {inputCategories.map(inputCategory => (
                 <button
+                  className={
+                    inputCategory === inputCategorySelected
+                      ? 'active-category'
+                      : ''
+                  }
                   key={inputCategory}
                   onClick={event => {
                     event.preventDefault()
-                    setInputCategory(inputCategory)
+                    setInputCategorySelected(inputCategory)
                   }}
                 >
                   {inputCategory}

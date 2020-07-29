@@ -23,13 +23,16 @@ export function Characters() {
   return (
     <div className="character-select">
       <header>
-        <input
-          className="bg-yellow"
-          type="search"
-          placeholder="Search"
-          value={filterText}
-          onChange={event => setFilterText(event.target.value)}
-        />
+        <div className="search-bar">
+          <i class="fas fa-search"></i>
+          <input
+            className="bg-yellow"
+            type="search"
+            placeholder="Search"
+            value={filterText}
+            onChange={event => setFilterText(event.target.value)}
+          />
+        </div>
       </header>
 
       <h3>Choose your character</h3>

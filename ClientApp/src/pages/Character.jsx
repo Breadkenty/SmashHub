@@ -63,11 +63,14 @@ export function Character() {
 
       <div className="search-container bg-grey">
         <div className="search-container-items">
-          <input
-            type="search"
-            placeholder="Search"
-            onChange={event => setFilterText(event.target.value)}
-          />
+          <div className="search-bar">
+            <i class="fas fa-search"></i>
+            <input
+              type="search"
+              placeholder="Search"
+              onChange={event => setFilterText(event.target.value)}
+            />
+          </div>
           <div>
             <SortController sortType={sortType} setSortType={setSortType} />
             <Link to={`/submit/${characterVariableName}`}>
