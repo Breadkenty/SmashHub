@@ -17,9 +17,6 @@ namespace Smash_Combos.Models
         [Required]
         public string Email { get; set; }
 
-        // public List<Combo> Combos { get; set; }
-        // public List<Comment> Comments { get; set; }
-
         [JsonIgnore]
         public string HashedPassword { get; set; }
 
