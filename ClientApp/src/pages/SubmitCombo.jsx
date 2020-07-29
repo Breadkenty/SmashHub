@@ -253,26 +253,32 @@ export function SubmitCombo() {
       videoEndTime: parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0),
     }
 
-    fetch('/api/Combos', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', ...authHeader() },
-      body: JSON.stringify(comboToSubmit),
-    })
-      .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
-        } else {
-          return response.json()
-        }
+    if (comboToSubmit.videoStartTime > comboToSubmit.videoEndTime) {
+      setErrorMessage('Your video end time must be after your start time')
+    } else if (!videoExists) {
+      setErrorMessage('Please enter a valid video')
+    } else {
+      fetch('/api/Combos', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...authHeader() },
+        body: JSON.stringify(comboToSubmit),
       })
-      .then(apiData => {
-        if (apiData.status === 400 || apiData.status === 401) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          history.push('/')
-        }
-      })
+        .then(response => {
+          if (response.status === 401) {
+            return { status: 401, errors: { login: 'Not Authorized' } }
+          } else {
+            return response.json()
+          }
+        })
+        .then(apiData => {
+          if (apiData.status === 400 || apiData.status === 401) {
+            const newMessage = Object.values(apiData.errors).join(' ')
+            setErrorMessage(newMessage)
+          } else {
+            history.push('/')
+          }
+        })
+    }
   }
 
   function checkVideoExists(event) {
@@ -428,7 +434,7 @@ export function SubmitCombo() {
                 selected character
               </p>
             )}
-            {videoExists && <p>Good video: {videoInformationById.title}</p>}
+            {videoExists && <p>{videoInformationById.title}</p>}
           </fieldset>
 
           <div className="duration ">
