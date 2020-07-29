@@ -41,7 +41,7 @@ export function SideNav(props) {
       <ul>
         {isLoggedIn() && (
           <li>
-            <Link to="/submit">
+            <Link to="/submit/new">
               <button
                 className="bg-yellow button black-text"
                 onClick={props.handleSideBar}

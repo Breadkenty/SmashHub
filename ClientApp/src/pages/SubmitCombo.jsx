@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { authHeader } from '../auth'
 
 import YouTube from 'react-youtube'
@@ -20,13 +20,14 @@ import { Throw } from '../components/combo-inputs/Throw'
 
 export function SubmitCombo() {
   const history = useHistory()
+  const params = useParams()
 
   const [characters, setCharacters] = useState([])
 
   const [characterSelected, setCharacterSelected] = useState({
-    name: 'Mario',
-    variableName: 'Mario',
-    yPosition: 30,
+    name: '',
+    variableName: '',
+    yPosition: 0,
   })
 
   let [startMinutes, setStartMinutes] = useState()
@@ -57,7 +58,7 @@ export function SubmitCombo() {
   let [inputs, setInputs] = useState('')
 
   const [newCombo, setNewCombo] = useState({
-    characterId: 1,
+    characterId: 0,
     title: '',
     videoId: '',
     videoStartTime: 0,
@@ -146,7 +147,24 @@ export function SubmitCombo() {
     fetch('/api/Characters')
       .then(response => response.json())
       .then(apiData => {
+        const characterByVariableName =
+          apiData.find(
+            character => character.variableName === params.characterVariableName
+          ) || apiData.find(character => character.variableName === 'Mario')
+
         setCharacters(apiData)
+
+        setCharacterSelected({
+          ...characterSelected,
+          name: characterByVariableName.name,
+          variableName: characterByVariableName.variableName,
+          yPosition: parseInt(characterByVariableName.yPosition),
+        })
+
+        setNewCombo({
+          ...newCombo,
+          characterId: characterByVariableName.id,
+        })
       })
   }
 
@@ -330,6 +348,7 @@ export function SubmitCombo() {
 
   // Get all characters from API
   useEffect(getCharacters, [])
+
   return (
     <div className="submit-combo">
       <header>
@@ -352,6 +371,7 @@ export function SubmitCombo() {
               <select
                 name="select-character"
                 id="characterId"
+                value={newCombo.characterId}
                 onChange={event => {
                   changeCharacterPortrait(event)
                   setVideoExists(false)
