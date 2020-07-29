@@ -687,8 +687,8 @@ export function EditCombo() {
                 onChange={handleFieldChange}
               />
               {errorMessage && (
-                <div className="alert alert-danger" role="alert">
-                  {errorMessage}
+                <div className="error-message">
+                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
               <div className="submit-buttons">
@@ -713,6 +713,10 @@ export function EditCombo() {
                       setDeleteMenuDisplay(false)
                     }}
                   ></i>
+                  <div className="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>{' '}
+                    <h3>Danger zone</h3>
+                  </div>
                   <label>
                     type in <span>{comboToEdit.title}</span> to delete
                   </label>

@@ -42,8 +42,8 @@ export function LogIn() {
     <div className="login-signup">
       <h3 className="white-text">Log in</h3>
       {errorMessage && (
-        <div className="alert alert-danger" role="alert">
-          {errorMessage}
+        <div className="error-message">
+          <i class="fas fa-exclamation-triangle"></i> {errorMessage}
         </div>
       )}
       <form onSubmit={handleSubmit}>

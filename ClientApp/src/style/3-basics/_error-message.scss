@@ -1,0 +1,19 @@
+.error-message {
+  margin: 8px;
+  padding: 8px 16px;
+  border-top: 2px solid $red;
+  border-bottom: 2px solid $red;
+
+  text-align: center;
+
+  color: white;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  @include transition;
+
+  i {
+    color: $yellow;
+    margin: 8px;
+  }
+}

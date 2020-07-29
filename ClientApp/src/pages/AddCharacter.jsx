@@ -95,8 +95,8 @@ export function AddCharacter() {
       </fieldset>
 
       {errorMessage && (
-        <div className="alert alert-danger" role="alert">
-          {errorMessage}
+        <div className="error-message">
+          <i class="fas fa-exclamation-triangle"></i> {errorMessage}
         </div>
       )}
 

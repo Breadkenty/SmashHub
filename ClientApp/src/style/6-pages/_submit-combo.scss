@@ -210,7 +210,7 @@
       }
 
       .input-controller {
-        padding-top: 24px;
+        padding: 24px 0;
         border-radius: 0 0 4px 4px;
 
         display: flex;
@@ -331,12 +331,12 @@
         width: 100%;
         border-radius: 5px;
 
-        i {
+        > i {
           align-self: flex-end;
           color: white;
           @include transition;
         }
-        i:hover {
+        > i:hover {
           color: $yellow;
         }
 

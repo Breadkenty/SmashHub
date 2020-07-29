@@ -55,7 +55,11 @@ export function SignUp() {
     <div className="login-signup">
       <h3 className="text-white">Sign up</h3>
       <form onSubmit={handleSubmit}>
-        <h3>{errorMessage}</h3>
+        {errorMessage && (
+          <div className="error-message">
+            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+          </div>
+        )}
         <input
           className="bg-yellow"
           type="text"

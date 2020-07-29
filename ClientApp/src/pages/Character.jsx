@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, isLoggedIn } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -73,9 +73,11 @@ export function Character() {
           </div>
           <div>
             <SortController sortType={sortType} setSortType={setSortType} />
-            <Link to={`/submit/${characterVariableName}`}>
-              <button className="button">Submit a combo</button>
-            </Link>
+            {isLoggedIn() && (
+              <Link to={`/submit/${characterVariableName}`}>
+                <button className="button">Submit a combo</button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

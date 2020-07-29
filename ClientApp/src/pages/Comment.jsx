@@ -42,6 +42,7 @@ export function Comment(props) {
         } else {
           setEditingComment(false)
           props.getCombo()
+          setErrorMessage(undefined)
         }
       })
   }
@@ -109,6 +110,11 @@ export function Comment(props) {
             <button className="bg-yellow button black-text" type="submit">
               Submit
             </button>
+            {errorMessage && (
+              <div className="error-message">
+                <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+              </div>
+            )}
           </form>
         )}
         {editingComment || <p>{props.comment.body}</p>}

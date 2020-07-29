@@ -93,6 +93,7 @@ export function CharacterCombo() {
           getCombo()
           setComment({ ...comment, body: '' })
           setSortType('newest')
+          setErrorMessage(undefined)
         }
       })
   }
@@ -240,8 +241,8 @@ export function CharacterCombo() {
         )}
 
         {errorMessage && (
-          <div className="alert alert-danger" role="alert">
-            {errorMessage}
+          <div className="error-message">
+            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
           </div>
         )}
         <section className="sort">

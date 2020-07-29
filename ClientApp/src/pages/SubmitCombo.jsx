@@ -686,8 +686,8 @@ export function SubmitCombo() {
                 onChange={handleFieldChange}
               />
               {errorMessage && (
-                <div className="alert alert-danger" role="alert">
-                  {errorMessage}
+                <div className="error-message">
+                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
               <button type="submit" className="button bg-yellow black-text">
