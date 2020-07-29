@@ -334,6 +334,10 @@
         i {
           align-self: flex-end;
           color: white;
+          @include transition;
+        }
+        i:hover {
+          color: $yellow;
         }
 
         label {
@@ -346,6 +350,7 @@
 
         input {
           width: 300px;
+          background-color: $grey;
         }
 
         button {

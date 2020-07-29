@@ -107,6 +107,10 @@
     .prevent-commenting {
       text-align: center;
       text-decoration: underline;
+      @include transition;
+    }
+    .prevent-commenting:hover {
+      color: $yellow;
     }
 
     .sort {
