@@ -1,10 +1,10 @@
 .button {
   // max-width: 50px;
-  border: 1px solid $yellow;
-  border-radius: 2px;
-  background-color: $yellow;
+  border-radius: 1px;
+  border: none;
   padding: 7px 15px;
   color: black;
+  background-color: $yellow;
 
   font-size: 0.7rem;
   font-weight: 700;
@@ -16,7 +16,8 @@
 
 .button:hover {
   background-color: $light-yellow;
-  transform: scale(1.04);
+  color: $black;
+  transform: scale(1.01);
 }
 
 .button-blank {
@@ -33,8 +34,8 @@
 .button-small {
   height: 20px;
   border: none;
-  border-radius: 2px;
-  padding: 2px 12px;
+  border-radius: 1px;
+  padding: 1px 11px;
   display: flex;
   align-items: center;
 }
@@ -50,7 +51,7 @@ input {
   height: 20px;
   width: 70px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   padding: 5px 16px;
 
@@ -61,7 +62,7 @@ input {
   font-size: 0.9rem;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .edit {
@@ -75,7 +76,7 @@ input {
 .very-easy {
   padding: 3px 10px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $blue;
 
@@ -93,7 +94,7 @@ input {
 .easy {
   padding: 3px 10px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $green;
 
@@ -109,10 +110,10 @@ input {
   font-size: 0.8rem;
 }
 .medium {
-  padding: 2px 8px;
+  padding: 1px 8px;
   max-height: 40px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $yellow;
 
@@ -129,7 +130,7 @@ input {
 .hard {
   padding: 3px 10px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $pink;
 
@@ -148,7 +149,7 @@ input {
 .very-hard {
   padding: 3px 10px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $red;
 
@@ -170,7 +171,7 @@ input {
 .true-combo {
   padding: 3px 10px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $green;
 
@@ -188,7 +189,7 @@ input {
 .not-true-combo {
   padding: 3px 10px;
 
-  border-radius: 2px;
+  border-radius: 1px;
 
   background-color: $red;
 
@@ -215,7 +216,26 @@ input {
   }
 }
 .active-button {
-  animation: glowing 1300ms infinite;
+  background: linear-gradient(
+    60deg,
+    hsl(224, 85%, 66%),
+    hsl(269, 85%, 66%),
+    hsl(314, 85%, 66%),
+    hsl(359, 85%, 66%),
+    hsl(44, 85%, 66%),
+    hsl(89, 85%, 66%),
+    hsl(134, 85%, 66%),
+    hsl(179, 85%, 66%)
+  );
+  background-size: 300% 300%;
+  background-position: 0 50%;
+  animation: moveGradient 4s alternate infinite;
+}
+
+@keyframes moveGradient {
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 button:focus {

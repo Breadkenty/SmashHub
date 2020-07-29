@@ -58,7 +58,7 @@
       justify-content: center;
 
       fieldset {
-        width: 175px;
+        width: 125px;
 
         margin-right: 8px;
 
@@ -74,9 +74,18 @@
         div {
           display: flex;
           align-items: center;
+          border-radius: 1px;
+          border: 1px solid $yellow;
 
           input {
             width: 100%;
+            border-radius: 1px;
+            border: none;
+          }
+
+          span {
+            margin: 0px 8px;
+            color: white;
           }
         }
       }
@@ -85,13 +94,22 @@
     // Difficulty
 
     .difficulty {
-      div {
+      > div {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         gap: 8px;
 
-        button {
-          max-width: none;
+        .button-wrapper {
+          padding: 2px;
+          border-radius: 1px;
+
+          button {
+            border: none;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            color: white;
+          }
         }
       }
     }
@@ -106,8 +124,15 @@
         display: flex;
         justify-content: center;
 
-        button {
+        .button-wrapper {
+          padding: 2px;
+          border-radius: 1px;
           margin-right: 8px;
+          button {
+            border: none;
+            width: 100%;
+            color: white;
+          }
         }
       }
     }
@@ -124,13 +149,18 @@
         padding: 8px;
         width: 120px;
 
+        border-radius: 1px;
+        border: 1px solid $yellow;
+
         input {
           width: 80px;
           height: 100%;
           font-size: 2rem;
+          border: none;
         }
 
         span {
+          color: white;
           font-weight: 800;
         }
       }
@@ -278,6 +308,17 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 3px;
+            @include transition;
+          }
+
+          select:hover {
+            background-color: $yellow;
+            color: black;
+          }
+
+          select:focus {
+            background-color: $yellow;
+            color: black;
           }
         }
       }

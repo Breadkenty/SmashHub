@@ -436,9 +436,8 @@ export function SubmitCombo() {
           <div className="duration ">
             <fieldset>
               <label htmlFor="video-start">Start time in video</label>
-              <div className="bg-yellow">
+              <div>
                 <input
-                  className="bg-yellow"
                   type="number"
                   max="60"
                   min="0"
@@ -455,7 +454,6 @@ export function SubmitCombo() {
                 />
                 <span>:</span>
                 <input
-                  className="bg-yellow"
                   type="number"
                   max="60"
                   min="0"
@@ -475,9 +473,8 @@ export function SubmitCombo() {
 
             <fieldset>
               <label htmlFor="video-end">End time in video</label>
-              <div className="bg-yellow">
+              <div>
                 <input
-                  className="bg-yellow"
                   type="number"
                   max="60"
                   min="0"
@@ -494,7 +491,6 @@ export function SubmitCombo() {
                 />
                 <span>:</span>
                 <input
-                  className="bg-yellow"
                   type="number"
                   max="60"
                   min="0"
@@ -516,95 +512,126 @@ export function SubmitCombo() {
           <fieldset className="difficulty">
             <label>Difficulty</label>
             <div>
-              <button
-                className={`button bg-blue ${
+              <div
+                className={`button-wrapper ${
                   selectedDifficulty === 'very easy' ? 'active-button' : ''
                 }`}
-                id="difficulty"
-                value="very easy"
-                onClick={handleFieldChange}
               >
-                Very Easy
-              </button>
-              <button
-                className={`button bg-green ${
+                <button
+                  className="button bg-blue"
+                  id="difficulty"
+                  value="very easy"
+                  onClick={handleFieldChange}
+                >
+                  Very Easy
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
                   selectedDifficulty === 'easy' ? 'active-button' : ''
                 }`}
-                id="difficulty"
-                value="easy"
-                onClick={handleFieldChange}
               >
-                Easy
-              </button>
-              <button
-                className={`button bg-yellow ${
+                <button
+                  className="button bg-green"
+                  id="difficulty"
+                  value="easy"
+                  onClick={handleFieldChange}
+                >
+                  Easy
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
                   selectedDifficulty === 'medium' ? 'active-button' : ''
                 }`}
-                id="difficulty"
-                value="medium"
-                onClick={handleFieldChange}
               >
-                Medium
-              </button>
-              <button
-                className={`button bg-pink ${
+                <button
+                  className="button bg-yellow"
+                  id="difficulty"
+                  value="medium"
+                  onClick={handleFieldChange}
+                >
+                  Medium
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
                   selectedDifficulty === 'hard' ? 'active-button' : ''
                 }`}
-                id="difficulty"
-                value="hard"
-                onClick={handleFieldChange}
               >
-                Hard
-              </button>
-              <button
-                className={`button bg-red ${
+                <button
+                  className="button bg-pink"
+                  id="difficulty"
+                  value="hard"
+                  onClick={handleFieldChange}
+                >
+                  Hard
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
                   selectedDifficulty === 'very hard' ? 'active-button' : ''
                 }`}
-                id="difficulty"
-                value="very hard"
-                onClick={handleFieldChange}
               >
-                Very Hard
-              </button>
+                <button
+                  className="button bg-blue"
+                  id="difficulty"
+                  value="very hard"
+                  onClick={handleFieldChange}
+                >
+                  Very Hard
+                </button>
+              </div>
             </div>
           </fieldset>
 
           <fieldset className="true-combo">
             <label>True Combo</label>
             <div>
-              <button
-                className={`button bg-green ${
-                  trueCombo ? 'active-button' : ''
+              <div
+                className={`button-wrapper ${trueCombo ? 'active-button' : ''}`}
+              >
+                <button
+                  className="button bg-green"
+                  id="trueCombo"
+                  value="true"
+                  onClick={handleFieldChange}
+                >
+                  Yes
+                </button>
+              </div>
+              <div
+                className={`button-wrapper ${
+                  !trueCombo ? 'active-button' : ''
                 }`}
-                id="trueCombo"
-                value="true"
-                onClick={handleFieldChange}
               >
-                Yes
-              </button>
-              <button
-                className={`button bg-red ${!trueCombo ? 'active-button' : ''}`}
-                id="trueCombo"
-                value="false"
-                onClick={handleFieldChange}
-              >
-                No
-              </button>
+                <button
+                  className="button bg-red"
+                  id="trueCombo"
+                  value="false"
+                  onClick={handleFieldChange}
+                >
+                  No
+                </button>
+              </div>
             </div>
           </fieldset>
 
           <fieldset className="damage">
             <label>Damage</label>
-            <div className="container bg-yellow">
+            <div className="container">
               <input
-                className="bg-yellow"
                 type="number"
                 placeholder="0"
                 id="damage"
                 onChange={handleFieldChange}
                 required
               />
-              <span className="bg-yellow">%</span>
+              <span>%</span>
             </div>
           </fieldset>
 
