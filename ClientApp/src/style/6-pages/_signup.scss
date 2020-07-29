@@ -15,9 +15,23 @@
     justify-content: center;
     align-items: center;
 
+    margin-bottom: 100px;
+
     input {
       width: 50vw;
       margin-bottom: 24px;
+      background-color: $grey;
+    }
+
+    input[type='text']:-webkit-autofill,
+    input[type='text']:-webkit-autofill:hover,
+    input[type='text']:-webkit-autofill:focus,
+    input[type='password']:-webkit-autofill,
+    input[type='password']:-webkit-autofill:hover,
+    input[type='password']:-webkit-autofill:focus {
+      -webkit-text-fill-color: $yellow;
+      -webkit-box-shadow: 0 0 0px 1000px $grey inset;
+      transition: background-color 5000s ease-in-out 0s;
     }
   }
   h3 {

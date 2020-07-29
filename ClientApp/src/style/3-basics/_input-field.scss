@@ -15,6 +15,7 @@
     letter-spacing: 1px;
   }
   input:focus {
+    outline: none;
     color: white;
   }
   input::placeholder {
@@ -25,19 +26,24 @@
   }
 }
 
-input[type='text'] {
+input[type='text'],
+input[type='password'] {
   background-color: $black;
   border-radius: 4px;
   color: white;
   font-weight: 800;
   letter-spacing: 1px;
 }
-input[type='text']:focus {
+input[type='text']:focus,
+input[type='password']:focus {
   outline: none;
 }
 input[type='text']:-webkit-autofill,
 input[type='text']:-webkit-autofill:hover,
-input[type='text']:-webkit-autofill:focus {
+input[type='text']:-webkit-autofill:focus,
+input[type='password']:-webkit-autofill,
+input[type='password']:-webkit-autofill:hover,
+input[type='password']:-webkit-autofill:focus {
   -webkit-text-fill-color: $yellow;
   -webkit-box-shadow: 0 0 0px 1000px #000 inset;
   transition: background-color 5000s ease-in-out 0s;
@@ -58,79 +64,3 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-// input[type='text'],
-// input[type='password'],
-// input[type='number'] {
-//   padding: 10px;
-
-//   border: none;
-//   border-radius: 2px;
-//   background: none;
-//   border: 1px solid $yellow;
-
-//   color: $yellow;
-//   font-weight: 800;
-//   letter-spacing: 1px;
-//   @include transition;
-// }
-
-// input[type='text']:focus,
-// input[type='password']:focus,
-// input[type='number']:focus {
-//   background-color: $yellow;
-//   color: black;
-// }
-
-// input[type='text']::-webkit-search-cancel-button,
-// input[type='password']::-webkit-search-cancel-button,
-// input[type='search']::-webkit-search-cancel-button {
-//   -webkit-appearance: none;
-// }
-
-// input[type='text']:hover,
-// input[type='password']:hover,
-// input[type='number']:hover {
-//   background: $yellow;
-//   color: $black;
-// }
-
-// input[type='text']::placeholder,
-// input[type='password']::placeholder,
-// input[type='number']::placeholder,
-// input[type='search']::placeholder {
-//   color: white;
-//   opacity: 0.5;
-//   font-weight: 800;
-//   letter-spacing: 1px;
-// }
-
-// input[type='text']:hover::-webkit-input-placeholder,
-// input[type='password']:hover::-webkit-input-placeholder,
-// input[type='number']:hover::-webkit-input-placeholder {
-//   color: $black;
-// }
-// input[type='text']:focus::-webkit-input-placeholder,
-// input[type='password']:focus::-webkit-input-placeholder,
-// input[type='number']:focus::-webkit-input-placeholder {
-//   color: $black;
-// }
-
-// textarea:-webkit-autofill,
-// textarea:-webkit-autofill:hover,
-// textarea:-webkit-autofill:focus,
-// select:-webkit-autofill,
-// select:-webkit-autofill:hover,
-// select:-webkit-autofill:focus {
-//   -webkit-text-fill-color: $yellow;
-//   -webkit-box-shadow: 0 0 0px 1000px #000 inset;
-//   transition: background-color 5000s ease-in-out 0s;
-// }
-
-// textarea {
-//   color: white;
-// }
-
-// input:focus {
-//   outline: none;
-// }

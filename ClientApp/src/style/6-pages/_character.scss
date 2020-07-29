@@ -81,7 +81,7 @@
           margin: 0;
         }
         svg:hover {
-          fill: black;
+          fill: $yellow;
         }
 
         .down-vote {
@@ -132,7 +132,7 @@
     }
 
     h3:hover {
-      font-weight: 900;
+      color: $yellow;
     }
   }
 }

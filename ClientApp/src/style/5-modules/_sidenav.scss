@@ -14,6 +14,10 @@
 
   i {
     align-self: flex-end;
+    @include transition;
+  }
+  i:hover {
+    color: $yellow;
   }
 
   a {
@@ -23,6 +27,7 @@
       height: 50px;
     }
   }
+
   ul {
     border-top: 1px solid $grey;
     margin-top: 16px;
@@ -35,6 +40,11 @@
 
       button {
         width: 100%;
+        @include transition;
+      }
+
+      .button-blank:hover {
+        color: $yellow;
       }
     }
   }

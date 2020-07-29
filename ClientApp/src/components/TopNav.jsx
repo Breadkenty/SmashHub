@@ -15,7 +15,11 @@ export function TopNav(props) {
       <Link to="/">
         <img src={logo} alt="Smash combos logo" />
       </Link>
-      {(isLoggedIn() && <p>Welcome {user.displayName}</p>) || <div></div>}
+      {(isLoggedIn() && (
+        <div>
+          <h5>Welcome</h5> <p>{user.displayName}</p>
+        </div>
+      )) || <div></div>}
     </nav>
   )
 }

@@ -1,4 +1,5 @@
 nav {
+  position: relative;
   background-color: $grey;
 
   padding: 16px;
@@ -29,12 +30,27 @@ nav {
     background-color: $black;
   }
 
-  img {
-    height: 40px;
+  a {
+    position: absolute;
+    left: 50%;
+    margin-left: -40px;
+
+    img {
+      height: 40px;
+    }
+  }
+
+  h5 {
+    text-align: right;
+    margin: 0;
+    font-weight: 400;
   }
 
   p {
+    color: $yellow;
+    text-align: right;
     font-size: 0.8rem;
+    font-weight: 600;
   }
 }
 

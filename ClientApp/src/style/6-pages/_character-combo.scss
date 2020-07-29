@@ -52,6 +52,10 @@
         svg {
           fill: white;
           width: 25px;
+          @include transition;
+        }
+        svg:hover {
+          fill: $yellow;
         }
 
         h3 {
@@ -68,6 +72,10 @@
           width: 100%;
           a {
             float: right;
+
+            h5:hover {
+              color: $yellow;
+            }
           }
         }
 
@@ -118,13 +126,15 @@
         margin-bottom: 16px;
         padding: 8px;
 
+        color: white;
+
         background-color: $black;
         border: none;
         border-radius: 2px;
         @include transition;
       }
-      textarea:hover {
-        background-color: $yellow;
+      textarea:focus {
+        outline: none;
       }
 
       button {
@@ -145,6 +155,11 @@
 
         svg {
           fill: white;
+          width: 25px;
+        }
+
+        svg:hover {
+          fill: $yellow;
         }
 
         h3 {
@@ -156,12 +171,29 @@
         width: 100%;
         padding: 16px 16px 24px 0;
 
+        .edit {
+          margin-left: 8px;
+          font-size: 0.8rem;
+          color: white;
+          background: none;
+          border: none;
+        }
+        .edit:hover {
+          color: $yellow;
+        }
+
         textarea {
           padding: 8px;
           width: 100%;
+
+          color: white;
           background-color: $grey;
           border: none;
           border-radius: 2px;
+        }
+
+        textarea:focus {
+          outline: none;
         }
       }
     }
