@@ -26,11 +26,15 @@ nav {
     }
   }
   button:hover {
-    background-color: black;
+    background-color: $black;
   }
 
   img {
     height: 40px;
+  }
+
+  p {
+    font-size: 0.8rem;
   }
 }
 

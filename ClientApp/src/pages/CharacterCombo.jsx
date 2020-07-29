@@ -194,9 +194,9 @@ export function CharacterCombo() {
             <h2>{combo.title}</h2>
 
             <div>
+              <h4>DMG: {combo.damage}%</h4>
               {returnDifficulty(combo.difficulty)}
               {returnTrueCombo(combo.trueCombo)}
-              <h3>{combo.damage}%</h3>
             </div>
           </div>
         </header>

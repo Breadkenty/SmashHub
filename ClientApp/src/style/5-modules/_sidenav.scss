@@ -1,4 +1,5 @@
 .side-nav {
+  width: 300px;
   position: fixed;
   z-index: 2;
 
@@ -6,7 +7,7 @@
   height: 100vh;
   padding: 16px;
 
-  background-color: black;
+  background-color: $black;
 
   display: flex;
   flex-direction: column;
@@ -31,12 +32,16 @@
     li {
       margin-top: 16px;
       text-align: center;
+
+      button {
+        width: 100%;
+      }
     }
   }
 }
 
 .blur {
-  background-color: black;
+  background-color: $black;
   opacity: 0.2;
   pointer-events: none;
 }

@@ -67,7 +67,8 @@ export function App() {
         </Switch>
         <footer className="bottom-footer">
           <p>
-            Made with love by <a href="#">Kento Kawakami</a>
+            Made with <i class="fas fa-heart"></i> by{' '}
+            <a href="#">Kento Kawakami</a>
           </p>
           <div>
             <a href="https://github.com/Breadkenty">

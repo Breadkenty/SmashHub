@@ -12,7 +12,7 @@
     height: 150px;
     width: 100%;
 
-    background-color: black;
+    background-color: $black;
     background-repeat: no-repeat;
     background-position-x: calc(80% + 20%);
     background-size: 60%;
@@ -73,18 +73,40 @@
       border-bottom: 1px solid $grey;
 
       .vote {
-        padding: 16px 8px;
+        padding: 0px 8px 0px 16px;
 
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        // text-align: center;
+
+        button {
+          padding: 0;
+        }
+
+        svg {
+          font-size: 1.2rem;
+          fill: white;
+          width: 25px;
+          margin: 0;
+        }
+
+        .down-vote {
+          transform: rotate(180deg);
+        }
+        h3 {
+          margin: 8px 0;
+          color: white;
+          font-size: 0.9rem;
+          text-align: center;
+        }
       }
 
       .information {
         width: 100%;
         padding: 16px;
-        background-color: black;
+        background-color: $black;
 
         display: flex;
         flex-direction: column;

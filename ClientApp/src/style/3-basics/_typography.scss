@@ -24,9 +24,9 @@ h3 {
 h4 {
   margin: 0;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1rem;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
 
   color: white;
 }
@@ -48,7 +48,7 @@ label {
 }
 
 .black-text {
-  color: black;
+  color: $black;
 }
 
 .white-text {

@@ -1,13 +1,22 @@
 .button {
   // max-width: 50px;
-  border: none;
+  border: 1px solid $yellow;
   border-radius: 2px;
+  background-color: $yellow;
   padding: 7px 15px;
-  color: white;
+  color: black;
 
   font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  font-weight: 800;
+  @include transition;
+  // transition: ease-in-out 0.1s;
+}
+
+.button:hover {
+  background-color: $light-yellow;
+  transform: scale(1.04);
 }
 
 .button-blank {

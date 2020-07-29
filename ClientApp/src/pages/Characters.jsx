@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getUser, isLoggedIn } from '../auth'
-
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 
 export function Characters() {
@@ -20,8 +18,6 @@ export function Characters() {
       })
   }
 
-  const user = getUser()
-
   useEffect(getCharacters, [filterText])
 
   return (
@@ -36,7 +32,6 @@ export function Characters() {
         />
       </header>
 
-      {isLoggedIn() && <h4>Welcome {user.displayName}</h4>}
       <h3>Choose your character</h3>
       <div className="characters">
         {characters.map(character => (

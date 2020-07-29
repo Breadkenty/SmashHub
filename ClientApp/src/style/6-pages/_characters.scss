@@ -16,7 +16,7 @@
   header {
     margin-bottom: 24px;
     padding: 16px;
-    background-color: black;
+    background-color: $black;
     width: 100vw;
 
     display: flex;
@@ -36,7 +36,7 @@
       width: 100px;
       border: 3px solid white;
       border-radius: 100px;
-      box-shadow: 2px 2px 15px 5px black;
+      box-shadow: 2px 2px 15px 5px$black;
     }
   }
 }

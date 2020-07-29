@@ -160,7 +160,7 @@
         button {
           padding: 8px 4px;
           background: none;
-          border: 1px solid black;
+          border: 1px solid$black;
 
           color: white;
           font-weight: 800;
@@ -191,7 +191,7 @@
 
             border: none;
 
-            background-color: black;
+            background-color: $black;
             background-position: center;
             background-size: cover;
           }
@@ -211,7 +211,7 @@
           height: 200px;
           margin-bottom: 24px;
 
-          background-color: black;
+          background-color: $black;
           border: none;
           border-radius: 5px;
 
@@ -270,7 +270,7 @@
           select {
             padding-left: 100px;
             color: white;
-            background-color: black;
+            background-color: $black;
 
             border: none;
 

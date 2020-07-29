@@ -7,12 +7,12 @@
     z-index: 1;
 
     margin: 50px 0px 0px 0px;
-    padding-left: 16px;
+    padding: 16px;
 
     height: 80px;
     width: 100%;
 
-    background-color: black;
+    background-color: $black;
     background-repeat: no-repeat;
     background-position-x: 110%;
 
@@ -40,6 +40,7 @@
     padding-top: calc((100vw * 0.56) + 150px);
 
     header {
+      padding: 0 16px;
       display: flex;
 
       .vote {
@@ -47,19 +48,20 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 16px;
 
         svg {
           fill: white;
+          width: 25px;
         }
 
         h3 {
           color: white;
+          font-size: 1.1rem;
         }
       }
 
       .detail {
-        padding: 16px;
+        padding: 16px 8px;
         width: 100%;
 
         h5 {
@@ -68,9 +70,14 @@
             float: right;
           }
         }
+
+        h4 {
+          margin-right: 8px;
+        }
       }
       .detail > div {
         display: flex;
+        align-items: center;
 
         div {
           margin-right: 8px;
@@ -107,8 +114,13 @@
         margin-bottom: 16px;
         padding: 8px;
 
-        background-color: black;
+        background-color: $black;
         border: none;
+        border-radius: 2px;
+        @include transition;
+      }
+      textarea:hover {
+        background-color: $yellow;
       }
 
       button {
