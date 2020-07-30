@@ -1,1 +1,63 @@
+.notes {
+  padding-top: 55px;
+  padding-bottom: 100px;
 
+  h2 {
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    margin-bottom: 16px;
+  }
+
+  h4 {
+    margin-bottom: 8px;
+  }
+
+  a {
+    color: $yellow;
+  }
+
+  span {
+    color: white;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+
+    text-shadow: 10px 10px 10px 1;
+  }
+
+  .red-text {
+    color: $red;
+  }
+
+  li {
+    color: white;
+  }
+
+  img {
+    padding-bottom: 24px;
+    max-width: 300px;
+    width: 100vw;
+  }
+
+  section {
+    padding: 24px;
+  }
+
+  ul {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+    }
+  }
+}
