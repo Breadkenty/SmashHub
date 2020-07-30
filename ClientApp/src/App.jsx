@@ -19,6 +19,8 @@ import { SideNav } from './components/SideNav'
 import { AddCharacter } from './pages/AddCharacter'
 import { EditCharacter } from './pages/EditCharacter'
 import { EditCombo } from './pages/EditCombo'
+import { Tutorial } from './pages/Tutorial'
+import { About } from './pages/About'
 
 export function App() {
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
@@ -63,6 +65,12 @@ export function App() {
           </Route>
           <Route exact path="/character/:characterVariableName/:comboId/edit">
             <EditCombo />
+          </Route>
+          <Route exact path="/tutorial">
+            <Tutorial />
+          </Route>
+          <Route exact path="/about">
+            <About />
           </Route>
         </Switch>
         <footer className="bottom-footer">

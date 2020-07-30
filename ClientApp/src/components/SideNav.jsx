@@ -77,6 +77,28 @@ export function SideNav(props) {
           </>
         )}
 
+        <li>
+          <Link to="/about">
+            <button
+              className="white-text button-blank"
+              onClick={props.handleSideBar}
+            >
+              About
+            </button>
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/tutorial">
+            <button
+              className="white-text button-blank"
+              onClick={props.handleSideBar}
+            >
+              Tutorial
+            </button>
+          </Link>
+        </li>
+
         {isLoggedIn() || (
           <li>
             <Link to="/signup">
