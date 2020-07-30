@@ -445,7 +445,7 @@ VALUES
 INSERT INTO "Comments"
   ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
 VALUES
-  ('1', '2020-07-22', 'Uhm this combo is great wtf', 45, 1);
+  ('1', '2020-07-22', 'Uhm this combo is great wow!', 45, 1);
 
 INSERT INTO "Comments"
   ("ComboId", "DatePosted", "Body", "NetVote", "UserId")
