@@ -23,7 +23,7 @@ export function About() {
 
       <section className="about-section">
         <header>
-          <h1>Find combos in a video.</h1>
+          <h1>Visualize combos through a video.</h1>
           <p>
             Smash combos will allow you highlight combos in a video by finding
             sections of a video to repeat.
@@ -37,10 +37,10 @@ export function About() {
 
       <section className="about-section">
         <header>
-          <h1>Create your own combo inputs.</h1>
+          <h1>Explore combos posted by other users.</h1>
           <p>
-            With Smash Combos, you are able to create customized inputs of any
-            of your favorite characters
+            Learning a character and its combo has never been easier. Check out
+            combos that users have uploaded and share with friends.
           </p>
         </header>
         <div
