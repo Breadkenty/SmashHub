@@ -19,7 +19,7 @@ import { SideNav } from './components/SideNav'
 import { AddCharacter } from './pages/AddCharacter'
 import { EditCharacter } from './pages/EditCharacter'
 import { EditCombo } from './pages/EditCombo'
-import { Tutorial } from './pages/Tutorial'
+import { Notes } from './pages/Notes'
 import { About } from './pages/About'
 
 export function App() {
@@ -66,28 +66,28 @@ export function App() {
           <Route exact path="/character/:characterVariableName/:comboId/edit">
             <EditCombo />
           </Route>
-          <Route exact path="/tutorial">
-            <Tutorial />
+          <Route exact path="/notes">
+            <Notes />
           </Route>
           <Route exact path="/about">
             <About />
           </Route>
         </Switch>
-        <footer className="bottom-footer">
-          <p>
-            Made with <i class="fas fa-heart"></i> by{' '}
-            <a href="#">Kento Kawakami</a>
-          </p>
-          <div>
-            <a href="https://github.com/Breadkenty">
-              <i className="fab fa-github"></i>
-            </a>
-            <a href="https://www.instagram.com/kento.kawakami/">
-              <i className="fab fa-instagram"></i>
-            </a>
-          </div>
-        </footer>
       </div>
+      <footer className="bottom-footer">
+        <p>
+          Made with <i class="fas fa-heart"></i> by{' '}
+          <a href="#">Kento Kawakami</a>
+        </p>
+        <div>
+          <a href="https://github.com/Breadkenty">
+            <i className="fab fa-github"></i>
+          </a>
+          <a href="https://www.instagram.com/kento.kawakami/">
+            <i className="fab fa-instagram"></i>
+          </a>
+        </div>
+      </footer>
     </>
   )
 }

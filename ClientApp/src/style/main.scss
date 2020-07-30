@@ -32,15 +32,18 @@
 @import '6-pages/submit-combo';
 @import '6-pages/add-character';
 @import '6-pages/edit-character';
-@import '6-pages/tutorial';
+@import '6-pages/notes';
 @import '6-pages/about';
 
 body {
   background-color: $black;
+  min-height: 100vh;
+  position: relative;
 }
 
 .none {
   display: flex;
   flex-direction: column;
+  height: 100%;
   align-items: center;
 }

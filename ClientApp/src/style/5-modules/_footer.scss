@@ -1,11 +1,13 @@
 .bottom-footer {
-  padding: 24px;
-
+  background-color: $grey;
+  position: absolute;
+  bottom: 0;
+  height: 100px;
   width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   p {
     font-size: 0.8rem;
