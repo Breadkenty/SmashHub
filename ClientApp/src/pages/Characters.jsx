@@ -48,7 +48,7 @@ export function Characters() {
           </li>
           <li>
             <h5>
-              This project is a working progress, please submit feature requests
+              This project is a work in progress, please submit feature requests
               by tweeting to
             </h5>
             <a href="https://twitter.com/KentoKawakami/">@KentoKawakami</a>
