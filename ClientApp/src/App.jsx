@@ -21,6 +21,7 @@ import { EditCharacter } from './pages/EditCharacter'
 import { EditCombo } from './pages/EditCombo'
 import { Notes } from './pages/Notes'
 import { About } from './pages/About'
+import { Tutorial } from './pages/Tutorial'
 
 export function App() {
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
@@ -71,6 +72,9 @@ export function App() {
           </Route>
           <Route exact path="/about">
             <About />
+          </Route>
+          <Route exact path="/tutorial">
+            <Tutorial />
           </Route>
         </Switch>
       </div>

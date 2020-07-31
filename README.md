@@ -37,7 +37,7 @@ Share all sorts of character combos with other players and join the discussion.
 <hr/>
 <img src="./ClientApp/src/graphics/demo/and-conditional.png" width="75"/>
 
-**And**: Combines two inputs as one input.
+**And**: Combines two inputs as one input
 
 **Examples**:
 
@@ -62,7 +62,7 @@ _Smash forward special_
 <hr/>
 <img src="./ClientApp/src/graphics/demo/then-conditional.png" width="75"/>
 
-**Then**: Proceeds to the next set of inputs.
+**Then**: Proceeds to the next set of inputs
 
 **Examples**:
 
@@ -79,7 +79,7 @@ _Down tilt > up smash_
 <img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
 <img src="./ClientApp/src/graphics/inputs/png/smash/up-smash.png" width="40"/>
 
-_Smash forward special_
+_Down throw bair_
 
 <img src="./ClientApp/src/graphics/inputs/png/throw/down-throw.png" width="40"/>
 <img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
@@ -90,11 +90,11 @@ _Smash forward special_
 <hr/>
 <img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="75"/>
 
-**Hold**: Indicates the following input to be held.
+**Hold**: Indicates the following input to be held
 
 <img src="./ClientApp/src/graphics/demo/release-conditional.png" width="75"/>
 
-**Release**: Indicates the held button to be released.
+**Release**: Indicates the held button to be released
 
 **Examples**:
 
@@ -144,11 +144,11 @@ _Charged forward special_
 <hr/>
 <img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="75"/>
 
-**Start Repeat**: Sets the beginning of the set of inputs that will be repeated.
+**Start Repeat**: Sets the beginning of the set of inputs that will be repeated
 
 <img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="75"/>
 
-**End Repeat**: Indicates the end of the repeat. Can be used to tell the amount of repeat times.
+**End Repeat**: Indicates the end of the repeat; can be used to tell the amount of repeat times
 
 **Examples**:
 

@@ -87,6 +87,16 @@ export function SideNav(props) {
             </button>
           </Link>
         </li>
+        <li>
+          <Link to="/tutorial">
+            <button
+              className="white-text button-blank"
+              onClick={props.handleSideBar}
+            >
+              Tutorial
+            </button>
+          </Link>
+        </li>
 
         <li>
           <Link to="/notes">
