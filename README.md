@@ -43,21 +43,15 @@ Share all sorts of character combos with other players and join the discussion.
 
 _Full hop forward_
 
-<img src="./ClientApp/src/graphics/inputs/png/hop/full-hop.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/hop/full-hop.png" width="40"/><img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
 
 _Up smash forward DI_
 
-<img src="./ClientApp/src/graphics/inputs/png/smash/up-smash.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/smash/up-smash.png" width="40"/><img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
 
 _Smash forward special_
 
-<img src="./ClientApp/src/graphics/inputs/png/special/forward-special.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/flick/forward-flick.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/special/forward-special.png" width="40"/><img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/flick/forward-flick.png" width="40"/>
 
 <hr/>
 <img src="./ClientApp/src/graphics/demo/then-conditional.png" width="75"/>
@@ -68,24 +62,15 @@ _Smash forward special_
 
 _Jab > jab > jab_
 
-<img src="./ClientApp/src/graphics/inputs/png/basic/jab-basic.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/basic/jab-basic.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/basic/jab-basic.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/basic/jab-basic.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/basic/jab-basic.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/basic/jab-basic.png" width="40"/>
 
 _Down tilt > up smash_
 
-<img src="./ClientApp/src/graphics/inputs/png/tilt/down-tilt.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/smash/up-smash.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/tilt/down-tilt.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/smash/up-smash.png" width="40"/>
 
 _Down throw bair_
 
-<img src="./ClientApp/src/graphics/inputs/png/throw/down-throw.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/hop/short-hop.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/aerial/back-aerial.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/throw/down-throw.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/hop/short-hop.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/aerial/back-aerial.png" width="40"/>
 
 <hr/>
 <img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="75"/>
@@ -100,46 +85,27 @@ _Down throw bair_
 
 _Dash forward_
 
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
 
 _Crouch_
 
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/down-move.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/down-move.png" width="40"/>
 
 _Up B out of shield_
 
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/basic/shield-basic.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/special/up-special.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/basic/shield-basic.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/special/up-special.png" width="40"/>
 
 _Ground float nair_
 
-<img src="./ClientApp/src/graphics/inputs/png/move/down-move.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/hop/full-hop.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/aerial/neutral-aerial.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
+<img src="./ClientApp/src/graphics/inputs/png/move/down-move.png" width="40"/><img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/hop/full-hop.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/aerial/neutral-aerial.png" width="40"/><img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
 
 _Charged forward smash_
 
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/smash/forward-smash.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/smash/forward-smash.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
 
 _Charged forward special_
 
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/special/forward-special.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/special/forward-special.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
 
 <hr/>
 <img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="75"/>
@@ -154,41 +120,15 @@ _Charged forward special_
 
 _Up tilt_
 
-<img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/tilt/up-tilt.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/tilt/up-tilt.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
 
 _Ground float nair x3_
 
-<img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/down-move.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/hop/full-hop.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/aerial/neutral-aerial.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/down-move.png" width="40"/><img src="./ClientApp/src/graphics/demo/and-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/hold-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/hop/full-hop.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/release-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/aerial/neutral-aerial.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/move/forward-move.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
 
 _Short hop fast fall nair x3_
 
-<img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/hop/short-hop.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/flick/down-flick.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/inputs/png/aerial/neutral-aerial.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
-<img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
+<img src="./ClientApp/src/graphics/demo/startRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/hop/short-hop.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/flick/down-flick.png" width="40"/><img src="./ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/aerial/neutral-aerial.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/><img src="./ClientApp/src/graphics/demo/endRepeat-conditional.png" width="40"/>
 
 <hr/>
 
