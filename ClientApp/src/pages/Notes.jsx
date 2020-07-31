@@ -149,14 +149,11 @@ export function Notes() {
           <li>
             <a href="https://twitter.com/Samsora_">
               eU Samsora
-              <span>
-                : For using his videos for examples, and bc I'm also a Peach
-                main
-              </span>
+              <span>: Videos for examples, and bc I'm also a Peach main</span>
             </a>
           </li>
           <li>
-            <a href="https://twitter.com/Samsora_">
+            <a href="https://suncoast.io/">
               Suncoast Developers Guild
               <span>
                 : Where I learned to make this app in 3 months from no
