@@ -147,6 +147,12 @@ export function Notes() {
             </a>
           </li>
           <li>
+            <a href="https://ultimateframedata.com/">
+              Ultimate Frame Data
+              <span>: Was really inspired by MetalMusicMan's work!</span>
+            </a>
+          </li>
+          <li>
             <a href="https://twitter.com/Samsora_">
               eU Samsora
               <span>: Videos for examples, and bc I'm also a Peach main</span>

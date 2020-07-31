@@ -8,12 +8,14 @@ import smashComboInterface from '../graphics/demo/interface.gif'
 export function Tutorial() {
   return (
     <div className="tutorial">
-      <h1>How to build a combo:</h1>
+      <header>
+        <h1>How to build a combo:</h1>
 
-      <p>
-        <strong>Conditionals</strong> are used to write these combos as if they
-        are a sentence. Here are some definitions and examples:
-      </p>
+        <p>
+          <strong>Conditionals</strong> are used to write these combos as if
+          they are a sentence. Here are some definitions and examples:
+        </p>
+      </header>
 
       <hr />
 
