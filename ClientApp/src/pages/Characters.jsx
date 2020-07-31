@@ -34,6 +34,11 @@ export function Characters() {
           />
         </div>
       </header>
+      <h5>
+        Tune in for my presentation of the live demo and cool code stuff
+        Saturday, August 1, 2020 @ 11:00 AM
+      </h5>
+      <a href="https://suncoast.io/conference">Register for the free event</a>
 
       <h3>Choose your character</h3>
       <div className="characters">

@@ -18,6 +18,17 @@
     background-color: $grey;
   }
 
+  h5 {
+    text-align: center;
+  }
+
+  a {
+    color: $yellow;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
   header {
     margin-bottom: 24px;
     padding: 16px;
