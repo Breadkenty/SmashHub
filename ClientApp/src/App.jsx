@@ -90,6 +90,9 @@ export function App() {
           <a href="https://www.instagram.com/kento.kawakami/">
             <i className="fab fa-instagram"></i>
           </a>
+          <a href="https://twitter.com/KentoKawakami/">
+            <i className="fab fa-twitter"></i>
+          </a>
         </div>
       </footer>
     </>

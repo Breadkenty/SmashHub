@@ -34,11 +34,27 @@ export function Characters() {
           />
         </div>
       </header>
-      <h5>
-        Tune in for my presentation of the live demo and cool code stuff
-        Saturday, August 1, 2020 @ 11:00 AM
-      </h5>
-      <a href="https://suncoast.io/conference">Register for the free event</a>
+      <section className="announcements">
+        <h4>Announcements</h4>
+        <ul>
+          <li className="announcement">
+            <h5>
+              Tune in for my presentation of the live demo and cool code stuff
+              Saturday, August 1, 2020 @ 11:00 AM
+            </h5>
+            <a href="https://suncoast.io/conference">
+              Register for the free event
+            </a>
+          </li>
+          <li>
+            <h5>
+              This project is a working progress, please submit feature requests
+              by tweeting to
+            </h5>
+            <a href="https://twitter.com/KentoKawakami/">@KentoKawakami</a>
+          </li>
+        </ul>
+      </section>
 
       <h3>Choose your character</h3>
       <div className="characters">
