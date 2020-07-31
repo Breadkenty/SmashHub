@@ -59,12 +59,12 @@ export function Tutorial() {
         </div>
 
         <div className="input-example-container">
-          <h4>Full hop forward</h4>
+          <h4>Up smash forward DI</h4>
           <div className="inputs">
             <div
               className="input-example"
               style={{
-                backgroundImage: `url(${allComboInputs['fullHop']})`,
+                backgroundImage: `url(${allComboInputs['upSmash']})`,
               }}
             />
             <div
@@ -83,12 +83,12 @@ export function Tutorial() {
         </div>
 
         <div className="input-example-container">
-          <h4>Full hop forward</h4>
+          <h4>Smash forward special</h4>
           <div className="inputs">
             <div
               className="input-example"
               style={{
-                backgroundImage: `url(${allComboInputs['fullHop']})`,
+                backgroundImage: `url(${allComboInputs['forwardSpecial']})`,
               }}
             />
             <div
@@ -100,7 +100,7 @@ export function Tutorial() {
             <div
               className="input-example"
               style={{
-                backgroundImage: `url(${allComboInputs['forwardMove']})`,
+                backgroundImage: `url(${allComboInputs['forwardFlick']})`,
               }}
             />
           </div>{' '}
