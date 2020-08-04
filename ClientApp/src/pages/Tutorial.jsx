@@ -446,7 +446,7 @@ export function Tutorial() {
             <div
               className="input-header"
               style={{
-                backgroundImage: `url(${allComboInputs['holdConditional']})`,
+                backgroundImage: `url(${allComboInputs['startRepeatConditional']})`,
               }}
             />
             <div className="description">
@@ -461,7 +461,7 @@ export function Tutorial() {
             <div
               className="input-header"
               style={{
-                backgroundImage: `url(${allComboInputs['releaseConditional']})`,
+                backgroundImage: `url(${allComboInputs['endRepeatConditional']})`,
               }}
             />
             <div className="description">

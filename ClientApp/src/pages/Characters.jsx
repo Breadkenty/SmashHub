@@ -39,11 +39,11 @@ export function Characters() {
         <ul>
           <li className="announcement">
             <h5>
-              Tune in for my presentation of the live demo and cool code stuff
-              Saturday, August 1, 2020 @ 11:00 AM
+              To view the demo of how this app works, feel free to watch my
+              presentation!
             </h5>
-            <a href="https://suncoast.io/conference">
-              Register for the free event
+            <a href="https://youtu.be/7lSaNBIl1Y8?t=3516">
+              The Demo (skip to 1:02:05 to skip the introduction)
             </a>
           </li>
           <li>
