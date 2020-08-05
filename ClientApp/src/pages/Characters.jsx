@@ -53,6 +53,12 @@ export function Characters() {
             </h5>
             <a href="https://twitter.com/KentoKawakami/">@KentoKawakami</a>
           </li>
+          <li>
+            <h5>Or join our official discord server</h5>
+            <a href="https://discord.gg/eZybSy">
+              Official Smash Combos Discord
+            </a>
+          </li>
         </ul>
       </section>
 

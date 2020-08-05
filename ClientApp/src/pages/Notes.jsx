@@ -34,47 +34,6 @@ export function Notes() {
           <p>Love,</p> <p>Kento</p>
         </header>
       </section>
-      <section>
-        <h3>Latest Patch Notes:</h3>
-        <ul>
-          <li>
-            <h4>July 29, 2020</h4>
-            <p>
-              Debut time! The beta version of Smash Combos is officially live :)
-            </p>
-            <p>
-              I will be doing a short little presentation and demo at{' '}
-              <a href="https://suncoast.io/conference">
-                Suncoast Developers Guild Conference
-              </a>{' '}
-              at 11:00AM EST Please feel free to RSVP and join us for the online
-              conference where I will be talking about the app!
-            </p>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Known Issues</h3>
-        <ul>
-          <li>Duplicate Display Names</li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Features on the way</h3>
-        <ul>
-          <li>
-            <p>Google/Facebook Authentication</p>
-          </li>
-          <li>
-            <p>Character Matchups</p>
-          </li>
-          <li>
-            <p>User Profile</p>
-          </li>
-        </ul>
-      </section>
 
       <section>
         <h3>Reporting Issues</h3>
@@ -83,6 +42,7 @@ export function Notes() {
           <a href="https://github.com/Breadkenty/Smash_Combos">
             Github repository
           </a>{' '}
+          or on our <a href="https://discord.gg/eZybSy">Discord Server</a>{' '}
           issues as well as suggesting feedback.
         </p>
       </section>
@@ -93,38 +53,6 @@ export function Notes() {
       </section>
 
       <section>
-        <h3>Technologies</h3>
-
-        <h4>Front end</h4>
-        <ul>
-          <li>
-            <p>React.js</p>
-          </li>
-          <li>
-            <p>Youtube API</p>
-          </li>
-        </ul>
-
-        <h4>Backend</h4>
-        <ul>
-          <li>
-            <p>C# / .NET</p>
-          </li>
-          <li>
-            <p>Entity Framework</p>
-          </li>
-          <li>
-            <p>PostgreSQL Database</p>
-          </li>
-        </ul>
-
-        <h4>Host</h4>
-        <ul>
-          <li>
-            <p>Heroku</p>
-          </li>
-        </ul>
-
         <h4>Source Code</h4>
         <ul>
           <li>
