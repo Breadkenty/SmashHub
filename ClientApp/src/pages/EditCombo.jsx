@@ -304,7 +304,7 @@ export function EditCombo() {
   }
 
   function checkVideoExists(event) {
-    const keyWords = ['super', 'smash', 'bros', 'ultimate', 'ssbu']
+    const keyWords = ['super', 'smash', 'bros', 'ultimate', 'ssbu', 'combos']
 
     fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=${process.env.REACT_APP_YOUTUBE_KEY}`
