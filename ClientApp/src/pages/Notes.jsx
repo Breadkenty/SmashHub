@@ -42,7 +42,7 @@ export function Notes() {
           <a href="https://github.com/Breadkenty/Smash_Combos">
             Github repository
           </a>{' '}
-          or on our <a href="https://discord.gg/eZybSy">Discord Server</a>{' '}
+          or on our <a href="https://discord.gg/VbnAwUg">Discord Server</a>{' '}
           issues as well as suggesting feedback.
         </p>
       </section>

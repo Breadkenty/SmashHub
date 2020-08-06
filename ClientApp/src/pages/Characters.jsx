@@ -55,7 +55,7 @@ export function Characters() {
           </li>
           <li>
             <h5>Or join our official discord server</h5>
-            <a href="https://discord.gg/eZybSy">
+            <a href="https://discord.gg/VbnAwUg">
               Official Smash Combos Discord
             </a>
           </li>
