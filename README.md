@@ -6,8 +6,6 @@
 
 Live site: https://smash-combos.herokuapp.com/
 
-This is a change I put for the develop branch
-
 A web app where Super Smash Brothers Ultimate players can upload combos for any characters to share.
 
 ## Features
