@@ -275,7 +275,7 @@ export function SubmitCombo() {
             const newMessage = Object.values(apiData.errors).join(' ')
             setErrorMessage(newMessage)
           } else {
-            history.push('/')
+            history.push(`/character/${characterSelected.variableName}`)
           }
         })
     }
