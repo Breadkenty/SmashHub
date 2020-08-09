@@ -10,7 +10,7 @@ A web app where Super Smash Brothers Ultimate players can upload combos for any 
 
 ## Contribution
 
-We'd love to have contributors for Smash Combos! Please read both contributing guidelines and instructions on getting started. If you need to communicate outside of Github, please join our discord server <a href="https://discord.com/invite/VbnAwUg">Discord server</a>.
+We'd love to have contributors for Smash Combos! Please read the <a href="./CONTRIBUTING.md">Contributing Guideline</a> for instructions on getting started. If you need to communicate outside of Github, please join our discord server <a href="https://discord.com/invite/VbnAwUg">Discord server</a>.
 
 Please keep in mind that everyone working on Smash Combos must follow the <a href="./CODE_OF_CONDUCT.md">code of conduct</a>.
 
@@ -166,3 +166,9 @@ In order to attach a valid YouTube video, the video has to be related to Super S
 [eu Samsora](https://twitter.com/Samsora_) : Videos for examples, and as a Peach main, he's my role model
 
 [Suncoast Developers Guild](https://suncoast.io/) : Where I learned to make this app in 3 months from no experience whatsoever
+
+---
+
+## License
+
+<a href="./LICENSE">MIT</a>
