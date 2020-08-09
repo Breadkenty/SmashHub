@@ -51,6 +51,18 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<User>> PostUser(User user)
         {
             var emailExists = _context.Users.Any(existingUser => existingUser.Email.ToLower() == user.Email.ToLower());
+            var displayNameExists = _context.Users.Any(existingUser => existingUser.DisplayName.ToLower() == user.DisplayName.ToLower());
+
+            if (displayNameExists)
+            {
+                var response = new
+                {
+                    status = 400,
+                    errors = new List<string>() { "There's already an account with this display name" }
+                };
+
+                return BadRequest(response);
+            }
 
             if (emailExists)
             {
