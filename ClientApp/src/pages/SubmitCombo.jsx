@@ -293,7 +293,7 @@ export function SubmitCombo() {
     ]
 
     fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=${process.env.REACT_APP_YOUTUBE_KEY}`
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${event.target.value}&key=AIzaSyC2DfNcBaxvV8ef8YRHUnw8vDgkrZTvsa8`
     )
       .then(response => {
         return response.json()

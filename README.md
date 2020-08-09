@@ -8,6 +8,12 @@ Live site: https://smash-combos.herokuapp.com/
 
 A web app where Super Smash Brothers Ultimate players can upload combos for any characters to share.
 
+## Contribution
+
+We'd love to have contributors for Smash Combos! Please read both contributing guidelines and instructions on getting started. If you need to communicate outside of Github, please join our discord server <a href="https://discord.com/invite/VbnAwUg">Discord server</a>.
+
+Please keep in mind that everyone working on Smash Combos must follow the <a href="./CODE_OF_CONDUCT.md">code of conduct</a>.
+
 ## Features
 
 This project is a working progress with more features to come. Here are some to name a few:
@@ -150,10 +156,6 @@ In order to attach a valid YouTube video, the video has to be related to Super S
 <img src="./ClientApp/src/graphics/demo/bad.png" width="400"/>
 
 <hr/>
-
-## Contribution
-
-Coming soon...
 
 ## Credits
 
