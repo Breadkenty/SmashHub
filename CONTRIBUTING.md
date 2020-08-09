@@ -114,12 +114,19 @@ Your commits should use past tense (eg. "Created a new variable" and not "Create
 Consider using emojis to better understand the type of commits you make:
 
 💜 `:purple_heart:` when improving the format/structure of the code
+
 🐎 `:racehorse:` when improving performance
+
 📝 `:memo:` when writing docs
+
 🦟 `:ant:` when fixing a bug
+
 🔥 `:fire:` when removing code or files
+
 🎨 `:art:` when dealing with styling
+
 💾 `:floppy_disk:` when dealing with backend
+
 📦 `:package:` when preparing files
 
 ##### HTML/CSS
@@ -130,7 +137,7 @@ Snakecase: `class-names, should-be, snake-cased`
 
 Camelcase `variableNames, shouldBe, camelCased`
 
-##### C
+##### Csharp
 
 Camelcase `variableNames, shouldBe, camelCased`
 
