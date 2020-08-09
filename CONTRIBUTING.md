@@ -20,40 +20,59 @@ There are a few tools you need to get started...
 **If you are on a Mac** and have <a href="https://brew.sh/">Homebrew</a> installed we've put together quick commands to get you set up quickly.
 
 1. **npm**
+
    `brew install nodejs`
+
    `npm install --global rimraf`
 
-2. **dotnet**
+2) **dotnet**
+
    `brew cask install dotnet-sdk`
+
    `dotnet tool install --global dotnet-ef`
+
    `dotnet tool install --global dotnet-aspnet-codegenerator`
 
 3. **PostgreSQL**
+
    `brew install postgresql`
+
    `brew services start postgresql`
 
-4. **Development environment**
+4) **Development environment**
+
    `echo "export ASPNETCORE_ENVIRONMENT=Development" >> ~/.zshrc`
+
    `echo "export ASPNETCORE_ENVIRONMENT=Development" >> ~/.bash_profile`
+
    `dotnet dev-certs https --trust`
 
 **If you are on PC** and have <a href="https://scoop.sh/">Scoop</a> installed, we've put together quick commands to get you set up quickly.
 
 1. **npm**
+
    `scoop install nodejs`
+
    `npm install --global windows-build-tools`
+
    `npm install --global rimraf`
 
-2. **dotnet**
+2) **dotnet**
+
    `scoop install dotnet-sdk`
+
    `dotnet tool install --global dotnet-ef`
+
    `dotnet tool install --global dotnet-aspnet-codegenerator`
 
 3. **PostgreSQL**
+
    `scoop install postgresql`
 
-4. **Development environment**
+4) **Development environment**
+
    `setx ASPNETCORE_ENVIRONMENT Development`
+
    `dotnet dev-certs https --trust`
 
 #### Preparing the database and .NET to do local development
@@ -61,28 +80,39 @@ There are a few tools you need to get started...
 After you've installed everything above, you need to do a couple of things to ensure your local development works properly.
 
 1. **In the root folder of `Smash_Combos` run:**
+
    `dotnet restore`
 
-2. **Update the database with the existing migrations**
+2) **Update the database with the existing migrations**
+
    `dotnet ef database update`
 
 3. **Import the characters into your local database**
+
    `psql Smash_ComboDatabase --file=Models/characters.sql`
 
-4. **Remove the `node_modules` file in the `ClientApp` folder**
+4) **Remove the `node_modules` file in the `ClientApp` folder**
+
    If you have <a href="https://www.npmjs.com/package/trash">Trash</a> installed, you can do `trash node_modules`
 
 5. **Install npm in `ClientApp`**
+
    `cd ClientApp`
+
    `npm install`
 
-6. **Set a JWT token locally for login sessions to work. Set the token on the root folder of `Smash_Combos`**
+6) **Set a JWT token locally for login sessions to work. Set the token on the root folder of `Smash_Combos`**
+
    You can just choose any set of strings but you can also grab a random key here: https://www.grc.com/passwords.htm
+
    `../` or `cd ..`
+
    `dotnet user-secrets set "JWT_KEY" "PASTE SOME STRING HERE"`
 
 7. **Run the app locally and get started!**
+
    Everytime you want to launch your changes live, run the command `dotnet watch run`.
+
    On your browser and go to `https://0.0.0.0:5001`, and you should have the app running locally!
 
 ## How can you contribute?
