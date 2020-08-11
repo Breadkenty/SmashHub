@@ -1,396 +1,416 @@
 TRUNCATE TABLE "Characters" RESTART IDENTITY;
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Mario', 'Mario', '30');
+  ('Mario', 'Mario', '1', '30');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Donkey Kong', 'DonkeyKong', '20');
+  ('Donkey Kong', 'DonkeyKong', '2', '20');
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Link', 'Link', '20');
+  ('Link', 'Link', '3', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Samus', 'Samus', '10');
+  ('Samus', 'Samus', '4', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Dark Samus', 'DarkSamus', '5');
+  ('Dark Samus', 'DarkSamus', '4.5', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Yoshi', 'Yoshi', '5');
+  ('Yoshi', 'Yoshi', '6', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Kirby', 'Kirby', '20');
+  ('Kirby', 'Kirby', '6', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Fox', 'Fox', '10');
+  ('Fox', 'Fox', '7', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Pikachu', 'Pikachu', '20');
+  ('Pikachu', 'Pikachu', '8', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Luigi', 'Luigi', '20');
+  ('Luigi', 'Luigi', '9', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ness', 'Ness', '20');
+  ('Ness', 'Ness', '10', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Captain Falcon', 'CaptainFalcon', '5');
+  ('Captain Falcon', '11', 'CaptainFalcon', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Jigglypuff', 'Jigglypuff', '35');
+  ('Jigglypuff', 'Jigglypuff', '12', '35');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Peach', 'Peach', '20');
+  ('Peach', 'Peach', '13', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Daisy', 'Daisy', '15');
+  ('Daisy', 'Daisy', '13.5', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Bowser', 'Bowser', '40');
+  ('Bowser', 'Bowser', '14', '40');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ice Climbers', 'IceClimbers', '20');
+  ('Ice Climbers', 'IceClimbers', '15', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Sheik', 'Sheik', '5');
+  ('Sheik', 'Sheik', '16', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Zelda', 'Zelda', '10');
+  ('Zelda', 'Zelda', '17', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Dr. Mario', 'DrMario', '15');
+  ('Dr. Mario', 'DrMario', '18', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Pichu', 'Pichu', '40');
+  ('Pichu', 'Pichu', '19', '40');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Falco', 'Falco', '15');
+  ('Falco', 'Falco', '20', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Marth', 'Marth', '15');
+  ('Marth', 'Marth', '21', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Lucina', 'Lucina', '15');
+  ('Lucina', 'Lucina', '21.5', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Young Link', 'YoungLink', '20');
+  ('Young Link', 'YoungLink', '22', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ganondorf', 'Ganondorf', '15');
+  ('Ganondorf', 'Ganondorf', '23', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Mewtwo', 'Mewtwo', '15');
+  ('Mewtwo', 'Mewtwo', '24', '15');
 
 INSERT INTO "Characters"
 
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Roy', 'Roy', '15');
+  ('Roy', 'Roy', '25', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Chrom', 'Chrom', '10');
+  ('Chrom', 'Chrom', '25.5', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Mr. Game & Watch', 'MrGameAndWatch', '20');
+  ('Mr. Game & Watch', 'MrGameAndWatch', '26', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Meta Knight', 'MetaKnight', '50');
+  ('Meta Knight', 'MetaKnight', '27', '50');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Pit', 'Pit', '20');
+  ('Pit', 'Pit', '28', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Dark Pit', 'DarkPit', '15');
+  ('Dark Pit', 'DarkPit', '28.5', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Zero Suit Samus', 'ZeroSuitSamus', '15');
+  ('Zero Suit Samus', 'ZeroSuitSamus', '29', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Wario', 'Wario', '20');
+  ('Wario', 'Wario', '30', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Snake', 'Snake', '15');
+  ('Snake', 'Snake', '31', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ike', 'Ike', '15');
+  ('Ike', 'Ike', '32', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Pokemon Trainer', 'PokemonTrainer', '5');
+  ('Squirtle', 'Squirtle', '33', '0');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Diddy Kong', 'DiddyKong', '20');
+  ('Ivysaur', 'Ivysaur', '34', '60');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Lucas', 'Lucas', '20');
+  ('Charizard', 'Charizard', '35', '25');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Sonic', 'Sonic', '20');
+  ('Diddy Kong', 'DiddyKong', '36', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('King Dedede', 'KingDedede', '20');
+  ('Lucas', 'Lucas', '37', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Olimar', 'Olimar', '50');
+  ('Sonic', 'Sonic', '38', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Lucario', 'Lucario', '15');
+  ('King Dedede', 'KingDedede', '39', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('R.O.B.', 'ROB', '5');
+  ('Olimar', 'Olimar', '40', '50');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Toon Link', 'ToonLink', '25');
+  ('Lucario', 'Lucario', '41', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Wolf', 'Wolf', '15');
+  ('R.O.B.', 'ROB', '42', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Villager', 'Villager', '20');
+  ('Toon Link', 'ToonLink', '43', '25');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Mega Man', 'MegaMan', '20');
+  ('Wolf', 'Wolf', '44', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Wii Fit Trainer', 'WiiFitTrainer', '0');
+  ('Villager', 'Villager', '45', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Rosalina & Luma', 'RosalinaAndLuma', '5');
+  ('Mega Man', 'MegaMan', '46', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Little Mac', 'LittleMac', '10');
+  ('Wii Fit Trainer', 'WiiFitTrainer', '47', '0');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Greninja', 'Greninja', '20');
+  ('Rosalina & Luma', 'RosalinaAndLuma', '48', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Mii', 'Mii', '10');
+  ('Little Mac', 'LittleMac', '49', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Palutena', 'Palutena', '15');
+  ('Greninja', 'Greninja', '50', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Pac-Man', 'PacMan', '15');
+  ('Mii Brawler', 'MiiBrawler', '51', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Robin', 'Robin', '20');
+  ('Mii Swordfighter', 'MiiSwordfighter', '52', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Shulk', 'Shulk', '20');
+  ('Mii Gunner', 'MiiGunner', '53', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Bowser Jr.', 'BowserJr', '15');
+  ('Palutena', 'Palutena', '54', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Duck Hunt', 'DuckHunt', '60');
+  ('Pac-Man', 'PacMan', '55', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ryu', 'Ryu', '13');
+  ('Robin', 'Robin', '56', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ken', 'Ken', '13');
+  ('Shulk', 'Shulk', '57', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Cloud', 'Cloud', '10');
+  ('Bowser Jr.', 'BowserJr', '58', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Corrin', 'Corrin', '5');
+  ('Duck Hunt', 'DuckHunt', '59', '60');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Bayonetta', 'Bayonetta', '10');
+  ('Ryu', 'Ryu', '60', '13');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Inkling', 'Inkling', '20');
+  ('Ken', 'Ken', '60.5',  '13');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Ridley', 'Ridley', '40');
+  ('Cloud', 'Cloud', '61', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Simon', 'Simon', '5');
+  ('Corrin', 'Corrin', '62', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Richter', 'Richter', '15');
+  ('Bayonetta', 'Bayonetta', '63', '10');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('King K. Rool', 'KingKRool', '15');
+  ('Inkling', 'Inkling', '64', '20');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Isabelle', 'Isabelle', '30');
+  ('Ridley', 'Ridley', '65', '40');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Incineroar', 'Incineroar', '15');
+  ('Simon', 'Simon', '66', '5');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Piranha Plant', 'PiranhaPlant', '15');
+  ('Richter', 'Richter', '66.5', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Joker', 'Joker', '45');
+  ('King K. Rool', 'KingKRool', '67', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Hero', 'Hero', '5');
+  ('Isabelle', 'Isabelle', '68', '30');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Banjo & Kazooie', 'BanjoAndKazooie', '50');
+  ('Incineroar', 'Incineroar', '69', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Terry', 'Terry', '10');
+  ('Piranha Plant', 'PiranhaPlant', '70', '15');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Byleth', 'Byleth', '3');
+  ('Joker', 'Joker', '71', '45');
 
 INSERT INTO "Characters"
-  ("Name", "VariableName", "YPosition")
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Min Min', 'MinMin', '23');
+  ('Hero', 'Hero', '72', '5');
+
+INSERT INTO "Characters"
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
+VALUES
+  ('Banjo & Kazooie', 'BanjoAndKazooie', '73', '50');
+
+INSERT INTO "Characters"
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
+VALUES
+  ('Terry', 'Terry', '74', '10');
+
+INSERT INTO "Characters"
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
+VALUES
+  ('Byleth', 'Byleth', '75', '3');
+
+INSERT INTO "Characters"
+  ("Name", "VariableName", "ReleaseOrder","YPosition")
+VALUES
+  ('Min Min', 'MinMin', '76', '23');
