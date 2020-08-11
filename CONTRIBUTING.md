@@ -75,45 +75,80 @@ There are a few tools you need to get started...
 
    `dotnet dev-certs https --trust`
 
+**If you are on Linux**
+
+1. **npm**
+
+   ```
+   sudo apt install nodejs
+
+   echo "export NPM_CONFIG_PREFIX=~/.npm-global" >> ~/.bashrc
+
+   echo "export PATH=~/.npm-global/bin" >> ~/.bashrc
+
+   npm install --global rimraf
+   ```
+
+2. **dotnet**
+
+   `dotnet tool install --global dotnet-ef`
+
+   `dotnet tool install --global dotnet-aspnet-codegenerator`
+
+3. **PostgreSQL**
+
+   `sudo apt install postgresql`
+
+4. **Development environment**
+
+   ```
+   echo "export ASPNETCORE_ENVIRONMENT=Development" >> ~/.zshrc
+
+   echo "export ASPNETCORE_ENVIRONMENT=Development" >> ~/.bash_profile
+
+   dotnet dev-certs https --trust
+
+   ```
+
 #### Preparing the database and .NET to do local development
 
 After you've installed everything above, you need to do a couple of things to ensure your local development works properly.
 
 1. **In the root folder of `Smash_Combos` run:**
 
-   `dotnet restore`
+`dotnet restore`
 
-2) **Update the database with the existing migrations**
+2. **Update the database with the existing migrations**
 
-   `dotnet ef database update`
+`dotnet ef database update`
 
 3. **Import the characters into your local database**
 
-   `psql Smash_ComboDatabase --file=Models/characters.sql`
+`psql Smash_ComboDatabase --file=Models/characters.sql`
 
-4) **Remove the `node_modules` file in the `ClientApp` folder**
+4. **Remove the `node_modules` file in the `ClientApp` folder**
 
-   If you have <a href="https://www.npmjs.com/package/trash">Trash</a> installed, you can do `trash node_modules`
+If you have <a href="https://www.npmjs.com/package/trash">Trash</a> installed, you can do `trash node_modules`
 
 5. **Install npm in `ClientApp`**
 
-   `cd ClientApp`
+`cd ClientApp`
 
-   `npm install`
+`npm install`
 
-6) **Set a JWT token locally for login sessions to work. Set the token on the root folder of `Smash_Combos`**
+6. **Set a JWT token locally for login sessions to work. Set the token on the root folder of `Smash_Combos`**
 
-   You can just choose any set of strings but you can also grab a random key here: https://www.grc.com/passwords.htm
+You can just choose any set of strings but you can also grab a random key here: https://www.grc.com/passwords.htm
 
-   `../` or `cd ..`
+`../` or `cd ..`
 
-   `dotnet user-secrets set "JWT_KEY" "PASTE SOME STRING HERE"`
+`dotnet user-secrets set "JWT_KEY" "PASTE SOME STRING HERE"`
 
 7. **Run the app locally and get started!**
 
-   Everytime you want to launch your changes live, run the command `dotnet watch run`.
+Everytime you want to launch your changes live, run the command `dotnet watch run`.
 
-   On your browser and go to `https://0.0.0.0:5001`, and you should have the app running locally!
+On your browser and go to `https://0.0.0.0:5001`, and you should have the app running locally!
 
 ## How can you contribute?
 
@@ -159,9 +194,43 @@ Consider using emojis to better understand the type of commits you make:
 
 📦 `:package:` when preparing files
 
+##### Variable Naming conventions
+
+We use descriptive variable names to make our code readable for everyone. When defining functions and variables, your code should read more like a sentence. Please avoid naming variables that makes reading your code challenging
+
+Examples:
+
+Good:
+
+```
+
+var controllerInput = "downAerial"
+
+const getYouTubeId = () => {
+...
+}
+
+const changeCharacterPortrait = () => {
+...
+}
+
+```
+
+Bad:
+
+```
+
+var str = "hello"
+
+const x = 1
+
+let a = true
+
+```
+
 ##### HTML/CSS
 
-Snakecase: `class-names, should-be, snake-cased`
+Kebab-case: `class-names, should-be, snake-cased`
 
 ##### Javascript
 
