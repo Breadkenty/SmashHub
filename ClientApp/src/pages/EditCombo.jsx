@@ -408,6 +408,7 @@ export function EditCombo() {
               type="text"
               placeholder="eg. Down-throw bair"
               value={comboToEdit.title}
+              maxLength={128}
               onChange={handleFieldChange}
               required
             />
@@ -692,6 +693,7 @@ export function EditCombo() {
                 placeholder="Additional notes"
                 id="notes"
                 value={comboToEdit.notes}
+                maxLength={512}
                 onChange={handleFieldChange}
               />
               {errorMessage && (
