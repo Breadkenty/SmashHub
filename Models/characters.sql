@@ -27,7 +27,7 @@ VALUES
 INSERT INTO "Characters"
   ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Yoshi', 'Yoshi', '6', '5');
+  ('Yoshi', 'Yoshi', '5', '5');
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "ReleaseOrder","YPosition")

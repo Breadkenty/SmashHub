@@ -10,8 +10,8 @@ using Smash_Combos.Models;
 namespace Smash_Combos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200811195926_MultiCharacterSplit")]
-    partial class MultiCharacterSplit
+    [Migration("20200812105807_AddedCharacterReleaseOrder")]
+    partial class AddedCharacterReleaseOrder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
