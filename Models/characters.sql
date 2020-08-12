@@ -42,7 +42,7 @@ VALUES
 INSERT INTO "Characters"
   ("Name", "VariableName", "ReleaseOrder","YPosition")
 VALUES
-  ('Pikachu', 'Pikachu', '8', '20');
+  ('Pikachu', 'Pikachu', '8', '10');
 
 INSERT INTO "Characters"
   ("Name", "VariableName", "ReleaseOrder","YPosition")
