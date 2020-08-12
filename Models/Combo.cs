@@ -18,6 +18,7 @@ namespace Smash_Combos.Models
         public DateTime DatePosted { get; private set; } = DateTime.Now;
 
         [Required]
+        [MaxLength(128)]
         public string Title { get; set; }
 
         [Required]
@@ -41,6 +42,7 @@ namespace Smash_Combos.Models
         [Required]
         public int Damage { get; set; }
 
+        [MaxLength(512)]
         public string Notes { get; set; }
 
         public List<Comment> Comments { get; private set; }
