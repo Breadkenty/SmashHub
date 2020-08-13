@@ -86,8 +86,7 @@ namespace Smash_Combos.Controllers
                 return BadRequest();
             }
 
-            var _dbComment = await _context.Comments.SingleOrDefaultAsync(c => c.Id == id);
-            _dbComment = comment;
+            _context.Entry(comment).State = EntityState.Modified;
 
             try
             {

@@ -95,8 +95,8 @@ namespace Smash_Combos.Controllers
                 return BadRequest();
             }
 
-            var dbCharacter = await _context.Characters.SingleOrDefaultAsync(c => c.VariableName == variableName);
-            dbCharacter = character;
+
+            _context.Entry(character).State = EntityState.Modified;
 
             try
             {

@@ -60,6 +60,8 @@ namespace Smash_Combos.Controllers
                     return BadRequest();
             }
 
+            _context.Entry(comment).State = EntityState.Modified;
+
             await _context.SaveChangesAsync(CancellationToken.None);
 
             return NoContent();

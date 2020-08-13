@@ -55,6 +55,7 @@ namespace Smash_Combos.Controllers
                 }
 
                 existingComboVote.upOrDown = upOrDown;
+                _context.Entry(existingComboVote).State = EntityState.Modified;
                 await _context.SaveChangesAsync(CancellationToken.None);
             }
             else

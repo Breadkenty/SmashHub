@@ -89,9 +89,7 @@ namespace Smash_Combos.Controllers
 
                 return NotFound();
             }
-
-            var dbCombo = await _context.Combos.SingleOrDefaultAsync(c => c.Id == id);
-            dbCombo = combo;
+            _context.Entry(combo).State = EntityState.Modified;
 
             try
             {
