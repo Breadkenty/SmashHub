@@ -35,7 +35,9 @@ import ZeroSuitSamus from '../graphics/characters/ZeroSuitSamus/ZeroSuitSamus-5.
 import Wario from '../graphics/characters/Wario/Wario-5.png'
 import Snake from '../graphics/characters/Snake/Snake-5.png'
 import Ike from '../graphics/characters/Ike/Ike-5.png'
-import PokemonTrainer from '../graphics/characters/PokemonTrainer/PokemonTrainer-5.png'
+import Squirtle from '../graphics/characters/Squirtle/Squirtle-5.png'
+import Ivysaur from '../graphics/characters/Ivysaur/Ivysaur-5.png'
+import Charizard from '../graphics/characters/Charizard/Charizard-5.png'
 import DiddyKong from '../graphics/characters/DiddyKong/DiddyKong-5.png'
 import Lucas from '../graphics/characters/Lucas/Lucas-5.png'
 import Sonic from '../graphics/characters/Sonic/Sonic-5.png'
@@ -51,7 +53,9 @@ import WiiFitTrainer from '../graphics/characters/WiiFitTrainer/WiiFitTrainer-5.
 import RosalinaAndLuma from '../graphics/characters/RosalinaAndLuma/RosalinaAndLuma-5.png'
 import LittleMac from '../graphics/characters/LittleMac/LittleMac-5.png'
 import Greninja from '../graphics/characters/Greninja/Greninja-5.png'
-import Mii from '../graphics/characters/Mii/Mii-5.png'
+import MiiBrawler from '../graphics/characters/MiiBrawler/MiiBrawler-5.png'
+import MiiSwordfighter from '../graphics/characters/MiiSwordfighter/MiiSwordfighter-5.png'
+import MiiGunner from '../graphics/characters/MiiGunner/MiiGunner-5.png'
 import Palutena from '../graphics/characters/Palutena/Palutena-5.png'
 import PacMan from '../graphics/characters/PacMan/PacMan-5.png'
 import Robin from '../graphics/characters/Robin/Robin-5.png'
@@ -116,7 +120,9 @@ export const allCharacterPortrait = {
   Wario,
   Snake,
   Ike,
-  PokemonTrainer,
+  Squirtle,
+  Ivysaur,
+  Charizard,
   DiddyKong,
   Lucas,
   Sonic,
@@ -132,7 +138,9 @@ export const allCharacterPortrait = {
   RosalinaAndLuma,
   LittleMac,
   Greninja,
-  Mii,
+  MiiBrawler,
+  MiiSwordfighter,
+  MiiGunner,
   Palutena,
   PacMan,
   Robin,

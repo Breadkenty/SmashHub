@@ -64,13 +64,14 @@ export function Characters() {
 
       <h3>Choose your character</h3>
       <div className="characters">
-        {characters.map(character => (
-          <Link key={character.id} to={`/character/${character.variableName}`}>
-            <img
-              src={allCharacterCloseUp[character.variableName]}
-              alt={`${character.name}'s portrait`}
-            />
-          </Link>
+        {characters.sort((a, b) => a.ReleaseOrder - b.ReleaseOrder)
+          .map(character => (
+            <Link key={character.id} to={`/character/${character.variableName}`}>
+              <img
+                src={allCharacterCloseUp[character.variableName]}
+                alt={`${character.name}'s portrait`}
+              />
+            </Link>
         ))}
       </div>
     </div>

@@ -122,15 +122,11 @@ After you've installed everything above, you need to do a couple of things to en
 
 `dotnet ef database update`
 
-3. **Import the characters into your local database**
-
-`psql Smash_ComboDatabase --file=Models/characters.sql`
-
-4. **Remove the `node_modules` file in the `ClientApp` folder**
+3. **Remove the `node_modules` file in the `ClientApp` folder**
 
 If you have <a href="https://www.npmjs.com/package/trash">Trash</a> installed, you can do `trash node_modules`
 
-5. **Install npm in `ClientApp`**
+4. **Install npm in `ClientApp`**
 
 `cd ClientApp`
 

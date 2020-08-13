@@ -6,6 +6,8 @@
 
 Live site: https://smash-combos.herokuapp.com/
 
+Staging site: https://smash-combos-dev.herokuapp.com/
+
 A web app where Super Smash Brothers Ultimate players can upload combos for any characters to share.
 
 ## Contribution
@@ -20,13 +22,13 @@ This project is a working progress with more features to come. Here are some to 
 
 ### Build your combo:
 
-Create a customized set of combo inputs labeled with Graphics of Gamecube Controller buttons.
+Create a customized set of combo inputs labeled with Graphics of GameCube Controller buttons.
 
 <img src="./ClientApp/src/graphics/demo/combo.gif" width="400"/>
 
 ### Attach a responsive video:
 
-This feature allows you to highlight sections on videos that are uploaded on Youtube and play them on repeat. Smash Combos will only allow you to attach videos that are relevant to Smash Bros content or your character selected.
+This feature allows you to highlight sections on videos that are uploaded on YouTube and play them on repeat. Smash Combos will only allow you to attach videos that are relevant to Smash Bros content or your character selected.
 
 <img src="./ClientApp/src/graphics/demo/video.gif" width="400"/>
 

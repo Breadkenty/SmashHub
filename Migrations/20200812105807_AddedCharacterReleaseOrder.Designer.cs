@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Smash_Combos.Models;
@@ -9,9 +10,10 @@ using Smash_Combos.Models;
 namespace Smash_Combos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200812105807_AddedCharacterReleaseOrder")]
+    partial class AddedCharacterReleaseOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,13 +73,11 @@ namespace Smash_Combos.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("character varying(512)")
-                        .HasMaxLength(512);
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("character varying(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("text");
 
                     b.Property<bool>("TrueCombo")
                         .HasColumnType("boolean");
