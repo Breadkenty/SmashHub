@@ -38,20 +38,16 @@ namespace Smash_Combos
                     }
                     catch (DbException)
                     {
-                        Notify("Database Migration FAILED");
+                        Console.WriteLine("Database Migration FAILED");
                         throw;
                     }
                 }
             }
 
             var task = host.RunAsync();
-            Notify("🚀");
+            Console.WriteLine("🚀");
             WebHostExtensions.WaitForShutdown(host);
         }
-
-        // public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        //     WebHost.CreateDefaultBuilder(args)
-        //         .UseStartup<Startup>();
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
@@ -61,45 +57,6 @@ namespace Smash_Combos
                 builder = builder.UseUrls("http://0.0.0.0:5000/;https://0.0.0.0:5001");
             }
             return builder.UseStartup<Startup>();
-        }
-
-        public static void Notify(string message)
-        {
-            var isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            var isMac = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-
-            if (!isWindows && !isMac)
-            {
-                return;
-            }
-
-            // Create a process to launch the nodejs app `notifiy` with our message
-            var process = isMac ? new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = ".bin/terminal-notifier.app/Contents/MacOS/terminal-notifier",
-                    Arguments = $"-message \"{message}\" -title \"Smash_Combos\"",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            } : new Process()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = ".bin/snoretoast",
-                    Arguments = $"-silent -m \"{message}\" -t \"Smash_Combos\"",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-
-            // Start the message but do not wait for it to end, we don't care about the termination result.
-            process.Start();
         }
     }
 }
