@@ -10,8 +10,8 @@ using Smash_Combos.Models;
 namespace Smash_Combos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200813103705_FixDataDiscrepancies")]
-    partial class FixDataDiscrepancies
+    [Migration("20200814043134_FixedDataDiscrepancies")]
+    partial class FixedDataDiscrepancies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
