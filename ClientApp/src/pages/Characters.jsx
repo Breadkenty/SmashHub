@@ -64,7 +64,7 @@ export function Characters() {
 
       <h3>Choose your character</h3>
       <div className="characters">
-        {characters.sort((a, b) => a.ReleaseOrder - b.ReleaseOrder)
+        {characters.sort((a, b) => a.releaseOrder - b.releaseOrder)
           .map(character => (
             <Link key={character.id} to={`/character/${character.variableName}`}>
               <img

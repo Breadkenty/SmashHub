@@ -35,7 +35,6 @@ import ZeroSuitSamus from '../graphics/characters/ZeroSuitSamus/ZeroSuitSamus-1.
 import Wario from '../graphics/characters/Wario/Wario-1.png'
 import Snake from '../graphics/characters/Snake/Snake-1.png'
 import Ike from '../graphics/characters/Ike/Ike-1.png'
-import PokemonTrainer from '../graphics/characters/PokemonTrainer/PokemonTrainer-1.png'
 import Squirtle from '../graphics/characters/Squirtle/Squirtle-1.png'
 import Ivysaur from '../graphics/characters/Ivysaur/Ivysaur-1.png'
 import Charizard from '../graphics/characters/Charizard/Charizard-1.png'
@@ -121,7 +120,6 @@ export const allCharacterCloseUp = {
   Wario,
   Snake,
   Ike,
-  PokemonTrainer,
   Squirtle,
   Ivysaur,
   Charizard,
