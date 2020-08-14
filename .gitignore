@@ -236,3 +236,4 @@ Properties/launchSettings.json
 docs/
 .DS_Store
 Smash_Combos.sln
+*.sln
