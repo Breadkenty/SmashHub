@@ -1,9 +1,9 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Smash_Combos.Domain.Models;
 using Smash_Combos.Domain.Services;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Smash_Combos.Persistence
 {

@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Smash_Combos.Domain.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace Smash_Combos.Controllers
