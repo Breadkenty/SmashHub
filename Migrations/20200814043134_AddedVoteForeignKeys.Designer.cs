@@ -10,7 +10,7 @@ using Smash_Combos.Models;
 namespace Smash_Combos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200814065922_AddedVoteForeignKeys")]
+    [Migration("20200814043134_AddedVoteForeignKeys")]
     partial class AddedVoteForeignKeys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

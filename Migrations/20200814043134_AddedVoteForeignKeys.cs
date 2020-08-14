@@ -27,7 +27,6 @@ namespace Smash_Combos.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.DropForeignKey(
                 name: "FK_ComboVotes_Combos_ComboId",
                 table: "ComboVotes"
