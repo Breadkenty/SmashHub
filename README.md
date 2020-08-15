@@ -78,7 +78,7 @@ _Down tilt > up smash_
 
 _Down throw bair_
 
-<img src="./Api/ClientApp/src/graphics/inputs/png/throw/down-throw.png" width="40"/><img src="./Api/ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./Api/ClientApp/src/graphics/inputs/png/hop/short-hop.png" width="40"/><img src="./Api/ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./ClientApp/src/graphics/inputs/png/aerial/back-aerial.png" width="40"/>
+<img src="./Api/ClientApp/src/graphics/inputs/png/throw/down-throw.png" width="40"/><img src="./Api/ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./Api/ClientApp/src/graphics/inputs/png/hop/short-hop.png" width="40"/><img src="./Api/ClientApp/src/graphics/demo/then-conditional.png" width="40"/><img src="./Api/ClientApp/src/graphics/inputs/png/aerial/back-aerial.png" width="40"/>
 
 <hr/>
 <img src="./Api/ClientApp/src/graphics/demo/hold-conditional.png" width="75"/>
