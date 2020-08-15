@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Domain.Models;
-using Smash_Combos.Domain.Services;
+using Smash_Combos.Core.Services;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

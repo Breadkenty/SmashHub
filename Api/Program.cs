@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Smash_Combos.Domain.Services;
+using Smash_Combos.Core.Services;
 using System;
 using System.Data.Common;
 using System.Linq;

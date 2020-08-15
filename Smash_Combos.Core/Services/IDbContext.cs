@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Smash_Combos.Domain.Services
+namespace Smash_Combos.Core.Services
 {
     public interface IDbContext
     {

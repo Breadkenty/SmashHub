@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Smash_Combos.Domain.Models;
-using Smash_Combos.Domain.Services;
+using Smash_Combos.Core.Services;
 using System;
 using System.Text.RegularExpressions;
 

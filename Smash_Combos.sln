@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smash_Combos.Domain", "Smas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smash_Combos.Persistence", "Smash_Combos.Persistence\Smash_Combos.Persistence.csproj", "{3A464018-BB21-4E49-8DBF-4651E76E7A0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smash_Combos.Core", "Smash_Combos.Core\Smash_Combos.Core.csproj", "{98EF87DF-2810-4E5B-899E-E9726AE96D6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,3 +1,5 @@
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,8 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Smash_Combos.Domain.Services;
+using Smash_Combos.Core.Services;
 using Smash_Combos.Persistence;
+using System.Reflection;
 using System.Text;
 
 namespace Smash_Combos
@@ -38,6 +41,8 @@ namespace Smash_Combos
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Smash_Combos", Version = "v1" });
             });
             services.AddDbContext<IDbContext, PostgreSqlDatabaseContext>();
+            services.AddMediatR(Core.AssemblyUtility.GetAssembly());
+            services.AddAutoMapper(Core.AssemblyUtility.GetAssembly());
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

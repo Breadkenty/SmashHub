@@ -1,9 +1,11 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Smash_Combos.Core.Cqrs.Combos.GetCombo;
+using Smash_Combos.Core.Services;
 using Smash_Combos.Domain.Models;
-using Smash_Combos.Domain.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -20,12 +22,14 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly IDbContext _context;
+        private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CombosController(IDbContext context)
+        public CombosController(IDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/Combos
@@ -45,18 +49,18 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<ActionResult<Combo>> GetCombo(int id)
+        public async Task<ActionResult<GetComboResponse>> GetCombo(int id)
         {
-            var combo = await _context.Combos.Where(combo => combo.Id == id).Include(combo => combo.User).Include(combo => combo.Comments).ThenInclude(comment => comment.User).FirstOrDefaultAsync();
+            var response = await _mediator.Send(new GetComboRequest { ComboID = id });
 
-            if (combo == null)
+            if (response == null)
             {
                 // Return a `404` response to the client indicating we could not find a combo with this id
                 return NotFound();
             }
 
             //  Return the combo as a JSON object.
-            return combo;
+            return response;
         }
 
         // PUT: api/Combos/5

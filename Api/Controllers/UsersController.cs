@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Domain.Models;
-using Smash_Combos.Domain.Services;
+using Smash_Combos.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

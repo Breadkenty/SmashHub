@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Smash_Combos.Core\Smash_Combos.Core.csproj" />
     <ProjectReference Include="..\Smash_Combos.Domain\Smash_Combos.Domain.csproj" />
   </ItemGroup>
 
