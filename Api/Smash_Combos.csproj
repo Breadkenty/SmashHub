@@ -29,7 +29,7 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Persistence\Smash_Combos.Persistence.csproj" />
+    <ProjectReference Include="..\Smash_Combos.Persistence\Smash_Combos.Persistence.csproj" />
     <ProjectReference Include="..\Smash_Combos.Domain\Smash_Combos.Domain.csproj" />
     <ProjectReference Include="..\Smash_Combos.Persistence\Smash_Combos.Persistence.csproj" />
   </ItemGroup>
