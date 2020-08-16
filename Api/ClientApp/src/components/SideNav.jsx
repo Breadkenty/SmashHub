@@ -76,6 +76,16 @@ export function SideNav(props) {
             </li>
           </>
         )}
+        <li>
+          <Link to="/reports">
+            <button
+              className="bg-yellow button black-text"
+              onClick={props.handleSideBar}
+            >
+              Reports
+            </button>
+          </Link>
+        </li>
 
         <li>
           <Link to="/about">

@@ -1,0 +1,70 @@
+import React, { useState } from 'react'
+
+export function Reports() {
+  return (
+    <div className="reports">
+      <header>
+        <h1>Reports</h1>
+      </header>
+
+      <section>
+        <p>Reports</p>
+        <p>User</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+        <p>2</p>
+        <p>BreadKenty</p>
+      </section>
+    </div>
+  )
+}

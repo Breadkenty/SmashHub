@@ -18,6 +18,7 @@ import { SubmitCombo } from './pages/SubmitCombo'
 import { SideNav } from './components/SideNav'
 import { AddCharacter } from './pages/AddCharacter'
 import { EditCharacter } from './pages/EditCharacter'
+import { Reports } from './pages/Reports'
 import { EditCombo } from './pages/EditCombo'
 import { Notes } from './pages/Notes'
 import { About } from './pages/About'
@@ -63,6 +64,9 @@ export function App() {
           </Route>
           <Route exact path="/edit">
             <EditCharacter />
+          </Route>
+          <Route exact path="/reports">
+            <Reports />
           </Route>
           <Route exact path="/character/:characterVariableName/:comboId/edit">
             <EditCombo />
