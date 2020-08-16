@@ -7,6 +7,7 @@ import { TopNav } from './components/TopNav'
 
 import { SignUp } from './pages/SignUp'
 import { LogIn } from './pages/LogIn'
+import { User } from './pages/User'
 
 import { Character } from './pages/Character'
 import { Characters } from './pages/Characters'
@@ -79,6 +80,9 @@ export function App() {
           </Route>
           <Route exact path="/tutorial">
             <Tutorial />
+          </Route>
+          <Route exact path="/Breadkenty">
+            <User />
           </Route>
         </Switch>
       </div>
