@@ -190,6 +190,9 @@ export function CharacterCombo() {
                   <h5>edit</h5>
                 </Link>
               )}
+              <Link to="#">
+                <h5>report</h5>
+              </Link>
             </h5>
 
             <h2>{combo.title}</h2>
@@ -201,6 +204,12 @@ export function CharacterCombo() {
             </div>
           </div>
         </header>
+
+        <form className="report">
+          <h4>Report this combo</h4>
+          <textarea placeholder="reason..." />
+          <button className="button">Submit</button>
+        </form>
 
         {/* Combo inputs */}
         <section className="bg-grey combo-inputs">

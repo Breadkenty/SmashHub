@@ -73,6 +73,7 @@
           width: 100%;
           a {
             float: right;
+            margin-left: 8px;
 
             h5:hover {
               color: $yellow;
@@ -91,6 +92,33 @@
         div {
           margin-right: 8px;
         }
+      }
+    }
+
+    .report {
+      padding: 16px;
+      // border: 1px solid red;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid $grey;
+
+      h4 {
+        margin-bottom: 16px;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        display: block;
+
+        background-color: $grey;
+        border: none;
+      }
+
+      button {
+        align-self: flex-end;
       }
     }
 
@@ -148,27 +176,30 @@
     }
 
     .comment {
-      display: flex;
       border-bottom: 1px solid $grey;
 
-      .vote {
-        padding: 16px;
+      > div {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
 
-        svg {
-          fill: white;
-          width: 25px;
-        }
+        .vote {
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
 
-        svg:hover {
-          fill: $yellow;
-        }
+          svg {
+            fill: white;
+            width: 25px;
+          }
 
-        h3 {
-          color: white;
+          svg:hover {
+            fill: $yellow;
+          }
+
+          h3 {
+            color: white;
+          }
         }
       }
 
@@ -176,8 +207,11 @@
         width: 100%;
         padding: 16px 16px 24px 0;
 
+        .edit:nth-of-type(1) {
+          margin-left: 24px;
+        }
+
         .edit {
-          margin-left: 8px;
           font-size: 0.8rem;
           color: white;
           background: none;
