@@ -85,7 +85,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutCharacter(string variableName, Character character)
         {
             var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.Admin == true;
+            var userIsAdmin = getUserById.UserType == UserType.Admin;
 
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
             if (variableName != character.VariableName || !userIsAdmin)
@@ -142,7 +142,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
             var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.Admin == true;
+            var userIsAdmin = getUserById.UserType == UserType.Admin;
 
             if (!userIsAdmin)
             {
@@ -170,7 +170,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> DeleteCharacter(string variableName)
         {
             var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.Admin == true;
+            var userIsAdmin = getUserById.UserType == UserType.Admin;
 
             if (!userIsAdmin)
             {

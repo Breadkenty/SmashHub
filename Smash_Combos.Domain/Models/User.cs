@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -7,8 +8,6 @@ namespace Smash_Combos.Domain.Models
     public class User
     {
         public int Id { get; set; }
-
-        public bool Admin { get; private set; } = false;
 
         [Required]
         public string DisplayName { get; set; }
@@ -21,6 +20,14 @@ namespace Smash_Combos.Domain.Models
 
         [JsonIgnore]
         public bool PasswordMeetsCriteria { get; set; }
+
+        public UserType UserType { get; private set; }
+
+        public List<Combo> Combos { get; set; }
+
+        public List<Comment> Comments { get; set; }
+
+        public List<Infraction> Infractions { get; set; }
 
         public string Password
         {
