@@ -21,6 +21,8 @@ namespace Smash_Combos.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<ComboVote> ComboVotes { get; set; }
         public DbSet<CommentVote> CommentVotes { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<Infraction> Infractions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

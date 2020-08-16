@@ -17,6 +17,8 @@ namespace Smash_Combos.Core.Services
         public DbSet<User> Users { get; set; }
         public DbSet<ComboVote> ComboVotes { get; set; }
         public DbSet<CommentVote> CommentVotes { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<Infraction> Infractions { get; set; }
         public EntityEntry Entry([NotNullAttribute] object entity);
         public EntityEntry<TEntity> Entry<TEntity>([NotNullAttribute] TEntity entity) where TEntity : class;
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
