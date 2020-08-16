@@ -21,7 +21,7 @@ namespace Smash_Combos.Domain.Models
         [JsonIgnore]
         public bool PasswordMeetsCriteria { get; set; }
 
-        public UserType UserType { get; private set; }
+        public UserType UserType { get; private set; } = UserType.User;
 
         public List<Combo> Combos { get; set; }
 
