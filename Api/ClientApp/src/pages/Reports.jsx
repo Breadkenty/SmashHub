@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export function Reports() {
   return (
@@ -11,59 +12,7 @@ export function Reports() {
         <p>Reports</p>
         <p>User</p>
         <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
-        <p>2</p>
-        <p>BreadKenty</p>
+        <Link to="/Breadkenty">BreadKenty</Link>
       </section>
     </div>
   )
