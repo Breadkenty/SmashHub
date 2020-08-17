@@ -50,8 +50,11 @@
           margin-right: 16px;
         }
 
-        button {
+        .button-wrapper {
           margin-right: 8px;
+
+          button {
+          }
         }
 
         .ban {
@@ -76,24 +79,34 @@
       margin-top: 16px;
     }
 
+    .infraction-actions {
+      display: flex;
+      .button-wrapper {
+        margin-right: 8px;
+      }
+    }
+
     .infraction-form {
       display: flex;
       flex-direction: column;
       margin-bottom: 16px;
       @include transition;
 
-      div {
-        margin-bottom: 16px;
-        button {
-          margin: 8px;
+      .types,
+      .ban-duration {
+        display: flex;
+        flex-wrap: wrap;
+        .button-wrapper {
+          margin: 8px 8px 0px 0px;
         }
       }
 
       textarea {
-        margin-bottom: 16px;
+        margin: 16px 0;
         border: none;
         border-radius: 4px;
         background-color: black;
+        color: white;
         padding: 8px;
       }
 

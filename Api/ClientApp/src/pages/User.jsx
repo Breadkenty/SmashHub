@@ -13,6 +13,21 @@ export function User() {
   const [toggleInfractionDropDown, setToggleInfractionDropDown] = useState(
     false
   )
+  const [infractionType, setInfractionType] = useState('warn')
+  const [infraction, setInfraction] = useState({
+    userId: 0,
+    moderatorId: 0,
+    banDuration: 0,
+    points: 0,
+    category: '',
+    body: '',
+  })
+
+  const handleSubmit = event => {
+    event.preventDefault()
+    console.log('Submit:')
+    console.log(infraction)
+  }
 
   return (
     <div className="user">
@@ -25,8 +40,6 @@ export function User() {
           <div>
             <h3>Reports: </h3>
             <h3 className="points">5</h3>
-            <button className="button">Warn</button>
-            <button className="button ban">Ban</button>
           </div>
           <button
             onClick={() => {
@@ -54,13 +67,219 @@ export function User() {
             toggleReportDropDown ? { display: 'block' } : { display: 'none' }
           }
         >
-          <form className="infraction-form">
-            <div>
-              <button className="button">Spam/Abuse</button>
-              <button className="button">Inappropriate</button>
-              <button className="button">Harassment</button>
+          <div className="infraction-actions">
+            <div
+              className={`button-wrapper ${
+                infractionType === 'warn' ? 'active-button' : ''
+              }`}
+            >
+              <button
+                className="button bg-yellow"
+                onClick={() => {
+                  setInfractionType('warn')
+                  setInfraction({
+                    ...infraction,
+                    category: '',
+                    banDuration: 0,
+                    body: '',
+                    points: 0,
+                  })
+                }}
+              >
+                Warn
+              </button>
             </div>
-            <textarea placeholder="reason" />
+            <div
+              className={`button-wrapper ${
+                infractionType === 'ban' ? 'active-button' : ''
+              }`}
+            >
+              <button
+                className="button bg-red white-text"
+                onClick={() => {
+                  setInfractionType('ban')
+                  setInfraction({
+                    ...infraction,
+                    category: '',
+                    banDuration: 0,
+                    body: '',
+                    points: 0,
+                  })
+                }}
+              >
+                Ban
+              </button>
+            </div>
+          </div>
+          <form className="infraction-form" onSubmit={handleSubmit}>
+            <div className="types">
+              <div
+                className={`button-wrapper ${
+                  infraction.category === 'Spam/Abuse' ? 'active-button' : ''
+                }`}
+              >
+                <button
+                  className="button bg-yellow"
+                  onClick={event => {
+                    event.preventDefault()
+                    setInfraction({
+                      ...infraction,
+                      category: 'Spam/Abuse',
+                      points: 1,
+                    })
+                  }}
+                >
+                  Spam/Abuse
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
+                  infraction.category === 'Harassment' ? 'active-button' : ''
+                }`}
+              >
+                <button
+                  className="button bg-yellow"
+                  onClick={event => {
+                    event.preventDefault()
+                    setInfraction({
+                      ...infraction,
+                      category: 'Harassment',
+                      points: 2,
+                    })
+                  }}
+                >
+                  Harassment
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
+                  infraction.category === 'Inappropriate' ? 'active-button' : ''
+                }`}
+              >
+                <button
+                  className="button bg-yellow"
+                  onClick={event => {
+                    event.preventDefault()
+                    setInfraction({
+                      ...infraction,
+                      category: 'Inappropriate',
+                      points: 1,
+                    })
+                  }}
+                >
+                  Inappropriate
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
+                  infraction.category === 'Off-topic' ? 'active-button' : ''
+                }`}
+              >
+                <button
+                  className="button bg-yellow"
+                  onClick={event => {
+                    event.preventDefault()
+                    setInfraction({
+                      ...infraction,
+                      category: 'Off-topic',
+                      points: 1,
+                    })
+                  }}
+                >
+                  Off-topic
+                </button>
+              </div>
+            </div>
+
+            {infractionType === 'ban' && (
+              <div className="ban-duration">
+                <div
+                  className={`button-wrapper ${
+                    infraction.banDuration === 172800 ? 'active-button' : ''
+                  }`}
+                >
+                  <button
+                    className="button bg-yellow"
+                    onClick={event => {
+                      event.preventDefault()
+                      setInfraction({
+                        ...infraction,
+                        banDuration: 172800,
+                      })
+                    }}
+                  >
+                    2 Days
+                  </button>
+                </div>
+
+                <div
+                  className={`button-wrapper ${
+                    infraction.banDuration === 604800 ? 'active-button' : ''
+                  }`}
+                >
+                  <button
+                    className="button bg-yellow"
+                    onClick={event => {
+                      event.preventDefault()
+                      setInfraction({
+                        ...infraction,
+                        banDuration: 604800,
+                      })
+                    }}
+                  >
+                    1 Week
+                  </button>
+                </div>
+
+                <div
+                  className={`button-wrapper ${
+                    infraction.banDuration === 1209600 ? 'active-button' : ''
+                  }`}
+                >
+                  <button
+                    className="button bg-yellow"
+                    onClick={event => {
+                      event.preventDefault()
+                      setInfraction({
+                        ...infraction,
+                        banDuration: 1209600,
+                      })
+                    }}
+                  >
+                    2 Weeks
+                  </button>
+                </div>
+
+                <div
+                  className={`button-wrapper ${
+                    infraction.banDuration === 2419200 ? 'active-button' : ''
+                  }`}
+                >
+                  <button
+                    className="button bg-yellow"
+                    onClick={event => {
+                      event.preventDefault()
+                      setInfraction({
+                        ...infraction,
+                        banDuration: 2419200,
+                      })
+                    }}
+                  >
+                    1 Month
+                  </button>
+                </div>
+              </div>
+            )}
+            <textarea
+              placeholder="reason"
+              value={infraction.body}
+              onChange={event => {
+                setInfraction({ ...infraction, body: event.target.value })
+              }}
+            />
             <button className="button" type="submit">
               Submit
             </button>
