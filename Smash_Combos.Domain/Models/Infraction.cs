@@ -20,7 +20,7 @@ namespace Smash_Combos.Domain.Models
 
         public int? BanDuration { get; set; }
 
-        public int Points { get; private set; }
+        public int? Points { get; private set; }
 
         public InfractionCategory Category { get; private set; }
 

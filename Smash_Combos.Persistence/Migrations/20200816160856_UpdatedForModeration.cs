@@ -23,7 +23,7 @@ namespace Smash_Combos.Persistence.Migrations
                     UserId = table.Column<int>(nullable: false),
                     ModeratorId = table.Column<int>(nullable: false),
                     BanDuration = table.Column<int>(nullable: true),
-                    Points = table.Column<int>(nullable: false),
+                    Points = table.Column<int>(nullable: true),
                     Category = table.Column<int>(nullable: false),
                     Body = table.Column<string>(nullable: false),
                     DateInfracted = table.Column<DateTime>(nullable: false)
