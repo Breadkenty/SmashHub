@@ -42,7 +42,6 @@
     header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 16px;
 
       div {
         display: flex;
@@ -67,13 +66,17 @@
           width: 10px;
           fill: white;
           transform: rotate(180deg);
+          @include transition;
         }
       }
     }
 
+    .drop-down {
+      display: none;
+      margin-top: 16px;
+    }
+
     .infraction-form {
-      // display: none;
-      // height: 0;
       display: flex;
       flex-direction: column;
       margin-bottom: 16px;
@@ -82,7 +85,7 @@
       div {
         margin-bottom: 16px;
         button {
-          margin-right: 8px;
+          margin: 8px;
         }
       }
 
@@ -124,9 +127,6 @@
         grid-column: span 4;
       }
     }
-  }
-
-  .infractions {
   }
 
   .combos {

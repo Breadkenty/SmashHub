@@ -9,6 +9,11 @@ export function User() {
   const comboInputs =
     'upTilt upTilt upTilt upTilt upTilt upTilt upTilt upTilt upTilt upTilt'
 
+  const [toggleReportDropDown, setToggleReportDropDown] = useState(false)
+  const [toggleInfractionDropDown, setToggleInfractionDropDown] = useState(
+    false
+  )
+
   return (
     <div className="user">
       <header>
@@ -18,83 +23,104 @@ export function User() {
       <section className="user-details">
         <header>
           <div>
-            <h3>Reports</h3>
+            <h3>Reports: </h3>
+            <h3 className="points">5</h3>
             <button className="button">Warn</button>
             <button className="button ban">Ban</button>
           </div>
-          <button>
-            <svg viewBox="0 0 81 45">
+          <button
+            onClick={() => {
+              if (!toggleReportDropDown) {
+                setToggleReportDropDown(true)
+              } else {
+                setToggleReportDropDown(false)
+              }
+            }}
+          >
+            <svg
+              viewBox="0 0 81 45"
+              style={
+                toggleReportDropDown ? { transform: 'rotate(360deg)' } : null
+              }
+            >
               <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
             </svg>
           </button>
         </header>
 
-        <form className="infraction-form">
-          <div>
-            <button className="button">Spam/Abuse</button>
-            <button className="button">Inappropriate</button>
-            <button className="button">Harassment</button>
-          </div>
-          <textarea placeholder="reason" />
-          <button className="button" type="submit">
-            Submit
-          </button>
-        </form>
+        <div
+          className="drop-down"
+          style={
+            toggleReportDropDown ? { display: 'block' } : { display: 'none' }
+          }
+        >
+          <form className="infraction-form">
+            <div>
+              <button className="button">Spam/Abuse</button>
+              <button className="button">Inappropriate</button>
+              <button className="button">Harassment</button>
+            </div>
+            <textarea placeholder="reason" />
+            <button className="button" type="submit">
+              Submit
+            </button>
+          </form>
 
-        <div className="reports-header">
-          <h5>Type</h5>
-          <h5>Reported Content</h5>
-          <h5>Comments</h5>
-          <h5>Reported By</h5>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p>Spam</p>
-          <Link to="#">Down tilt ground float nair</Link>
-          <p>This is inappropriate, please remove</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p className="report-date">08/21/20</p>
+          <div className="reports-header">
+            <h5>Type</h5>
+            <h5>Reported Content</h5>
+            <h5>Comments</h5>
+            <h5>Reported By</h5>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p>Spam</p>
+            <Link to="#">Down tilt ground float nair</Link>
+            <p>This is inappropriate, please remove</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p className="report-date">08/21/20</p>
+          </div>
         </div>
       </section>
 
@@ -104,41 +130,66 @@ export function User() {
             <h3>Infractions:</h3>
             <h3 className="points">3</h3>
           </div>
-          <button>
-            <svg viewBox="0 0 81 45">
+          <button
+            onClick={() => {
+              if (!toggleInfractionDropDown) {
+                setToggleInfractionDropDown(true)
+              } else {
+                setToggleInfractionDropDown(false)
+              }
+            }}
+          >
+            <svg
+              viewBox="0 0 81 45"
+              style={
+                toggleInfractionDropDown
+                  ? { transform: 'rotate(360deg)' }
+                  : null
+              }
+            >
               <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
             </svg>
           </button>
         </header>
-        <div className="reports-header">
-          <h5>Points</h5>
-          <h5>Comment</h5>
-          <h5>Moderator</h5>
-          <h5>Date</h5>
-        </div>
-        <div className="reports-row">
-          <p className="points">2</p>
-          <p>Infracted for spamming</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p>08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p className="points">2</p>
-          <p>Infracted for spamming</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p>08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p className="points">2</p>
-          <p>Infracted for spamming</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p>08/21/20</p>
-        </div>
-        <div className="reports-row">
-          <p className="points">2</p>
-          <p>Infracted for spamming</p>
-          <Link to="#">Sleeping-dev</Link>
-          <p>08/21/20</p>
+
+        <div
+          className="drop-down"
+          style={
+            toggleInfractionDropDown
+              ? { display: 'block' }
+              : { display: 'none' }
+          }
+        >
+          <div className="reports-header">
+            <h5>Points</h5>
+            <h5>Comment</h5>
+            <h5>Moderator</h5>
+            <h5>Date</h5>
+          </div>
+          <div className="reports-row">
+            <p className="points">2</p>
+            <p>Infracted for spamming</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p>08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p className="points">2</p>
+            <p>Infracted for spamming</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p>08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p className="points">2</p>
+            <p>Infracted for spamming</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p>08/21/20</p>
+          </div>
+          <div className="reports-row">
+            <p className="points">2</p>
+            <p>Infracted for spamming</p>
+            <Link to="#">Sleeping-dev</Link>
+            <p>08/21/20</p>
+          </div>
         </div>
       </section>
 
