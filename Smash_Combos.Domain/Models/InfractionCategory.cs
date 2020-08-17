@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Domain.Models
 {
-    public enum InfractionType
+    public enum InfractionCategory
     {
         Spam = 0,
         Inappropriate = 1,

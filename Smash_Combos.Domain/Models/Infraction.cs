@@ -22,7 +22,7 @@ namespace Smash_Combos.Domain.Models
 
         public int Points { get; private set; }
 
-        public InfractionType Type { get; private set; }
+        public InfractionCategory Category { get; private set; }
 
         [Required]
         public string Body { get; set; }
