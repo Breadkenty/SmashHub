@@ -8,10 +8,6 @@ namespace Smash_Combos.Persistence.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Admin",
-                table: "Users");
-
             migrationBuilder.AddColumn<int>(
                 name: "UserType",
                 table: "Users",
@@ -26,8 +22,9 @@ namespace Smash_Combos.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(nullable: false),
                     ModeratorId = table.Column<int>(nullable: false),
-                    BanDuration = table.Column<int>(nullable: false),
+                    BanDuration = table.Column<int>(nullable: true),
                     Points = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
                     Body = table.Column<string>(nullable: false),
                     DateInfracted = table.Column<DateTime>(nullable: false)
                 },
@@ -40,6 +37,12 @@ namespace Smash_Combos.Persistence.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Infractions_Users_ModeratorId",
+                        column: x => x.ModeratorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,17 +63,29 @@ namespace Smash_Combos.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Reports_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_ReporterId",
+                        column: x => x.ReporterId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
                         name: "FK_Reports_Combos_ComboId",
                         column: x => x.ComboId,
                         principalTable: "Combos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reports_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -87,6 +102,17 @@ namespace Smash_Combos.Persistence.Migrations
                 name: "IX_Reports_CommentId",
                 table: "Reports",
                 column: "CommentId");
+
+
+            migrationBuilder.Sql(
+                "UPDATE \"Users\" " +
+                "SET \"UserType\" = 3 " +
+                "WHERE \"Admin\";"
+            );
+
+            migrationBuilder.DropColumn(
+                name: "Admin",
+                table: "Users");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -97,16 +123,22 @@ namespace Smash_Combos.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "Reports");
 
-            migrationBuilder.DropColumn(
-                name: "UserType",
-                table: "Users");
-
             migrationBuilder.AddColumn<bool>(
                 name: "Admin",
                 table: "Users",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
+
+            migrationBuilder.Sql(
+                "UPDATE \"Users\" " +
+                "SET \"Admin\" = TRUE " +
+                "WHERE \"UserType\" = 3;"
+            );
+
+            migrationBuilder.DropColumn(
+                name: "UserType",
+                table: "Users");
         }
     }
 }
