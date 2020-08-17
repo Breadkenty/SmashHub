@@ -27,6 +27,13 @@ export function CharacterCombo() {
   const [combo, setCombo] = useState({})
   const [comboAuthor, setComboAuthor] = useState('')
 
+  const [reportingCombo, setReportingCombo] = useState(false)
+  const [comboReport, setComboReport] = useState({
+    userId: 0,
+    reporterId: 0,
+    body: '',
+  })
+
   const [comments, setComments] = useState([])
   const [comment, setComment] = useState({
     comboId: parseInt(comboId),
@@ -107,6 +114,12 @@ export function CharacterCombo() {
     }).then(() => {
       getCombo()
     })
+  }
+
+  function handleReportSubmit(event) {
+    event.preventDefault()
+    console.log('Combo Report: ')
+    console.log(comboReport)
   }
 
   const loggedInUser = getUserId()
@@ -190,9 +203,13 @@ export function CharacterCombo() {
                   <h5>edit</h5>
                 </Link>
               )}
-              <Link to="#">
+              <button
+                onClick={() => {
+                  setReportingCombo(true)
+                }}
+              >
                 <h5>report</h5>
-              </Link>
+              </button>
             </h5>
 
             <h2>{combo.title}</h2>
@@ -205,9 +222,25 @@ export function CharacterCombo() {
           </div>
         </header>
 
-        <form className="report">
+        <form
+          className="report"
+          style={reportingCombo ? { display: 'flex' } : { display: 'none' }}
+          onSubmit={handleReportSubmit}
+        >
+          <i
+            className="fas fa-times"
+            onClick={() => {
+              setReportingCombo(false)
+            }}
+          ></i>
           <h4>Report this combo</h4>
-          <textarea placeholder="reason..." />
+          <textarea
+            placeholder="reason..."
+            value={comboReport.body}
+            onChange={event => {
+              setComboReport({ ...comboReport, body: event.target.value })
+            }}
+          />
           <button className="button">Submit</button>
         </form>
 

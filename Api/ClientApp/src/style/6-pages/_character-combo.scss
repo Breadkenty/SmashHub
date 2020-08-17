@@ -79,6 +79,17 @@
               color: $yellow;
             }
           }
+
+          button {
+            float: right;
+            background: none;
+            border: none;
+          }
+          button:hover {
+            h5 {
+              color: $yellow;
+            }
+          }
         }
 
         h4 {
@@ -97,10 +108,17 @@
 
     .report {
       padding: 16px;
-      // border: 1px solid red;
       display: flex;
       flex-direction: column;
       border-top: 1px solid $grey;
+
+      i {
+        align-self: flex-end;
+      }
+
+      i:hover {
+        color: $yellow;
+      }
 
       h4 {
         margin-bottom: 16px;
@@ -115,6 +133,8 @@
 
         background-color: $grey;
         border: none;
+
+        color: white;
       }
 
       button {

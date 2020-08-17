@@ -10,6 +10,13 @@ export function Comment(props) {
   const [editingComment, setEditingComment] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
 
+  const [reportingComment, setReportingComment] = useState(false)
+  const [commentReport, setCommentReport] = useState({
+    userId: 0,
+    reporterId: 0,
+    body: '',
+  })
+
   function handleTextChange(event) {
     setEditedComment({
       ...editedComment,
@@ -46,6 +53,13 @@ export function Comment(props) {
         }
       })
   }
+
+  function handleSubmitCommentReport(event) {
+    event.preventDefault()
+    console.log('Comment Report:')
+    console.log(commentReport)
+  }
+
   return (
     <div className="comment">
       <div>
@@ -99,7 +113,14 @@ export function Comment(props) {
           <h5>
             Posted by {props.comment.user.displayName}{' '}
             {moment(props.comment.datePosted).fromNow()}
-            <button className="edit">report</button>
+            <button
+              className="edit"
+              onClick={() => {
+                setReportingComment(true)
+              }}
+            >
+              report
+            </button>
             {props.loggedInUser === props.comment.userId && (
               <>
                 <button
@@ -132,9 +153,25 @@ export function Comment(props) {
           {editingComment || <p>{props.comment.body}</p>}
         </div>
       </div>
-      <form className="report">
+      <form
+        className="report"
+        style={reportingComment ? { display: 'flex' } : { display: 'none' }}
+        onSubmit={handleSubmitCommentReport}
+      >
+        <i
+          className="fas fa-times"
+          onClick={() => {
+            setReportingComment(false)
+          }}
+        ></i>
         <h4>Report this comment</h4>
-        <textarea placeholder="reason..." />
+        <textarea
+          placeholder="reason..."
+          value={commentReport.body}
+          onChange={event => {
+            setCommentReport({ ...commentReport, body: event.target.value })
+          }}
+        />
         <button className="button">Submit</button>
       </form>
     </div>
