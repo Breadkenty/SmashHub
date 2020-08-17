@@ -39,7 +39,7 @@ namespace Smash_Combos.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Combo>>> GetCombos()
         {
-            return await _context.Combos.Include(combo => combo.User).Include(combo => combo.Comments).ToListAsync();
+            return await _context.Combos.Include(combo => combo.Comments).ToListAsync();
         }
 
         // GET: api/Combos/5

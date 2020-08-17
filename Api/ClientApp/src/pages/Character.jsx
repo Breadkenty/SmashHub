@@ -134,7 +134,7 @@ export function Character() {
 
                 <footer>
                   <h5 className="white-text">
-                    Posted by {combo.user.displayName}{' '}
+                    Posted by {/*combo.user.displayName*/'TODO'}{' '}
                     {moment(combo.datePosted).fromNow()}
                   </h5>
                 </footer>

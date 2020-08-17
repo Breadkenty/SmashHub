@@ -37,12 +37,12 @@ namespace Smash_Combos.Controllers
         {
             if (filter == null)
             {
-                return await _context.Characters.Include(character => character.Combos).ThenInclude(combo => combo.User).ToListAsync();
+                return await _context.Characters.Include(character => character.Combos).ToListAsync();
 
             }
             else
             {
-                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter) || character.VariableName.ToLower().Contains(filter)).Include(character => character.Combos).ThenInclude(combo => combo.User).ToListAsync();
+                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter) || character.VariableName.ToLower().Contains(filter)).Include(character => character.Combos).ToListAsync();
             }
         }
 
@@ -56,7 +56,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<Character>> GetCharacter(string variableName)
         {
             // Find the character in the database using `FindAsync` to look it up by id
-            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).ThenInclude(combo => combo.User).FirstOrDefaultAsync();
+            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).FirstOrDefaultAsync();
 
             // If we didn't find anything, we receive a `null` in return
             if (character == null)

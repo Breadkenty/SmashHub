@@ -13,8 +13,6 @@ namespace Smash_Combos.Domain.Models
         [Required]
         public int CharacterId { get; set; }
 
-        public User User { get; set; }
-
         public DateTime DatePosted { get; private set; } = DateTime.Now;
 
         [Required]

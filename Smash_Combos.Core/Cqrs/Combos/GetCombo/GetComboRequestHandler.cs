@@ -22,7 +22,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
 
         public async Task<GetComboResponse> Handle(GetComboRequest request, CancellationToken cancellationToken)
         {
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboID).Include(combo => combo.User).Include(combo => combo.Comments).ThenInclude(comment => comment.User).FirstOrDefaultAsync();
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboID).Include(combo => combo.Comments).FirstOrDefaultAsync();
 
             if (combo == null)
                 return null;

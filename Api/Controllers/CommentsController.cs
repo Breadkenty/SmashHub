@@ -37,7 +37,7 @@ namespace Smash_Combos.Controllers
         {
             // Uses the database context in `_context` to request all of the Comments and
             // return them as a JSON array.
-            return await _context.Comments.Include(comment => comment.User).ToListAsync();
+            return await _context.Comments.ToListAsync();
         }
 
         // GET: api/Comments/5
@@ -50,7 +50,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<Comment>> GetComment(int id)
         {
             // Find the comment in the database using `FindAsync` to look it up by id
-            var comment = await _context.Comments.Where(combo => combo.Id == id).Include(comment => comment.User).FirstOrDefaultAsync();
+            var comment = await _context.Comments.Where(combo => combo.Id == id).FirstOrDefaultAsync();
 
             // If we didn't find anything, we receive a `null` in return
             if (comment == null)
