@@ -135,9 +135,27 @@
 
       border-bottom: 1px solid white;
 
+      .report-dismiss,
       .report-date {
         text-align: right;
         grid-column: span 4;
+      }
+
+      .report-dismiss {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        button {
+          background: none;
+          border: none;
+          color: $red;
+          font-size: 0.7rem;
+          @include transition;
+        }
+        button:hover {
+          color: white;
+        }
       }
     }
   }

@@ -23,12 +23,18 @@ export function User() {
     body: '',
   })
 
+  const [confirmDismiss, setConfirmDismiss] = useState(false)
+
   const handleSubmit = event => {
     event.preventDefault()
     console.log('Submit:')
     console.log(infraction)
   }
 
+  const handleDismiss = event => {
+    event.preventDefault()
+    console.log('Dismiss:')
+  }
   return (
     <div className="user">
       <header>
@@ -292,48 +298,30 @@ export function User() {
             <h5>Reported By</h5>
           </div>
           <div className="reports-row">
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
-          <div className="reports-row">
+            {confirmDismiss ? (
+              <div className="report-dismiss">
+                <p>Are you sure you want to dismiss this report?: </p>
+                <button onClick={handleDismiss}>yes</button>
+                <button
+                  onClick={() => {
+                    setConfirmDismiss(false)
+                  }}
+                >
+                  no
+                </button>
+              </div>
+            ) : (
+              <div className="report-dismiss">
+                <button
+                  onClick={() => {
+                    setConfirmDismiss(true)
+                  }}
+                >
+                  dismiss
+                </button>
+              </div>
+            )}
+
             <p>Spam</p>
             <Link to="#">Down tilt ground float nair</Link>
             <p>This is inappropriate, please remove</p>
