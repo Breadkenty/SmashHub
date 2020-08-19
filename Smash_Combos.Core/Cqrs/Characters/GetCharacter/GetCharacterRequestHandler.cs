@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
 {
-    public class GetCharacterRequestHandler : IRequestHandler<GetCharacterRequest, GetCharacterResponse>
+    public class GetCharacterRequestHandler : IRequestHandler<GetCharacterRequest, CharacterResponse>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<GetCharacterResponse> Handle(GetCharacterRequest request, CancellationToken cancellationToken)
+        public async Task<CharacterResponse> Handle(GetCharacterRequest request, CancellationToken cancellationToken)
         {
             if (request.VariableName == null)
             {
@@ -46,7 +46,7 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
                     }
                 }
 
-                return _mapper.Map<GetCharacterResponse>(character);
+                return _mapper.Map<CharacterResponse>(character);
             }
         }
     }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
 using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
+using Smash_Combos.Core.Cqrs.Characters;
 
 namespace Smash_Combos.Controllers
 {
@@ -38,7 +39,7 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Characters
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCharactersResponse>>> GetCharacters(string filter)
+        public async Task<ActionResult<IEnumerable<CharacterResponse>>> GetCharacters(string filter)
         {
             var response = await _mediator.Send(new GetCharactersRequest { Filter = filter });
 
@@ -59,7 +60,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{variableName}")]
-        public async Task<ActionResult<GetCharacterResponse>> GetCharacter(string variableName)
+        public async Task<ActionResult<CharacterResponse>> GetCharacter(string variableName)
         {
             // Find the character in the database using `FindAsync` to look it up by id
             var character = await _mediator.Send(new GetCharacterRequest { VariableName = variableName }); ;

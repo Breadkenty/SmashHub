@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Characters.GetCharacters
 {
-    public class GetCharactersRequestHandler : IRequestHandler<GetCharactersRequest, IEnumerable<GetCharactersResponse>>
+    public class GetCharactersRequestHandler : IRequestHandler<GetCharactersRequest, IEnumerable<CharacterResponse>>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,17 +22,17 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacters
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<GetCharactersResponse>> Handle(GetCharactersRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CharacterResponse>> Handle(GetCharactersRequest request, CancellationToken cancellationToken)
         {
             if (request.Filter == null)
             {
                 var characters = await _dbContext.Characters.Include(character => character.Combos).ToListAsync();
-                return characters.Select(character => _mapper.Map<GetCharactersResponse>(character));
+                return _mapper.Map<IEnumerable<CharacterResponse>>(characters);
             }
             else
             {
                 var characters = await _dbContext.Characters.Where(character => character.Name.ToLower().Contains(request.Filter) || character.VariableName.ToLower().Contains(request.Filter)).Include(character => character.Combos).ToListAsync();
-                return characters.Select(character => _mapper.Map<GetCharactersResponse>(character));
+                return _mapper.Map<IEnumerable<CharacterResponse>>(characters);
             }
         }
     }

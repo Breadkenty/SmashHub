@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
+namespace Smash_Combos.Core.Cqrs.Characters
 {
-    public class GetCharacterResponse
+    public class CharacterResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
