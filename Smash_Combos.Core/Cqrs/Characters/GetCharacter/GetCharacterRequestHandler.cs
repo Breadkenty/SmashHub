@@ -38,11 +38,16 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
                 if (character == null)
                     return null;
 
-                foreach(var combo in character.Combos)
+                if(character.Combos?.Count > 0)
                 {
-                    if(combo.User != null)
+                    foreach (var combo in character.Combos)
                     {
-                        combo.User.Combos = null;
+                        if (combo.User != null)
+                        {
+                            combo.User.Combos = null;
+                            combo.User.Comments = null;
+                            combo.User.Infractions = null;
+                        }
                     }
                 }
 
