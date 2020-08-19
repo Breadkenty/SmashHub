@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
 
 namespace Smash_Combos.Controllers
 {
@@ -20,12 +23,14 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly IDbContext _context;
+        private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CharactersController(IDbContext context)
+        public CharactersController(IDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/Characters
@@ -33,17 +38,18 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Characters
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters(string filter)
+        public async Task<ActionResult<IEnumerable<GetCharactersResponse>>> GetCharacters(string filter)
         {
-            if (filter == null)
-            {
-                return await _context.Characters.Include(character => character.Combos).ToListAsync();
+            var response = await _mediator.Send(new GetCharactersRequest { Filter = filter });
 
-            }
-            else
+            if (response == null)
             {
-                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter) || character.VariableName.ToLower().Contains(filter)).Include(character => character.Combos).ToListAsync();
+                // Return a `404` response to the client indicating we could not find a combo with this id
+                return NotFound();
             }
+
+            //  Return the combo as a JSON object.
+            return Ok(response);
         }
 
         // GET: api/Characters/5
@@ -53,10 +59,10 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{variableName}")]
-        public async Task<ActionResult<Character>> GetCharacter(string variableName)
+        public async Task<ActionResult<GetCharacterResponse>> GetCharacter(string variableName)
         {
             // Find the character in the database using `FindAsync` to look it up by id
-            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).ThenInclude(combo => combo.User).FirstOrDefaultAsync();
+            var character = await _mediator.Send(new GetCharacterRequest { VariableName = variableName }); ;
 
             // If we didn't find anything, we receive a `null` in return
             if (character == null)
