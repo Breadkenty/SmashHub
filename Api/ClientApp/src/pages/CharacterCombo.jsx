@@ -51,7 +51,7 @@ export function CharacterCombo() {
       .then(apiData => {
         setCombo(apiData)
         setComments(apiData.comments)
-        setComboAuthor(/*apiData.user.displayName*/'TODO')
+        setComboAuthor(apiData.user.displayName)
       })
   }
 
