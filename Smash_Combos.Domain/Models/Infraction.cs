@@ -19,6 +19,8 @@ namespace Smash_Combos.Domain.Models
         public int ModeratorId { get; set; }
 
         public int? BanDuration { get; set; }
+        
+        public DateTime? BanLiftDate { get; set; }
 
         public int? Points { get; private set; }
 
