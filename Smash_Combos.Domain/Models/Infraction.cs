@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Smash_Combos.Domain.Models
@@ -14,9 +15,11 @@ namespace Smash_Combos.Domain.Models
 
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        [Required]
+        [InverseProperty("Infractions")]
+        public User User { get; set; }
 
-        public int ModeratorId { get; set; }
+        public User Moderator { get; set; }
 
         public int? BanDuration { get; set; }
         

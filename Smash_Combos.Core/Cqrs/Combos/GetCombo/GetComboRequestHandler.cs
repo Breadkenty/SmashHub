@@ -27,19 +27,6 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
             if (combo == null)
                 return null;
 
-            if(combo.Comments?.Count > 0)
-            {
-                foreach(var comment in combo.Comments)
-                {
-                    if(comment.User != null)
-                    {
-                        comment.User.Comments = null;
-                        comment.User.Combos = null;
-                        comment.User.Infractions = null;
-                    }
-                }
-            }
-
             return _mapper.Map<GetComboResponse>(combo);
         }
     }

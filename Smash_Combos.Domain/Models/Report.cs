@@ -12,11 +12,13 @@ namespace Smash_Combos.Domain.Models
         {
             this.DateReported = DateTime.Now;
         }
+
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        [Required]
+        public User User { get; set; }
 
-        public int ReporterId { get; set; }
+        public User Reporter { get; set; }
 
         [Required]
         public string Body { get; set; }

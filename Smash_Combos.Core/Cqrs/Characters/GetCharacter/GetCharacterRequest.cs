@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
 {
-    public class GetCharacterRequest : IRequest<CharacterResponse>
+    public class GetCharacterRequest : IRequest<GetCharacterResponse>
     {
         public string VariableName { get; set; }
     }
