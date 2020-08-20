@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Smash_Combos.Core.Cqrs.Combos.DeleteCombo;
 using Smash_Combos.Core.Cqrs.Combos.GetCombo;
+using Smash_Combos.Core.Cqrs.Combos.GetCombos;
+using Smash_Combos.Core.Cqrs.Combos.PostCombo;
+using Smash_Combos.Core.Cqrs.Combos.PutCombo;
 using Smash_Combos.Core.Services;
 using Smash_Combos.Domain.Models;
 using System.Collections.Generic;
@@ -20,15 +24,10 @@ namespace Smash_Combos.Controllers
     [ApiController]
     public class CombosController : ControllerBase
     {
-        // This is the variable you use to have access to your database
-        private readonly IDbContext _context;
         private readonly IMediator _mediator;
 
-        // Constructor that recives a reference to your database context
-        // and stores it in _context for you to use in your API methods
-        public CombosController(IDbContext context, IMediator mediator)
+        public CombosController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -37,9 +36,10 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Combos
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Combo>>> GetCombos()
+        public async Task<ActionResult<IEnumerable<GetCombosResponse>>> GetCombos()
         {
-            return await _context.Combos.Include(combo => combo.User).Include(combo => combo.Comments).ToListAsync();
+            var response = await _mediator.Send(new GetCombosRequest());
+            return Ok(response);
         }
 
         // GET: api/Combos/5
@@ -54,13 +54,9 @@ namespace Smash_Combos.Controllers
             var response = await _mediator.Send(new GetComboRequest { ComboID = id });
 
             if (response == null)
-            {
-                // Return a `404` response to the client indicating we could not find a combo with this id
-                return NotFound();
-            }
+                return NotFound(); // Return a `404` response to the client indicating we could not find a combo with this id
 
-            //  Return the combo as a JSON object.
-            return response;
+            return Ok(response); // Return the combo as a JSON object.
         }
 
         // PUT: api/Combos/5
@@ -78,50 +74,24 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCombo(int id, Combo combo)
         {
-            // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (id != combo.Id)
-            {
+            if (id != combo.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
-            }
-
-            var comboExists = await _context.Combos.Where(combo => combo.Id == id && combo.UserId == GetCurrentUserId()).AnyAsync();
-            if (!comboExists)
-            {
-
-                return NotFound();
-            }
-            _context.Entry(combo).State = EntityState.Modified;
 
             try
             {
-                // Try to save these changes.
-                await _context.SaveChangesAsync(CancellationToken.None);
+                var response = await _mediator.Send(new PutComboRequest { Combo = combo, ComboId = id, UserId = combo.UserId });
+
+                if (response.Success)
+                    return NoContent(); // Return NoContent to indicate the update was done.
+                else if (!response.ComboFound)
+                    return NotFound();
+                else
+                    return StatusCode(500); // The combo was found, but couldn't be updated -> something went wrong. How should we handle this?
             }
             catch (DbUpdateConcurrencyException)
             {
-                // Ooops, looks like there was an error, so check to see if the record we were
-                // updating no longer exists.
-                if (!ComboExists(id))
-                {
-                    // If the record we tried to update was already deleted by someone else,
-                    // return a `404` not found
-                    return NotFound();
-                }
-
-                else
-                {
-                    // Otherwise throw the error back, which will cause the request to fail
-                    // and generate an error to the client.
-                    throw;
-                }
+                throw; // Should we throw the exception here or deal with it otherwise?
             }
-
-            // return NoContent to indicate the update was done. Alternatively you can use the
-            // following to send back a copy of the updated data.
-            //
-            return Ok(combo);
-            //
-            // return NoContent();
         }
 
         // POST: api/Combos
@@ -133,20 +103,14 @@ namespace Smash_Combos.Controllers
         // supplies to the names of the attributes of our Combo POCO class. This represents the
         // new values for the record.
         //
-
-
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Combo>> PostCombo(Combo combo)
+        public async Task<ActionResult<PostComboResponse>> PostCombo(Combo combo)
         {
-            combo.UserId = GetCurrentUserId();
-            // Indicate to the database context we want to add this new record
-            _context.Combos.Add(combo);
-            await _context.SaveChangesAsync(CancellationToken.None);
+            var response = await _mediator.Send(new PostComboRequest { Combo = combo, UserId = GetCurrentUserId() });
 
-            // Return a response that indicates the object was created (status code `201`) and some additional
-            // headers with details of the newly created object.
-            return CreatedAtAction("GetCombo", new { id = combo.Id }, combo);
+            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
+            return CreatedAtAction("GetCombo", new { id = response.Id }, response);
         }
 
         // DELETE: api/Combos/5
@@ -159,32 +123,12 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteCombo(int id)
         {
-            // Find this combo by looking for the specific id
-            var combo = await _context.Combos.Where(combo => combo.Id == id && combo.UserId == GetCurrentUserId()).FirstOrDefaultAsync();
-            if (combo == null)
-            {
-                // There wasn't a combo with that id so return a `404` not found
+            var response = await _mediator.Send(new DeleteComboRequest { ComboId = id, UserId = GetCurrentUserId() });
+
+            if (response.Combo == null) // There wasn't a combo with that id so return a `404` not found
                 return NotFound();
-            }
 
-            // Tell the database we want to remove this record
-            _context.Combos.Remove(combo);
-
-            // Tell the database to perform the deletion
-            await _context.SaveChangesAsync(CancellationToken.None);
-
-            // return NoContent to indicate the update was done. Alternatively you can use the
-            // following to send back a copy of the deleted data.
-            //
-            return Ok(combo);
-            //
-            // return NoContent();
-        }
-
-        // Private helper method that looks up an existing combo by the supplied id
-        private bool ComboExists(int id)
-        {
-            return _context.Combos.Any(combo => combo.Id == id);
+            return Ok(response.Combo); // Send back a copy of the deleted data.
         }
 
         private int GetCurrentUserId()
