@@ -18,6 +18,7 @@ namespace Smash_Combos.Domain.Models
 
         [Required]
         public string Body { get; set; }
+        public List<Report> Reports { get; private set; }
         public int NetVote { get; private set; } = 0;
 
         public void VoteUp()

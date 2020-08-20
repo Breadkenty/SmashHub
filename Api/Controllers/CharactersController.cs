@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
+using Smash_Combos.Core.Cqrs.Characters;
 
 namespace Smash_Combos.Controllers
 {
@@ -20,12 +24,14 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly IDbContext _context;
+        private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CharactersController(IDbContext context)
+        public CharactersController(IDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/Characters
@@ -33,17 +39,18 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Characters
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters(string filter)
+        public async Task<ActionResult<IEnumerable<GetCharactersResponse>>> GetCharacters(string filter)
         {
-            if (filter == null)
-            {
-                return await _context.Characters.Include(character => character.Combos).ThenInclude(combo => combo.User).ToListAsync();
+            var response = await _mediator.Send(new GetCharactersRequest { Filter = filter });
 
-            }
-            else
+            if (response == null)
             {
-                return await _context.Characters.Where(character => character.Name.ToLower().Contains(filter) || character.VariableName.ToLower().Contains(filter)).Include(character => character.Combos).ThenInclude(combo => combo.User).ToListAsync();
+                // Return a `404` response to the client indicating we could not find a character with this id
+                return NotFound();
             }
+
+            //  Return the character as a JSON object.
+            return Ok(response);
         }
 
         // GET: api/Characters/5
@@ -53,15 +60,15 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{variableName}")]
-        public async Task<ActionResult<Character>> GetCharacter(string variableName)
+        public async Task<ActionResult<GetCharacterResponse>> GetCharacter(string variableName)
         {
-            // Find the character in the database using `FindAsync` to look it up by id
-            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).ThenInclude(combo => combo.User).FirstOrDefaultAsync();
+            // Find the character in the database using `FindAsync` to look it up by variableName
+            var character = await _mediator.Send(new GetCharacterRequest { VariableName = variableName }); ;
 
             // If we didn't find anything, we receive a `null` in return
             if (character == null)
             {
-                // Return a `404` response to the client indicating we could not find a character with this id
+                // Return a `404` response to the client indicating we could not find a character with this variableName
                 return NotFound();
             }
 
@@ -85,7 +92,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutCharacter(string variableName, Character character)
         {
             var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.Admin == true;
+            var userIsAdmin = getUserById.UserType == UserType.Admin;
 
             // If the ID in the URL does not match the ID in the supplied request body, return a bad request
             if (variableName != character.VariableName || !userIsAdmin)
@@ -142,7 +149,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
             var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.Admin == true;
+            var userIsAdmin = getUserById.UserType == UserType.Admin;
 
             if (!userIsAdmin)
             {
@@ -170,7 +177,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> DeleteCharacter(string variableName)
         {
             var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.Admin == true;
+            var userIsAdmin = getUserById.UserType == UserType.Admin;
 
             if (!userIsAdmin)
             {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Smash_Combos.Persistence;
@@ -9,9 +10,10 @@ using Smash_Combos.Persistence;
 namespace Smash_Combos.Persistence.Migrations
 {
     [DbContext(typeof(PostgreSqlDatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200816160856_UpdatedForModeration")]
+    partial class UpdatedForModeration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,34 +187,26 @@ namespace Smash_Combos.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("BanDuration")
+                    b.Property<int>("BanDuration")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("BanLiftDate")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("DateInfracted")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("ModeratorId")
+                    b.Property<int>("ModeratorId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Points")
+                    b.Property<int>("Points")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ModeratorId");
 
                     b.HasIndex("UserId");
 
@@ -242,7 +236,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.Property<bool>("Dismiss")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("ReporterId")
+                    b.Property<int>("ReporterId")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
@@ -253,10 +247,6 @@ namespace Smash_Combos.Persistence.Migrations
                     b.HasIndex("ComboId");
 
                     b.HasIndex("CommentId");
-
-                    b.HasIndex("ReporterId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
                 });
@@ -322,11 +312,7 @@ namespace Smash_Combos.Persistence.Migrations
 
             modelBuilder.Entity("Smash_Combos.Domain.Models.Infraction", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.User", "Moderator")
-                        .WithMany()
-                        .HasForeignKey("ModeratorId");
-
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("Smash_Combos.Domain.Models.User", null)
                         .WithMany("Infractions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -342,16 +328,6 @@ namespace Smash_Combos.Persistence.Migrations
                     b.HasOne("Smash_Combos.Domain.Models.Comment", null)
                         .WithMany("Reports")
                         .HasForeignKey("CommentId");
-
-                    b.HasOne("Smash_Combos.Domain.Models.User", "Reporter")
-                        .WithMany()
-                        .HasForeignKey("ReporterId");
-
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
