@@ -82,8 +82,8 @@ namespace Smash_Combos.Controllers
                 var response = await _mediator.Send(new PutComboRequest { Combo = combo, ComboId = id, UserId = combo.UserId });
 
                 if (response.Success)
-                    return NoContent(); // Return NoContent to indicate the update was done.
-                else if (!response.ComboFound)
+                    return Ok(response.Combo); // Return the updated combo.
+                else if (response.Combo == null)
                     return NotFound();
                 else
                     return StatusCode(500); // The combo was found, but couldn't be updated -> something went wrong. How should we handle this?

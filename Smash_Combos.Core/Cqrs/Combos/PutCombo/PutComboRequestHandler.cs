@@ -28,20 +28,21 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
             var comboExists = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId && combo.UserId == request.UserId).AnyAsync();
 
             if (!comboExists)
-                return new PutComboResponse { Success = false, ComboFound = false };
+                return new PutComboResponse { Success = false };
 
             _dbContext.Entry(request.Combo).State = EntityState.Modified;
 
             try
             {
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                return new PutComboResponse { Success = true, ComboFound = true };
+                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.Combo.Id).FirstOrDefaultAsync();
+                return new PutComboResponse { Success = true, Combo = _mapper.Map<ComboDto>(comboToReturn) };
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!_dbContext.Combos.Any(combo => combo.Id == request.ComboId))
                 {
-                    return new PutComboResponse { Success = false, ComboFound = false };
+                    return new PutComboResponse { Success = false };
                 }
                 else
                 {

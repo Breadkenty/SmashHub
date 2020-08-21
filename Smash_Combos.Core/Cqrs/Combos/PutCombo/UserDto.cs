@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
+namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 {
     public class UserDto
     {

@@ -11,8 +11,6 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
         public DeleteComboProfile()
         {
             CreateMap<Combo, ComboDto>();
-            CreateMap<Comment, CommentDto>();
-            CreateMap<User, UserDto>();
         }
     }
 }
