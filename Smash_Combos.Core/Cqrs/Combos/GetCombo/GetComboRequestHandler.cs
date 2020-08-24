@@ -14,9 +14,9 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetComboRequestHandler(IDbContext context, IMapper mapper)
+        public GetComboRequestHandler(IDbContext dbContext, IMapper mapper)
         {
-            _dbContext = context ?? throw new ArgumentNullException(nameof(context));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
