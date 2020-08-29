@@ -17,9 +17,9 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 
         public DateTime? BanLiftDate { get; set; }
 
-        public int? Points { get; private set; }
+        public int? Points { get; set; }
 
-        public InfractionCategory Category { get; private set; }
+        public InfractionCategory Category { get; set; }
 
         public string Body { get; set; }
 

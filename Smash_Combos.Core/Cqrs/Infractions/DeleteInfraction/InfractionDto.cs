@@ -19,10 +19,10 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
 
         public int? Points { get; private set; }
 
-        public InfractionCategory Category { get; private set; }
+        public InfractionCategory Category { get; set; }
 
         public string Body { get; set; }
 
-        public DateTime DateInfracted { get; private set; }
+        public DateTime DateInfracted { get; set; }
     }
 }

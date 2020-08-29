@@ -8,7 +8,17 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 {
     public class PostInfractionRequest : IRequest<PostInfractionResponse>
     {
-        public Infraction Infraction { get; set; }
         public int UserId { get; set; }
+
+        public int ModeratorId { get; set; }
+
+        public int? BanDuration { get; set; }
+
+        public int? Points { get; set; }
+
+        public InfractionCategory Category { get; set; }
+
+        public string Body { get; set; }
+
     }
 }

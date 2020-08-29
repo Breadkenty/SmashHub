@@ -37,7 +37,7 @@ namespace Smash_Combos.Controllers
 
         // GET api/<InfractionsController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetInfractionResponse>> GetInfraction(int id)
+        public async Task<ActionResult<GetInfractionResponse>> GetInfraction([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetInfractionRequest { InfractionId = id });
             if (response == null)
@@ -49,9 +49,9 @@ namespace Smash_Combos.Controllers
         // POST api/<InfractionsController>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostInfractionResponse>> PostInfraction([FromBody] Infraction infraction)
+        public async Task<ActionResult<PostInfractionResponse>> PostInfraction([FromBody] PostInfractionRequest postInfractionRequest)
         {
-            var response = await _mediator.Send(new PostInfractionRequest { Infraction = infraction });
+            var response = await _mediator.Send(postInfractionRequest);
 
             // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
             return CreatedAtAction("GetInfraction", new { id = response.Id }, response);
@@ -60,14 +60,14 @@ namespace Smash_Combos.Controllers
         // PUT api/<InfractionsController>/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PutInfractionResponse>> PutInfraction(int id, [FromBody] Infraction infraction)
+        public async Task<ActionResult<PutInfractionResponse>> PutInfraction([FromRoute] int id, [FromBody] PutInfractionRequest putInfractionRequest)
         {
-            if (id != infraction.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != putInfractionRequest.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
             try
             {
-                var response = await _mediator.Send(new PutInfractionRequest { Infraction = infraction });
+                var response = await _mediator.Send(putInfractionRequest);
 
                 if (response.Success)
                     return Ok(response.Infraction); // Return the updated infraction.

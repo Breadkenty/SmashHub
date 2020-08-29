@@ -24,22 +24,30 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 
         public async Task<PutInfractionResponse> Handle(PutInfractionRequest request, CancellationToken cancellationToken)
         {
-            var infractionExists = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId && infraction.User.Id == request.UserId).AnyAsync();
+            var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.Id).FirstOrDefaultAsync();
 
-            if (!infractionExists)
+            if (infraction == null)
                 return new PutInfractionResponse { Success = false };
 
-            _dbContext.Entry(request.Infraction).State = EntityState.Modified;
+            infraction.BanDuration = request.BanDuration;
+            infraction.Points = request.Points;
+            infraction.Category = request.Category;
+            infraction.Body = request.Body;
+
+            if (request.LiftBan)
+                infraction.BanLiftDate = DateTime.Now;
+
+            _dbContext.Entry(infraction).State = EntityState.Modified;
 
             try
             {
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var comboToReturn = await _dbContext.Infractions.Where(infraction => infraction.Id == request.Infraction.Id).FirstOrDefaultAsync();
-                return new PutInfractionResponse { Success = true, Infraction = _mapper.Map<InfractionDto>(comboToReturn) };
+                var infractionToReturn = await _dbContext.Infractions.Where(infraction => infraction.Id == request.Id).FirstOrDefaultAsync();
+                return new PutInfractionResponse { Success = true, Infraction = _mapper.Map<InfractionDto>(infractionToReturn) };
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_dbContext.Combos.Any(combo => combo.Id == request.InfractionId))
+                if (!_dbContext.Infractions.Any(infraction => infraction.Id == request.Id))
                 {
                     return new PutInfractionResponse { Success = false };
                 }
