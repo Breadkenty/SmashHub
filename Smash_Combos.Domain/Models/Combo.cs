@@ -47,7 +47,7 @@ namespace Smash_Combos.Domain.Models
 
         public List<Comment> Comments { get; private set; }
 
-        public List<Report> Reports { get; private set; }
+        public List<Report> Reports { get; private set; } = new List<Report>();
 
         public int NetVote { get; private set; } = 0;
         public void VoteUp()
