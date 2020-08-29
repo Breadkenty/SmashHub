@@ -24,7 +24,11 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
 
         public async Task<DeleteInfractionResponse> Handle(DeleteInfractionRequest request, CancellationToken cancellationToken)
         {
-            var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId && infraction.User.Id == request.UserId).FirstOrDefaultAsync();
+            var infraction = await _dbContext.Infractions
+                                .Include(infraction => infraction.User)
+                                .Include(infraction => infraction.Moderator)
+                                .Where(infraction => infraction.Id == request.InfractionId && infraction.User.Id == request.UserId)
+                                .FirstOrDefaultAsync();
             if (infraction == null)
             {
                 return new DeleteInfractionResponse { Success = false };

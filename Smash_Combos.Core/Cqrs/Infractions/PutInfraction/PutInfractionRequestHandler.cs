@@ -42,7 +42,11 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
             try
             {
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var infractionToReturn = await _dbContext.Infractions.Where(infraction => infraction.Id == request.Id).FirstOrDefaultAsync();
+                var infractionToReturn = await _dbContext.Infractions
+                                                .Include(infraction => infraction.User)
+                                                .Include(infraction => infraction.Moderator)
+                                                .Where(infraction => infraction.Id == request.Id)
+                                                .FirstOrDefaultAsync();
                 return new PutInfractionResponse { Success = true, Infraction = _mapper.Map<InfractionDto>(infractionToReturn) };
             }
             catch (DbUpdateConcurrencyException)
