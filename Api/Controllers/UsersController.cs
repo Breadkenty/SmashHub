@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Smash_Combos.Core.Cqrs.Users.GetUser;
+using Smash_Combos.Core.Cqrs.Users.GetUsers;
+using Smash_Combos.Core.Cqrs.Users.PostUser;
 
 namespace Smash_Combos.Controllers
 {
@@ -18,88 +22,86 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly IDbContext _context;
+        private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public UsersController(IDbContext context)
+        public UsersController(IDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var response = await _mediator.Send(new GetUsersRequest());
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] int id)
         {
-            var user = await _context.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
+            var response = await _mediator.Send(new GetUserRequest { UserId = id });
 
-            if (user == null)
+            if (response == null)
             {
                 // Return a `404` response to the client indicating we could not find a combo with this id
                 return NotFound();
             }
 
             //  Return the combo as a JSON object.
-            return user;
+            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser([FromBody] User user)
         {
-            var emailExists = _context.Users.Any(existingUser => existingUser.Email.ToLower() == user.Email.ToLower());
-            var displayNameExists = _context.Users.Any(existingUser => existingUser.DisplayName.ToLower() == user.DisplayName.ToLower());
+            var response = await _mediator.Send(new PostUserRequest { User = user });
 
-            if (displayNameExists)
+            if (response.DisplayNameAlreadyExists)
             {
-                var response = new
+                var httpResponse = new
                 {
                     status = 400,
                     errors = new List<string>() { "There's already an account with this display name" }
                 };
-
-                return BadRequest(response);
+                return BadRequest(httpResponse);
             }
 
-            if (emailExists)
+            if (response.EmailAlreadyExists)
             {
-                var response = new
+                var httpResponse = new
                 {
                     status = 400,
                     errors = new List<string>() { "There's already an account with this email" }
                 };
-
-                return BadRequest(response);
+                return BadRequest(httpResponse);
             }
 
-            if (!user.PasswordMeetsCriteria)
+            if (response.PasswordDoesntMeetCriteria)
             {
-                var response = new
+                var httpResponse = new
                 {
                     status = 400,
                     errors = new List<string>() { "Password must be at least 8 characters" }
                 };
-
-                return BadRequest(response);
+                return BadRequest(httpResponse);
             }
 
-
-            // Indicate to the database context we want to add this new record
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync(CancellationToken.None);
+            if(response.User == null)
+            {
+                var httpResponse = new
+                {
+                    status = 500,
+                    errors = new List<string>() { "Internal server error" }
+                };
+                return StatusCode(500, httpResponse);
+            }
 
             // Return a response that indicates the object was created (status code `201`) and some additional
             // headers with details of the newly created object.
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        // Private helper method that looks up an existing user by the supplied id
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(user => user.Id == id);
+            return CreatedAtAction("GetUser", new { id = user.Id }, response.User);
         }
     }
 }
