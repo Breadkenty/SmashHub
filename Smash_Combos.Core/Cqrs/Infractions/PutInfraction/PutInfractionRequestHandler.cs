@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
                 return new PutInfractionResponse { Success = false };
 
             infraction.BanDuration = request.BanDuration;
-            infraction.Points = request.Points;
+            infraction.Points = DeterminePoints(request);
             infraction.Category = request.Category;
             infraction.Body = request.Body;
 
@@ -60,6 +61,20 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
                     throw;
                 }
             }
+        }
+        private int? DeterminePoints(PutInfractionRequest request)
+        {
+            if (request.Points != null)
+                return request.Points;
+
+            return request.Category switch
+            {
+                InfractionCategory.Spam => 1,
+                InfractionCategory.Inappropriate => 1,
+                InfractionCategory.Harassment => 2,
+                InfractionCategory.Other => request.Points,
+                _ => null,
+            };
         }
     }
 }
