@@ -38,7 +38,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
                 Body = request.Body,
                 BanDuration = request.BanDuration,
                 Category = request.Category,
-                Points = request.Points
+                Points = DeterminePoints(request)
             };
             _dbContext.Infractions.Add(infraction);
 
@@ -48,6 +48,21 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
             return _mapper.Map<PostInfractionResponse>(infraction);
+        }
+
+        private int? DeterminePoints(PostInfractionRequest request)
+        {
+            if (request.Points != null)
+                return request.Points;
+
+            return request.Category switch
+            {
+                InfractionCategory.Spam => 1,
+                InfractionCategory.Inappropriate => 1,
+                InfractionCategory.Harassment => 2,
+                InfractionCategory.Other => request.Points,
+                _ => null,
+            };
         }
     }
 }
