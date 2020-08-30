@@ -6,7 +6,8 @@ namespace Smash_Combos.Core.Cqrs
 {
     public abstract class ResponseBase
     {
-        public ResponseStatus Status { get; set; }
+        public ResponseStatus ResponseStatus { get; set; }
+        public string ResponseMessage { get; set; }
     }
 
     public abstract class ResponseBase<T> : ResponseBase
