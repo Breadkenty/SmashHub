@@ -10,6 +10,9 @@ using MediatR;
 using Smash_Combos.Core.Cqrs.Users.GetUser;
 using Smash_Combos.Core.Cqrs.Users.GetUsers;
 using Smash_Combos.Core.Cqrs.Users.PostUser;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Smash_Combos.Core.Cqrs.Users.UnbanUser;
 
 namespace Smash_Combos.Controllers
 {
@@ -102,6 +105,24 @@ namespace Smash_Combos.Controllers
             // Return a response that indicates the object was created (status code `201`) and some additional
             // headers with details of the newly created object.
             return CreatedAtAction("GetUser", new { id = user.Id }, response.User);
+        }
+
+        [HttpPut("unban/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<UnbanUserResponse>> UnbanUser([FromRoute] int id)
+        {
+            var response = await _mediator.Send(new UnbanUserRequest { UserId = id, ModeratorId = GetCurrentUserId() });
+
+            if(response == null)
+                return BadRequest();
+
+            return Ok(response);
+        }
+
+        private int GetCurrentUserId()
+        {
+            // Get the User Id from the claim and then parse it as an integer.
+            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }
