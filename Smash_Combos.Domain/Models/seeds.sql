@@ -86,4 +86,62 @@ INSERT INTO "Comments"
 VALUES
   ('2', '2018-05-22', 'lol', 21, 2);
 
--- update "Users" set "Admin" = 'true' where "Id" = 1 
+
+update "Users" set "Admin" = 'true' where "DisplayName" = "Moderator";
+
+INSERT INTO "Infractions"
+  ("UserId", "ModeratorId", "BanDuration", "Points", "Category", "Body", "DateInfracted")
+VALUES
+  (1, 8, 0, 1, 0, 'Spamming in the Peach Combo', '2020-09-01');
+
+INSERT INTO "Infractions"
+  ("UserId", "ModeratorId", "BanDuration", "Points", "Category", "Body", "DateInfracted")
+VALUES
+  (1, 8, 172800, 1, 0, 'Spamming again', '2020-09-01');
+
+INSERT INTO "Infractions"
+  ("UserId", "ModeratorId", "BanDuration", "Points", "Category", "Body" , "DateInfracted")
+VALUES
+  (2, 8, 0, 1, 1, 'Inappropriate posts', '2020-09-01');
+
+
+
+INSERT INTO "Reports"
+  ("UserId", "ReporterId", "ComboId", "Body", "DateReported", "Dismiss")
+VALUES
+  (1, 2, 3, 'This person is spamming', '2020-09-01', false);
+
+  INSERT INTO "Reports"
+  ("UserId", "ReporterId", "ComboId", "Body", "DateReported", "Dismiss")
+VALUES
+  (1, 2, 3, 'This person is spamming again', '2020-09-01', false);
+
+  INSERT INTO "Reports"
+  ("UserId", "ReporterId", "ComboId", "Body", "DateReported", "Dismiss")
+VALUES
+  (1, 2, 3, 'This person is spamming again and again', '2020-09-01', false);
+
+
+
+  INSERT INTO "Reports"
+  ("UserId", "ReporterId", "CommentId", "Body", "DateReported", "Dismiss")
+VALUES
+  (1, 2, 6, 'This person is spamming', '2020-09-01', false);
+
+  INSERT INTO "Reports"
+  ("UserId", "ReporterId", "CommentId", "Body", "DateReported", "Dismiss")
+VALUES
+  (1, 2, 7, 'This person is spamming again', '2020-09-01', false);
+
+  INSERT INTO "Reports"
+  ("UserId", "ReporterId", "CommentId", "Body", "DateReported", "Dismiss")
+VALUES
+  (1, 2, 5, 'This person is spamming again and again', '2020-09-01', false);
+
+
+
+-- Admin:
+-- update "Users" set "UserType" = 3 where "Id" = X ;
+
+--Moderator:
+-- update "Users" set "UserType" = 2 where "Id" = X ;
