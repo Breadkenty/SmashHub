@@ -42,10 +42,10 @@ namespace Smash_Combos.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] int id)
+        [HttpGet("{displayName}")]
+        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName)
         {
-            var response = await _mediator.Send(new GetUserRequest { UserId = id });
+            var response = await _mediator.Send(new GetUserRequest { DisplayName = displayName });
 
             if (response == null)
             {
@@ -92,7 +92,7 @@ namespace Smash_Combos.Controllers
                 return BadRequest(httpResponse);
             }
 
-            if(response.User == null)
+            if (response.User == null)
             {
                 var httpResponse = new
                 {
@@ -107,22 +107,27 @@ namespace Smash_Combos.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, response.User);
         }
 
-        [HttpPut("unban/{id}")]
+        [HttpPut("unban/{displayName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<UnbanUserResponse>> UnbanUser([FromRoute] int id)
+        public async Task<ActionResult<UnbanUserResponse>> UnbanUser([FromRoute] string displayName)
         {
-            var response = await _mediator.Send(new UnbanUserRequest { UserId = id, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new UnbanUserRequest { DisplayName = displayName, ModeratorDisplayName = GetCurrentUserDisplayName() });
 
-            if(response == null)
+            if (response == null)
                 return BadRequest();
 
             return Ok(response);
         }
 
-        private int GetCurrentUserId()
+        private bool UserExists(string displayName)
+        {
+            return _context.Users.Any(user => user.DisplayName == displayName);
+        }
+
+        private string GetCurrentUserDisplayName()
         {
             // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return User.Claims.FirstOrDefault(claim => claim.Type == "DisplayName").Value;
         }
     }
 }

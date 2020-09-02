@@ -26,7 +26,7 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
 
         public async Task<UnbanUserResponse> Handle(UnbanUserRequest unbanRequest, CancellationToken cancellationToken)
         {
-            var moderator = await _dbContext.Users.Where(user => user.Id == unbanRequest.ModeratorId).FirstOrDefaultAsync();
+            var moderator = await _dbContext.Users.Where(user => user.DisplayName == unbanRequest.ModeratorDisplayName).FirstOrDefaultAsync();
 
             if (moderator == null || (moderator.UserType != UserType.Moderator && moderator.UserType != UserType.Admin))
                 return null;
@@ -35,14 +35,14 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
                                 .Include(user => user.Comments)
                                 .Include(user => user.Combos)
                                 .Include(user => user.Infractions)
-                                .FirstOrDefaultAsync(user => user.Id == unbanRequest.UserId);
+                                .FirstOrDefaultAsync(user => user.DisplayName == unbanRequest.DisplayName);
 
             if (user == null)
                 return null;
 
-            var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.Id == unbanRequest.UserId).ToListAsync();
+            var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.DisplayName == unbanRequest.DisplayName).ToListAsync();
 
-            foreach(var infraction in infractions)
+            foreach (var infraction in infractions)
             {
                 if (infraction.IsActiveBan())
                 {
