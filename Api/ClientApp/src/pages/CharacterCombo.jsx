@@ -5,7 +5,7 @@ import moment from 'moment'
 import YouTube from 'react-youtube'
 
 import { useParams } from 'react-router'
-import { authHeader, getUserId, isLoggedIn } from '../auth'
+import { authHeader, getUserId, getUser, isLoggedIn } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -19,13 +19,30 @@ import { Comment } from './Comment'
 
 export function CharacterCombo() {
   const params = useParams()
+  const loggedInUser = getUser()
   const characterVariableName = params.characterVariableName
   const comboId = params.comboId
 
   const [character, setCharacter] = useState({})
 
-  const [combo, setCombo] = useState({})
-  const [comboAuthor, setComboAuthor] = useState('')
+  const [combo, setCombo] = useState({
+    id: 0,
+    userId: 0,
+    characterId: 0,
+    user: {},
+    datePosted: '',
+    title: '',
+    videoId: '',
+    videoStartTime: 0,
+    videoEndTime: 0,
+    comboInput: '',
+    trueCombo: false,
+    difficulty: '',
+    damage: 0,
+    notes: '',
+    comments: [],
+    netVote: 0,
+  })
 
   const [reportingCombo, setReportingCombo] = useState(false)
   const [comboReport, setComboReport] = useState({
@@ -34,9 +51,11 @@ export function CharacterCombo() {
     body: '',
   })
 
-  const [comments, setComments] = useState([])
   const [comment, setComment] = useState({
     comboId: parseInt(comboId),
+    user: {
+      displayName: loggedInUser.displayName,
+    },
     body: '',
   })
 
@@ -57,8 +76,6 @@ export function CharacterCombo() {
       .then(response => response.json())
       .then(apiData => {
         setCombo(apiData)
-        setComments(apiData.comments)
-        setComboAuthor(apiData.user.displayName)
       })
   }
 
@@ -122,9 +139,7 @@ export function CharacterCombo() {
     console.log(comboReport)
   }
 
-  const loggedInUser = getUserId()
-
-  const sortedComments = comments.sort(sortingFunctions[sortType])
+  combo.comments.sort(sortingFunctions[sortType])
 
   useEffect(getCharacter, [])
   useEffect(getCombo, [])
@@ -195,8 +210,9 @@ export function CharacterCombo() {
           {/* Combo detail */}
           <div className="detail">
             <h5>
-              Posted by {comboAuthor} {moment(combo.datePosted).fromNow()}
-              {loggedInUser === combo.userId && (
+              Posted by {combo.user.displayName}{' '}
+              {moment(combo.datePosted).fromNow()}
+              {loggedInUser.id === combo.userId && (
                 <Link
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
                 >
@@ -292,7 +308,7 @@ export function CharacterCombo() {
         </section>
 
         <section className="comments">
-          {comments.map(comment => (
+          {combo.comments.map(comment => (
             <Comment
               key={comment.id}
               loggedInUser={loggedInUser}

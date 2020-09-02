@@ -121,7 +121,7 @@ export function Comment(props) {
             >
               report
             </button>
-            {props.loggedInUser === props.comment.userId && (
+            {props.loggedInUser.id === props.comment.userId && (
               <>
                 <button
                   className="edit"
