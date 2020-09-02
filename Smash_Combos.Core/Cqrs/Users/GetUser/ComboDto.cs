@@ -15,5 +15,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
         public List<ReportDto> Reports { get; set; } = new List<ReportDto>();
 
         public string Title { get; set; }
+        public int NetVote { get; set; }
+        public string ComboInput { get; set; }
     }
 }

@@ -81,7 +81,7 @@ export function App() {
           <Route exact path="/tutorial">
             <Tutorial />
           </Route>
-          <Route exact path="/Breadkenty">
+          <Route exact path="/user/:displayName">
             <User />
           </Route>
         </Switch>

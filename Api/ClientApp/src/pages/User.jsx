@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 import { returnDifficulty } from '../components/returnDifficulty'
+import { useParams } from 'react-router'
+
+import moment from 'moment'
 
 export function User() {
-  const comboInputs =
-    'upTilt upTilt upTilt upTilt upTilt upTilt upTilt upTilt upTilt upTilt'
+  const params = useParams()
+  const displayName = params.displayName
+
+  const [user, setUser] = useState({
+    combos: [],
+    comments: [],
+    displayName: '',
+    infractions: 0,
+    userType: 1,
+  })
 
   const [toggleReportDropDown, setToggleReportDropDown] = useState(false)
   const [toggleInfractionDropDown, setToggleInfractionDropDown] = useState(
@@ -35,10 +46,31 @@ export function User() {
     event.preventDefault()
     console.log('Dismiss:')
   }
+
+  function getUser() {
+    fetch(`/api/Users/${displayName}`)
+      .then(response => response.json())
+      .then(apiData => {
+        setUser(apiData)
+      })
+  }
+
+  function getCharacter(characterVariableName) {
+    fetch(`/api/Characters/${characterVariableName}`)
+      .then(response => response.json())
+      .then(apiData => {
+        console.log(apiData)
+      })
+  }
+
+  useEffect(getUser, [])
+
+  console.log(user)
+
   return (
     <div className="user">
       <header>
-        <h1>Breadkenty</h1>
+        <h1>{displayName}</h1>
       </header>
 
       <section className="user-details">
@@ -401,523 +433,57 @@ export function User() {
       </section>
 
       <section className="combos">
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
+        {user.combos.map(combo => (
+          <div key={combo.id} className="combo">
+            <div className="vote">
+              <button className="button-blank">
+                <svg viewBox="0 0 81 45">
+                  <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
+                </svg>
+              </button>
+              <h3 className="black-text">{combo.netVote}</h3>
+              <button className="button-blank">
+                <svg className="down-vote" viewBox="0 0 81 45">
+                  <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
+                </svg>
+              </button>
             </div>
+            <div className="detail">
+              <header>
+                <div>
+                  <Link to={`/character/Peach`}>
+                    <img
+                      src={allCharacterCloseUp['Peach']}
+                      alt={`Peach's portrait`}
+                    />
+                  </Link>
+                  <Link to={`/character/Mario/1`}>
+                    <h3>{combo.title}</h3>
+                  </Link>
+                </div>
+                {returnDifficulty('hard ')}
+              </header>
 
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
+              <div className="combo-inputs">
+                {combo.comboInput.split(' ').map((input, index) => (
+                  <div
+                    key={index}
+                    className="combo-input"
+                    style={{
+                      backgroundImage: `url(${allComboInputs[input]})`,
+                    }}
+                  ></div>
+                )) || <></>}
               </div>
-              {returnDifficulty('hard ')}
-            </header>
 
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
+              <footer>
+                <h5 className="white-text">
+                  Posted {moment(combo.datePosted).fromNow()}
+                </h5>
+              </footer>
             </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
           </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
-        <div className="combo">
-          <div className="vote">
-            <button className="button-blank">
-              <svg viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-            <h3 className="black-text">21</h3>
-            <button className="button-blank">
-              <svg className="down-vote" viewBox="0 0 81 45">
-                <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="detail">
-            <header>
-              <div>
-                <Link to={`/character/Peach`}>
-                  <img
-                    src={allCharacterCloseUp['Peach']}
-                    alt={`Peach's portrait`}
-                  />
-                </Link>
-                <Link to={`/character/Mario/1`}>
-                  <h3>Some Cool Mario Combo</h3>
-                </Link>
-              </div>
-              {returnDifficulty('hard ')}
-            </header>
-
-            <div className="combo-inputs">
-              {comboInputs.split(' ').map((input, index) => (
-                <div
-                  key={index}
-                  className="combo-input"
-                  style={{
-                    backgroundImage: `url(${allComboInputs[input]})`,
-                  }}
-                ></div>
-              ))}
-            </div>
-
-            <footer>
-              <h5 className="white-text">Posted 2 days ago</h5>
-            </footer>
-          </div>
-        </div>
+        ))}
       </section>
     </div>
   )

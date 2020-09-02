@@ -40,7 +40,7 @@ export function Reports() {
           .map(user => (
             <>
               <p>{sumReports(user)}</p>
-              <Link to={`/${user.displayName}`}>{user.displayName}</Link>
+              <Link to={`/user/${user.displayName}`}>{user.displayName}</Link>
             </>
           ))}
       </section>
