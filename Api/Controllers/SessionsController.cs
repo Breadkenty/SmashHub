@@ -1,6 +1,8 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Smash_Combos.Core.Cqrs.Sessions.Login;
 using Smash_Combos.Core.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,60 +14,41 @@ namespace Smash_Combos.Controllers
     [ApiController]
     public class SessionsController : ControllerBase
     {
-        private readonly IDbContext _context;
+        private readonly IMediator _mediator;
 
-        readonly protected string JWT_KEY;
-
-        public SessionsController(IDbContext context, IConfiguration config)
+        public SessionsController(IMediator mediator)
         {
-            _context = context;
-            JWT_KEY = config["JWT_KEY"];
-        }
-
-        public class LoginUser
-        {
-            public string Email { get; set; }
-            public string Password { get; set; }
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginUser loginUser)
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest loginRequest)
         {
-            var foundUser = await _context.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == loginUser.Email.ToLower());
-            if (foundUser != null && foundUser.IsValidPassword(loginUser.Password))
-            {
-                // create a custom response
-                var response = new
-                {
-                    // This is the login token
-                    token = new TokenGenerator(JWT_KEY).TokenFor(foundUser),
-                    // The is the user details
-                    user = foundUser
-                };
+            var response = await _mediator.Send(loginRequest);
+            if(response.User != null && response.Token != null)
                 return Ok(response);
-            }
-            if (foundUser != null && !foundUser.IsValidPassword(loginUser.Password))
+
+            if (response.User != null && !response.PasswordIsValid)
             {
-                var response = new
+                var responseObject = new
                 {
                     status = 400,
-                    errors = new List<string>() { $"Invalid password" }
+                    errors = new List<string>() { response.ResponseMessage }
                 };
                 // Return our error with the custom response
-                return BadRequest(response);
+                return BadRequest(responseObject);
             }
             else
             {
                 // Make a custom error response
-                var response = new
+                var responseObject = new
                 {
                     status = 400,
-                    errors = new List<string>() { $"User does not exist" }
+                    errors = new List<string>() { response.ResponseMessage }
                 };
                 // Return our error with the custom response
-                return BadRequest(response);
+                return BadRequest(responseObject);
             }
         }
-
     }
 }

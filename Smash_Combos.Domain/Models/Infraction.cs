@@ -25,13 +25,27 @@ namespace Smash_Combos.Domain.Models
         
         public DateTime? BanLiftDate { get; set; }
 
-        public int? Points { get; private set; }
+        public int? Points { get; set; }
 
-        public InfractionCategory Category { get; private set; }
+        public InfractionCategory Category { get; set; }
 
         [Required]
         public string Body { get; set; }
 
         public DateTime DateInfracted { get; private set; }
+
+        public bool IsActiveBan()
+        {
+            if (BanDuration == null)
+                return false;
+
+            if (BanLiftDate != null && BanLiftDate < DateTime.Now)
+                return false;
+
+            if (DateInfracted.AddSeconds((double)BanDuration) > DateTime.Now)
+                return true;
+            else
+                return false;
+        }
     }
 }
