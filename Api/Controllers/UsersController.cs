@@ -126,8 +126,7 @@ namespace Smash_Combos.Controllers
 
         private string GetCurrentUserDisplayName()
         {
-            // Get the User Id from the claim and then parse it as an integer.
-            return User.Claims.FirstOrDefault(claim => claim.Type == "DisplayName").Value;
+            return User.Claims.SingleOrDefault(claim => claim.Type == "DisplayName").Value;
         }
     }
 }
