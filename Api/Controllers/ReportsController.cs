@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Cqrs.Reports.DeleteReport;
 using Smash_Combos.Core.Cqrs.Reports.GetReport;
+using Smash_Combos.Core.Cqrs.Reports.GetReportByDisplayName;
 using Smash_Combos.Core.Cqrs.Reports.GetReports;
 using Smash_Combos.Core.Cqrs.Reports.PostComboReport;
 using Smash_Combos.Core.Cqrs.Reports.PostCommentReport;
@@ -44,6 +45,17 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetReportRequest { ReportId = id });
+            if (response == null)
+                return NotFound();
+
+            return Ok(response);
+        }
+
+        // Get api/<ReportsController/displayName
+        [HttpGet("user/{displayName}")]
+        public async Task<ActionResult<GetReportByDisplayNameResponse>> GetReportByDisplayname([FromRoute] string displayName)
+        {
+            var response = await _mediator.Send(new GetReportByDisplayNameRequest { DisplayName = displayName });
             if (response == null)
                 return NotFound();
 
