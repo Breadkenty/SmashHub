@@ -8,7 +8,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
     {
         public int Id { get; set; }
 
-        public int CharacterId { get; set; }
+        public CharacterDto Character { get; set; }
 
         public DateTime DatePosted { get; set; }
 
