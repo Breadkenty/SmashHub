@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByDisplayName
+namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
 {
-    public class GetReportsByDisplayNameResponse
+    public class GetReportsByUserResponse
     {
         public int Id { get; set; }
 

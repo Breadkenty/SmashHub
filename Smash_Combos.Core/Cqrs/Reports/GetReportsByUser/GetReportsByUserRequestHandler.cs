@@ -8,23 +8,23 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByDisplayName
+namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
 {
-    public class GetReportsByDisplayNameRequestHandler : IRequestHandler<GetReportsByDisplayNameRequest, IEnumerable<GetReportsByDisplayNameResponse>>
+    public class GetReportsByUserRequestHandler : IRequestHandler<GetReportsByUserRequest, IEnumerable<GetReportsByUserResponse>>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetReportsByDisplayNameRequestHandler(IDbContext dbContext, IMapper mapper)
+        public GetReportsByUserRequestHandler(IDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<GetReportsByDisplayNameResponse>> Handle(GetReportsByDisplayNameRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetReportsByUserResponse>> Handle(GetReportsByUserRequest request, CancellationToken cancellationToken)
         {
             var reports = await _dbContext.Reports
-                .Where(report => report.User.DisplayName == request.DisplayName)
+                .Where(report => report.User.DisplayName == request.UserName)
                 .Include(report => report.User)
                 .Include(report => report.Reporter)
                 .Include(report => report.Comment)
@@ -34,7 +34,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByDisplayName
             if (reports == null)
                 return null;
 
-            return _mapper.Map<IEnumerable<GetReportsByDisplayNameResponse>>(reports);
+            return _mapper.Map<IEnumerable<GetReportsByUserResponse>>(reports);
         }
     }
 }

@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByDisplayName
+namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
 {
-    public class GetReportsByDisplayNameProfile : Profile
+    public class GetReportsByUserProfile : Profile
     {
-        public GetReportsByDisplayNameProfile()
+        public GetReportsByUserProfile()
         {
-            CreateMap<Report, GetReportsByDisplayNameResponse>();
+            CreateMap<Report, GetReportsByUserResponse>();
             CreateMap<User, UserDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<Combo, ComboDto>();
