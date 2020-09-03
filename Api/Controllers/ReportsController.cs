@@ -52,7 +52,7 @@ namespace Smash_Combos.Controllers
         }
 
         // Get api/<ReportsController/displayName
-        [HttpGet("user/{displayName}")]
+        [HttpGet("user/{userName}")]
         public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName)
         {
             var response = await _mediator.Send(new GetReportsByUserRequest { UserName = userName });

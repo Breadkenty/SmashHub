@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Smash_Combos.Domain\Smash_Combos.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Cqrs\Infractions\GetInfractionsByUser\" />
-  </ItemGroup>
-
 </Project>

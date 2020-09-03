@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction;
 using Smash_Combos.Core.Cqrs.Infractions.GetInfraction;
 using Smash_Combos.Core.Cqrs.Infractions.GetInfractions;
+using Smash_Combos.Core.Cqrs.Infractions.GetInfractionsByUser;
 using Smash_Combos.Core.Cqrs.Infractions.PostInfraction;
 using Smash_Combos.Core.Cqrs.Infractions.PutInfraction;
 using Smash_Combos.Domain.Models;
@@ -40,6 +41,17 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<GetInfractionResponse>> GetInfraction([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetInfractionRequest { InfractionId = id });
+            if (response == null)
+                return NotFound();
+
+            return Ok(response);
+        }
+
+        // GET api/<InfractionsController>/user/Username
+        [HttpGet("user/{userName}")]
+        public async Task<ActionResult<GetInfractionsByUserResponse>> GetInfractionsByUser([FromRoute] string userName)
+        {
+            var response = await _mediator.Send(new GetInfractionsByUserRequest { UserName = userName });
             if (response == null)
                 return NotFound();
 
