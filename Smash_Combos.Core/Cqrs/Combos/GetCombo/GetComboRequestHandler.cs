@@ -22,7 +22,11 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
 
         public async Task<GetComboResponse> Handle(GetComboRequest request, CancellationToken cancellationToken)
         {
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).Include(combo => combo.User).Include(combo => combo.Comments).FirstOrDefaultAsync();
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId)
+                .Include(combo => combo.User)
+                .Include(combo => combo.Comments)
+                    .ThenInclude(comment => comment.User)
+                .FirstOrDefaultAsync();
 
             if (combo == null)
                 return new GetComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };

@@ -7,6 +7,5 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
     public class UserDto
     {
         public string DisplayName { get; set; }
-        public string Email { get; set; }
     }
 }

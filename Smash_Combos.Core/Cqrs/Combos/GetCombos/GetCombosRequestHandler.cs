@@ -23,7 +23,12 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombos
 
         public async Task<GetCombosResponse> Handle(GetCombosRequest request, CancellationToken cancellationToken)
         {
-            var combos = await _dbContext.Combos.Include(combo => combo.User).Include(combo => combo.Comments).ToListAsync();
+            var combos = await _dbContext.Combos
+                .Include(combo => combo.User)
+                .Include(combo => combo.Comments)
+                    .ThenInclude(comment => comment.User)
+                .ToListAsync();
+
             return new GetCombosResponse { Data = _mapper.Map<IEnumerable<ComboDto>>(combos), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{combos.Count} found" };
         }
     }
