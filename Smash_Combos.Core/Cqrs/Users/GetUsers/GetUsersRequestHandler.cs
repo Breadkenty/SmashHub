@@ -27,9 +27,12 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUsers
             var users = await _dbContext.Users
                         .Include(user => user.Combos)
                             .ThenInclude(combo => combo.Reports)
+                        .Include(user => user.Combos)
+                            .ThenInclude(combo => combo.Character)
                         .Include(user => user.Comments)
                             .ThenInclude(comment => comment.Reports)
                         .Include(user => user.Infractions)
+                            .ThenInclude(infraction => infraction.Moderator)
                         .ToListAsync();
 
             var responseList = new List<GetUsersResponse>();

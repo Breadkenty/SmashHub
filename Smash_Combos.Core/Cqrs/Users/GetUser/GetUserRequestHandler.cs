@@ -27,6 +27,8 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
             var user = await _dbContext.Users
                         .Include(user => user.Combos)
                             .ThenInclude(combo => combo.Reports)
+                        .Include(user => user.Combos)
+                            .ThenInclude(combo => combo.Character)
                         .Include(user => user.Comments)
                             .ThenInclude(comment => comment.Reports)
                         .Include(user => user.Infractions)
