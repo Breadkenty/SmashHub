@@ -24,16 +24,14 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
 
         public async Task<DeleteComboResponse> Handle(DeleteComboRequest request, CancellationToken cancellationToken)
         {
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId && combo.UserId == request.UserId).FirstOrDefaultAsync();
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId && combo.User.Id == request.UserId).FirstOrDefaultAsync();
             if (combo == null)
-            {
-                return new DeleteComboResponse { Success = false };
-            }
+                return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
 
             _dbContext.Combos.Remove(combo);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return new DeleteComboResponse { Success = true, Combo = _mapper.Map<ComboDto>(combo) };
+            return new DeleteComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"Combo '{combo.Title}' was deleted" };
         }
     }
 }

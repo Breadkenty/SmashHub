@@ -25,29 +25,46 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 
         public async Task<PutComboResponse> Handle(PutComboRequest request, CancellationToken cancellationToken)
         {
-            var comboExists = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId && combo.UserId == request.UserId).AnyAsync();
+            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
 
-            if (!comboExists)
-                return new PutComboResponse { Success = false };
+            if (user == null)
+                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find User" };
 
-            _dbContext.Entry(request.Combo).State = EntityState.Modified;
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+
+            if (combo == null)
+                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Combo" };
+
+            if(combo.User.Id != user.Id && user.UserType != UserType.Admin)
+                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this Combo" };
+
+            var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
+
+            if(character == null)
+                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Character" };
+
+            combo.Character = character;
+            combo.Title = request.Title;
+            combo.VideoId = request.VideoId;
+            combo.VideoStartTime = request.VideoStartTime;
+            combo.VideoEndTime = request.VideoEndTime;
+            combo.ComboInput = request.ComboInput;
+            combo.TrueCombo = request.TrueCombo; ;
+            combo.Difficulty = request.Difficulty;
+            combo.Damage = request.Damage;
+            combo.Notes = request.Notes;
+
+            _dbContext.Entry(combo).State = EntityState.Modified;
 
             try
             {
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.Combo.Id).FirstOrDefaultAsync();
-                return new PutComboResponse { Success = true, Combo = _mapper.Map<ComboDto>(comboToReturn) };
+                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+                return new PutComboResponse { Data = _mapper.Map<ComboDto>(comboToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo updated" };
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_dbContext.Combos.Any(combo => combo.Id == request.ComboId))
-                {
-                    return new PutComboResponse { Success = false };
-                }
-                else
-                {
-                    throw;
-                }
+                return new PutComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
             }
         }
     }

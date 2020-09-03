@@ -1,36 +1,26 @@
-﻿using MediatR;
-using Smash_Combos.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
 {
-    public class PostComboRequest : IRequest<PostComboResponse>
+    public class ComboDto
     {
-        [Required]
-        public int CharacterId { get; set; }
-        [Required]
+        public int Id { get; set; }
         public int UserId { get; set; }
-        [Required]
-        [MaxLength(128)]
+        public CharacterDto Character { get; set; }
+        public UserDto User { get; set; }
+        public DateTime DatePosted { get; set; }
         public string Title { get; set; }
-        [Required]
         public string VideoId { get; set; }
-        [Required]
         public int VideoStartTime { get; set; }
-        [Required]
         public int VideoEndTime { get; set; }
-        [Required]
         public string ComboInput { get; set; }
-        [Required]
         public bool TrueCombo { get; set; }
-        [Required]
         public string Difficulty { get; set; }
-        [Required]
         public int Damage { get; set; }
-        [MaxLength(512)]
         public string Notes { get; set; }
+        public List<CommentDto> Comments { get; set; }
+        public int NetVote { get; set; }
     }
 }

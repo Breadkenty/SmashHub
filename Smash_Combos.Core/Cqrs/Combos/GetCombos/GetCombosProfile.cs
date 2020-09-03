@@ -10,9 +10,10 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombos
     {
         public GetCombosProfile()
         {
-            CreateMap<Combo, GetCombosResponse>();
+            CreateMap<Combo, ComboDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<User, UserDto>();
+            CreateMap<Character, CharacterDto>();
         }
     }
 }

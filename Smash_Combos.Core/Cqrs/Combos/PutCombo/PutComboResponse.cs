@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 {
-    public class PutComboResponse
+    public class PutComboResponse : ResponseBase<ComboDto>
     {
-        public bool Success { get; set; }
-        public ComboDto Combo { get; set; }
     }
 }

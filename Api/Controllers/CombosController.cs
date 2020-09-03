@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Cqrs.Combos.DeleteCombo;
 using Smash_Combos.Core.Cqrs.Combos.GetCombo;
@@ -12,6 +14,7 @@ using Smash_Combos.Core.Services;
 using Smash_Combos.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,10 +39,23 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Combos
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCombosResponse>>> GetCombos()
+        public async Task<ActionResult<IEnumerable<Core.Cqrs.Combos.GetCombo.ComboDto>>> GetCombos()
         {
             var response = await _mediator.Send(new GetCombosRequest());
-            return Ok(response);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // GET: api/Combos/5
@@ -49,14 +65,23 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetComboResponse>> GetCombo(int id)
+        public async Task<ActionResult<Core.Cqrs.Combos.GetCombo.ComboDto>> GetCombo([FromRoute] int id)
         {
-            var response = await _mediator.Send(new GetComboRequest { ComboID = id });
+            var response = await _mediator.Send(new GetComboRequest { ComboId = id });
 
-            if (response == null)
-                return NotFound(); // Return a `404` response to the client indicating we could not find a combo with this id
-
-            return Ok(response); // Return the combo as a JSON object.
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // PUT: api/Combos/5
@@ -72,25 +97,25 @@ namespace Smash_Combos.Controllers
         //
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutCombo(int id, Combo combo)
+        public async Task<IActionResult> PutCombo([FromRoute] int id, [FromBody] PutComboRequest putComboRequest)
         {
-            if (id != combo.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != putComboRequest.ComboId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
-            try
-            {
-                var response = await _mediator.Send(new PutComboRequest { Combo = combo, ComboId = id, UserId = combo.UserId });
+            var response = await _mediator.Send(putComboRequest);
 
-                if (response.Success)
-                    return Ok(response.Combo); // Return the updated combo.
-                else if (response.Combo == null)
-                    return NotFound();
-                else
-                    return StatusCode(500); // The combo was found, but couldn't be updated -> something went wrong. How should we handle this?
-            }
-            catch (DbUpdateConcurrencyException)
+            switch (response.ResponseStatus)
             {
-                throw; // Should we throw the exception here or deal with it otherwise?
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
         }
 
@@ -105,12 +130,25 @@ namespace Smash_Combos.Controllers
         //
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostComboResponse>> PostCombo(Combo combo)
+        public async Task<ActionResult<PostComboResponse>> PostCombo([FromBody] PostComboRequest request)
         {
-            var response = await _mediator.Send(new PostComboRequest { Combo = combo, UserId = GetCurrentUserId() });
+            request.UserId = GetCurrentUserId();
 
-            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
-            return CreatedAtAction("GetCombo", new { id = response.Id }, response);
+            var response = await _mediator.Send(request);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return CreatedAtAction("GetCombo", new { id = response.Data.Id }, response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // DELETE: api/Combos/5
@@ -121,14 +159,23 @@ namespace Smash_Combos.Controllers
         //
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> DeleteCombo(int id)
+        public async Task<IActionResult> DeleteCombo([FromRoute] int id)
         {
             var response = await _mediator.Send(new DeleteComboRequest { ComboId = id, UserId = GetCurrentUserId() });
 
-            if (response.Combo == null) // There wasn't a combo with that id so return a `404` not found
-                return NotFound();
-
-            return Ok(response.Combo); // Send back a copy of the deleted data.
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         private int GetCurrentUserId()

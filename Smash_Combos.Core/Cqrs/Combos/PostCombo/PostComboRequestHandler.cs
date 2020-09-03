@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,12 +25,33 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
 
         public async Task<PostComboResponse> Handle(PostComboRequest request, CancellationToken cancellationToken)
         {
-            request.Combo.UserId = request.UserId;
+            var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
 
-            _dbContext.Combos.Add(request.Combo);
+            if (user == null)
+                return new PostComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
+            if(character == null)
+                return new PostComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Character not found" };
+
+            var combo = new Combo
+            {
+                Character = character,
+                User = user,
+                Title = request.Title,
+                VideoId = request.VideoId,
+                VideoStartTime = request.VideoStartTime,
+                VideoEndTime = request.VideoEndTime,
+                ComboInput = request.ComboInput,
+                TrueCombo = request.TrueCombo,
+                Difficulty = request.Difficulty,
+                Damage = request.Damage,
+                Notes = request.Notes
+            };
+
+            _dbContext.Combos.Add(combo);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return _mapper.Map<PostComboResponse>(request.Combo);
+            return new PostComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo created" };
         }
     }
 }

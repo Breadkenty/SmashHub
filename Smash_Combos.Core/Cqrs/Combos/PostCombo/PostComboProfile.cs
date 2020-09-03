@@ -10,9 +10,10 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
     {
         public PostComboProfile()
         {
-            CreateMap<Combo, PostComboResponse>();
+            CreateMap<Combo, ComboDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<User, UserDto>();
+            CreateMap<Character, CharacterDto>();
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Combos.GetCombos
 {
-    public class GetCombosRequestHandler : IRequestHandler<GetCombosRequest, IEnumerable<GetCombosResponse>>
+    public class GetCombosRequestHandler : IRequestHandler<GetCombosRequest, GetCombosResponse>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -21,10 +21,10 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombos
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<GetCombosResponse>> Handle(GetCombosRequest request, CancellationToken cancellationToken)
+        public async Task<GetCombosResponse> Handle(GetCombosRequest request, CancellationToken cancellationToken)
         {
             var combos = await _dbContext.Combos.Include(combo => combo.User).Include(combo => combo.Comments).ToListAsync();
-            return _mapper.Map<IEnumerable<GetCombosResponse>>(combos);
+            return new GetCombosResponse { Data = _mapper.Map<IEnumerable<ComboDto>>(combos), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{combos.Count} found" };
         }
     }
 }

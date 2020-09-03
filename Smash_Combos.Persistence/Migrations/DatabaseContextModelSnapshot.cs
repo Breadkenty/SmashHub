@@ -292,7 +292,7 @@ namespace Smash_Combos.Persistence.Migrations
 
             modelBuilder.Entity("Smash_Combos.Domain.Models.Combo", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Character", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Character", "Character")
                         .WithMany("Combos")
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)

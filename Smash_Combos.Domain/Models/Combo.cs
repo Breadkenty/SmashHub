@@ -7,12 +7,11 @@ namespace Smash_Combos.Domain.Models
     public class Combo
     {
         public int Id { get; set; }
-
-        public int UserId { get; set; }
+        
+        [Required]
+        public Character Character { get; set; }
 
         [Required]
-        public int CharacterId { get; set; }
-
         public User User { get; set; }
 
         public DateTime DatePosted { get; private set; } = DateTime.Now;
@@ -45,7 +44,7 @@ namespace Smash_Combos.Domain.Models
         [MaxLength(512)]
         public string Notes { get; set; }
 
-        public List<Comment> Comments { get; private set; }
+        public List<Comment> Comments { get; private set; } = new List<Comment>();
 
         public List<Report> Reports { get; private set; } = new List<Report>();
 

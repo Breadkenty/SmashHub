@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Combos.GetCombos
 {
-    public class GetCombosRequest : IRequest<IEnumerable<GetCombosResponse>>
+    public class GetCombosRequest : IRequest<GetCombosResponse>
     {
     }
 }
