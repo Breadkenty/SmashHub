@@ -30,6 +30,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
                         .Include(user => user.Comments)
                             .ThenInclude(comment => comment.Reports)
                         .Include(user => user.Infractions)
+                            .ThenInclude(infraction => infraction.Moderator)
                         .Where(user => user.DisplayName == request.DisplayName)
                         .FirstOrDefaultAsync();
 
