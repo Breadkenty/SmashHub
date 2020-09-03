@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useParams } from 'react-router'
+import { authHeader } from '../auth'
 
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 import { returnDifficulty } from '../components/returnDifficulty'
-import { useParams } from 'react-router'
+
+import { sortingFunctions } from '../components/sortingFunctions'
+import { Report } from './Report'
 
 import moment from 'moment'
 
@@ -16,9 +20,11 @@ export function User() {
     combos: [],
     comments: [],
     displayName: '',
-    infractions: 0,
+    infractions: [],
     userType: 1,
   })
+
+  const [reports, setReports] = useState([])
 
   const [toggleReportDropDown, setToggleReportDropDown] = useState(false)
   const [toggleInfractionDropDown, setToggleInfractionDropDown] = useState(
@@ -34,17 +40,21 @@ export function User() {
     body: '',
   })
 
-  const [confirmDismiss, setConfirmDismiss] = useState(false)
-
   const handleSubmit = event => {
     event.preventDefault()
     console.log('Submit:')
     console.log(infraction)
   }
 
-  const handleDismiss = event => {
+  function handleVote(event, id, upOrDown) {
     event.preventDefault()
-    console.log('Dismiss:')
+
+    fetch(`/api/ComboVotes/${id}/${upOrDown}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    }).then(() => {
+      getUser()
+    })
   }
 
   function getUser() {
@@ -52,6 +62,14 @@ export function User() {
       .then(response => response.json())
       .then(apiData => {
         setUser(apiData)
+      })
+  }
+
+  function getUserReports() {
+    fetch(`api/Reports/user/${displayName}`)
+      .then(response => response.json())
+      .then(apiData => {
+        setReports(apiData)
       })
   }
 
@@ -63,7 +81,18 @@ export function User() {
       })
   }
 
+  function sumInfraction(user) {
+    let totalInfraction = 0
+    user.infractions.forEach(
+      infraction => (totalInfraction = totalInfraction + infraction.points)
+    )
+    return totalInfraction
+  }
+
   useEffect(getUser, [])
+  useEffect(getUserReports, [])
+
+  reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
 
   console.log(user)
 
@@ -324,42 +353,15 @@ export function User() {
           </form>
 
           <div className="reports-header">
-            <h5>Type</h5>
+            <h5>Date</h5>
             <h5>Reported Content</h5>
             <h5>Comments</h5>
             <h5>Reported By</h5>
           </div>
-          <div className="reports-row">
-            {confirmDismiss ? (
-              <div className="report-dismiss">
-                <p>Are you sure you want to dismiss this report?: </p>
-                <button onClick={handleDismiss}>yes</button>
-                <button
-                  onClick={() => {
-                    setConfirmDismiss(false)
-                  }}
-                >
-                  no
-                </button>
-              </div>
-            ) : (
-              <div className="report-dismiss">
-                <button
-                  onClick={() => {
-                    setConfirmDismiss(true)
-                  }}
-                >
-                  dismiss
-                </button>
-              </div>
-            )}
 
-            <p>Spam</p>
-            <Link to="#">Down tilt ground float nair</Link>
-            <p>This is inappropriate, please remove</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p className="report-date">08/21/20</p>
-          </div>
+          {reports.map(report => (
+            <Report report={report} />
+          ))}
         </div>
       </section>
 
@@ -367,7 +369,7 @@ export function User() {
         <header>
           <div>
             <h3>Infractions:</h3>
-            <h3 className="points">3</h3>
+            <h3 className="points">{sumInfraction(user)}</h3>
           </div>
           <button
             onClick={() => {
@@ -405,30 +407,14 @@ export function User() {
             <h5>Moderator</h5>
             <h5>Date</h5>
           </div>
-          <div className="reports-row">
-            <p className="points">2</p>
-            <p>Infracted for spamming</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p>08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p className="points">2</p>
-            <p>Infracted for spamming</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p>08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p className="points">2</p>
-            <p>Infracted for spamming</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p>08/21/20</p>
-          </div>
-          <div className="reports-row">
-            <p className="points">2</p>
-            <p>Infracted for spamming</p>
-            <Link to="#">Sleeping-dev</Link>
-            <p>08/21/20</p>
-          </div>
+          {user.infractions.map(infraction => (
+            <div className="reports-row">
+              <p className="points">{infraction.points}</p>
+              <p>{infraction.body}</p>
+              <Link to="#">{infraction.moderator.displayName}</Link>
+              <p>{moment(infraction.dateInfracted).format('L')}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -436,13 +422,23 @@ export function User() {
         {user.combos.map(combo => (
           <div key={combo.id} className="combo">
             <div className="vote">
-              <button className="button-blank">
+              <button
+                className="button-blank"
+                onClick={event => {
+                  handleVote(event, combo.id, 'upvote')
+                }}
+              >
                 <svg viewBox="0 0 81 45">
                   <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
                 </svg>
               </button>
               <h3 className="black-text">{combo.netVote}</h3>
-              <button className="button-blank">
+              <button
+                className="button-blank"
+                onClick={event => {
+                  handleVote(event, combo.id, 'downvote')
+                }}
+              >
                 <svg className="down-vote" viewBox="0 0 81 45">
                   <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
                 </svg>
