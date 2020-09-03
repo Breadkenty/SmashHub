@@ -24,7 +24,6 @@ export function Reports() {
   }
 
   useEffect(getReports, [])
-  console.log(users)
 
   return (
     <div className="reports">

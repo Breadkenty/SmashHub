@@ -94,8 +94,6 @@ export function User() {
 
   reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
 
-  console.log(user)
-
   return (
     <div className="user">
       <header>
