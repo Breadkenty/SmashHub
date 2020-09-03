@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Reports.GetReportByDisplayName
+namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByDisplayName
 {
-    public class GetReportByDisplayNameResponse
+    public class GetReportsByDisplayNameResponse
     {
         public int Id { get; set; }
 
         public UserDto User { get; set; }
 
         public UserDto Reporter { get; set; }
+
+        public CommentDto Comment { get; set; }
+
+        public ComboDto Combo { get; set; }
 
         public string Body { get; set; }
 

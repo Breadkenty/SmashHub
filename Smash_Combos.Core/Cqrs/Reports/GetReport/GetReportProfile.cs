@@ -12,6 +12,8 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
         {
             CreateMap<Report, GetReportResponse>();
             CreateMap<User, UserDto>();
+            CreateMap<Combo, ComboDto>();
+            CreateMap<Comment, CommentDto>();
         }
     }
 }

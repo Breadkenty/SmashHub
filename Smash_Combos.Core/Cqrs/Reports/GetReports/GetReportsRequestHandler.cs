@@ -24,8 +24,10 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReports
         public async Task<IEnumerable<GetReportsResponse>> Handle(GetReportsRequest request, CancellationToken cancellationToken)
         {
             var reports = await _dbContext.Reports
-                .Include(infraction => infraction.User)
-                .Include(infraction => infraction.Reporter)
+                .Include(report => report.User)
+                .Include(report => report.Reporter)
+                .Include(report => report.Combo)
+                .Include(report => report.Comment)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<GetReportsResponse>>(reports);

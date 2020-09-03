@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Reports.GetReportByDisplayName
+namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByDisplayName
 {
     public class UserDto
     {

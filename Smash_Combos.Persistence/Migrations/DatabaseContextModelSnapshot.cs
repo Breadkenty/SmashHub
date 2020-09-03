@@ -335,11 +335,11 @@ namespace Smash_Combos.Persistence.Migrations
 
             modelBuilder.Entity("Smash_Combos.Domain.Models.Report", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Combo", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Combo", "Combo")
                         .WithMany("Reports")
                         .HasForeignKey("ComboId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.Comment", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Comment", "Comment")
                         .WithMany("Reports")
                         .HasForeignKey("CommentId");
 

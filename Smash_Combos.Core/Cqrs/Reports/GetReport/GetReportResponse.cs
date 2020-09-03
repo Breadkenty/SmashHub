@@ -12,6 +12,10 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
 
         public UserDto Reporter { get; set; }
 
+        public CommentDto Comment { get; set; }
+
+        public ComboDto Combo { get; set; }
+
         public string Body { get; set; }
 
         public DateTime DateReported { get; set; }
