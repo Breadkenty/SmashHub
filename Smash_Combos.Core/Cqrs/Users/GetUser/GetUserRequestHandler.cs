@@ -34,7 +34,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
                         .Include(user => user.Infractions)
                             .ThenInclude(infraction => infraction.Moderator)
                         .Where(user => user.DisplayName == request.DisplayName)
-                        .SingleOrDefaultAsync();
+                        .FirstOrDefaultAsync();
 
             if (user == null)
                 return null;

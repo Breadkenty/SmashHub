@@ -7,6 +7,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
     public class ComboDto
     {
         public int Id { get; set; }
+        public CharacterDto Character { get; set; }
         public DateTime DatePosted { get; set; }
         public string Title { get; set; }
         public string VideoId { get; set; }

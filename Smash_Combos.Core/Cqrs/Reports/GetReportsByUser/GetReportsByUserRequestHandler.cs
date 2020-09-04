@@ -29,6 +29,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
                 .Include(report => report.Reporter)
                 .Include(report => report.Comment)
                 .Include(report => report.Combo)
+                    .ThenInclude(combo => combo.Character)
                 .ToListAsync();
 
             if (reports == null)
