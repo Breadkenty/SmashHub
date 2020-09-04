@@ -29,11 +29,6 @@ export function Report(props) {
     user: {},
   })
 
-  const handleDismiss = event => {
-    event.preventDefault()
-    console.log('Dismiss:')
-  }
-
   useEffect(() => {
     setReport(props.report)
   }, [])
@@ -59,7 +54,7 @@ export function Report(props) {
       {confirmDismiss ? (
         <div className="report-dismiss">
           <p>Are you sure you want to dismiss this report?: </p>
-          <button onClick={handleDismiss}>yes</button>
+          <button onClick={props.handleDismiss}>yes</button>
           <button
             onClick={() => {
               setConfirmDismiss(false)

@@ -11,6 +11,7 @@ import { sortingFunctions } from '../components/sortingFunctions'
 import { Report } from './Report'
 
 import moment from 'moment'
+import { Infraction } from './Infraction'
 
 export function User() {
   const params = useParams()
@@ -44,6 +45,11 @@ export function User() {
     event.preventDefault()
     console.log('Submit:')
     console.log(infraction)
+  }
+
+  const handleDismiss = event => {
+    event.preventDefault()
+    console.log('Dismiss:')
   }
 
   function handleVote(event, id, upOrDown) {
@@ -408,12 +414,7 @@ export function User() {
             <h5>Date</h5>
           </div>
           {user.infractions.map(infraction => (
-            <div className="reports-row">
-              <p className="points">{infraction.points}</p>
-              <p>{infraction.body}</p>
-              <Link to="#">{infraction.moderator.displayName}</Link>
-              <p>{moment(infraction.dateInfracted).format('L')}</p>
-            </div>
+            <Infraction infraction={infraction} handleDismiss={handleDismiss} />
           ))}
         </div>
       </section>
