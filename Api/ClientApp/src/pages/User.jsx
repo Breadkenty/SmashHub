@@ -100,8 +100,6 @@ export function User() {
 
   reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
 
-  console.log(reports)
-
   return (
     <div className="user">
       <header>
@@ -448,17 +446,19 @@ export function User() {
             <div className="detail">
               <header>
                 <div>
-                  <Link to={`/character/Peach`}>
+                  <Link to={`/character/${combo.character.variableName}`}>
                     <img
-                      src={allCharacterCloseUp['Peach']}
-                      alt={`Peach's portrait`}
+                      src={
+                        allCharacterCloseUp[`${combo.character.variableName}`]
+                      }
+                      alt={`${combo.character.name}'s portrait`}
                     />
                   </Link>
-                  <Link to={`/character/Mario/1`}>
+                  <Link to={`/character/${combo.character.variableName}/1`}>
                     <h3>{combo.title}</h3>
                   </Link>
                 </div>
-                {returnDifficulty('hard ')}
+                {returnDifficulty(`${combo.difficulty}`)}
               </header>
 
               <div className="combo-inputs">

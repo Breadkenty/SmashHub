@@ -17,5 +17,6 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
         public string Title { get; set; }
         public int NetVote { get; set; }
         public string ComboInput { get; set; }
+        public string Difficulty { get; set; }
     }
 }
