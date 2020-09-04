@@ -10,5 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
         public DateTime DatePosted { get; private set; }
         public string Body { get; set; }
         public int NetVote { get; private set; }
+
+        public ComboDto Combo { get; set; }
     }
 }
