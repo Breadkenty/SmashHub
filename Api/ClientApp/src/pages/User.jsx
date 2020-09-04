@@ -94,6 +94,8 @@ export function User() {
 
   reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
 
+  console.log(reports)
+
   return (
     <div className="user">
       <header>
@@ -104,7 +106,7 @@ export function User() {
         <header>
           <div>
             <h3>Reports: </h3>
-            <h3 className="points">5</h3>
+            <h3 className="points">{reports.length}</h3>
           </div>
           <button
             onClick={() => {
