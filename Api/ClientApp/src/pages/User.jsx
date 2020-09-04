@@ -454,7 +454,9 @@ export function User() {
                       alt={`${combo.character.name}'s portrait`}
                     />
                   </Link>
-                  <Link to={`/character/${combo.character.variableName}/1`}>
+                  <Link
+                    to={`/character/${combo.character.variableName}/${combo.id}`}
+                  >
                     <h3>{combo.title}</h3>
                   </Link>
                 </div>
