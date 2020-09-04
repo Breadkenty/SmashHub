@@ -40,7 +40,7 @@ export function Report(props) {
         to={
           report.combo
             ? `/character/${report.combo.character.variableName}/${report.combo.id}`
-            : `/character/${report.comment.combo.character.variableName}/${report.comment.combo.id}`
+            : `/character/${report.comment.combo.character.variableName}/${report.comment.combo.id}#${report.comment.id}`
         }
       >
         {report.combo

@@ -61,7 +61,7 @@ export function Comment(props) {
   }
 
   return (
-    <div className="comment">
+    <div className="comment" id={props.comment.id}>
       <div>
         <div className="vote">
           <button
