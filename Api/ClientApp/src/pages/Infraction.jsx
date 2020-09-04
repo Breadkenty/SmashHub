@@ -9,7 +9,9 @@ export function Infraction(props) {
     <div className="reports-row">
       <p className="points">{props.infraction.points}</p>
       <p>{props.infraction.body}</p>
-      <Link to="#">{props.infraction.moderator.displayName}</Link>
+      <Link to={`/user/${props.infraction.moderator.displayName}`}>
+        {props.infraction.moderator.displayName}
+      </Link>
       <p>{moment(props.infraction.dateInfracted).format('L')}</p>
       {confirmDismiss ? (
         <div className="report-dismiss">
