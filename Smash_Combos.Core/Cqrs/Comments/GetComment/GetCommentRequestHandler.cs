@@ -34,7 +34,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.GetComment
             if (comment == null)
                 return new GetCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
 
-            return new GetCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment found" };
+            return new GetCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment found" };
         }
     }
 }

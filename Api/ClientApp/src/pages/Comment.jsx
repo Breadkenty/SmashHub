@@ -60,6 +60,8 @@ export function Comment(props) {
     console.log(commentReport)
   }
 
+  console.log(props.comment)
+
   return (
     <div className="comment" id={props.comment.id}>
       <div>
@@ -121,7 +123,7 @@ export function Comment(props) {
             >
               report
             </button>
-            {props.loggedInUser.id === props.comment.userId && (
+            {props.loggedInUser.id === props.comment.user.id && (
               <>
                 <button
                   className="edit"
