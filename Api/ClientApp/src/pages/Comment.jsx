@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 import moment from 'moment'
 import { authHeader } from '../auth'
 
-import { getUserId } from '../auth'
-
 export function Comment(props) {
-  const [editedComment, setEditedComment] = useState(props.comment)
+  const [editedComment, setEditedComment] = useState({
+    id: props.comment.id,
+    user: {
+      displayName: props.comment.user.id,
+    },
+    body: props.comment.id,
+  })
 
   const [editingComment, setEditingComment] = useState(false)
   const [errorMessage, setErrorMessage] = useState()

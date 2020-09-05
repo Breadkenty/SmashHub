@@ -29,17 +29,17 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
             User user = null;
             try
             {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+                user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).SingleOrDefaultAsync();
             }
             catch (InvalidOperationException)
             {
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
             }
 
-            if(user == null)
+            if (user == null)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
 
-            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.Id).FirstOrDefaultAsync();
 
             if (comment == null)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
@@ -56,7 +56,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
                 var commentToReturn = await _dbContext.Comments
                     .Include(comment => comment.User)
-                    .Where(comment => comment.Id == request.CommentId)
+                    .Where(comment => comment.Id == request.Id)
                     .FirstOrDefaultAsync();
                 return new PutCommentResponse { Data = _mapper.Map<CommentDto>(commentToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment edited" };
             }
