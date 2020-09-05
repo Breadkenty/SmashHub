@@ -8,6 +8,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Smash_Combos.Core.Cqrs.Comments.GetComments;
+using Smash_Combos.Core.Cqrs.Comments.GetComment;
+using Smash_Combos.Core.Cqrs.Comments.PutComment;
+using Smash_Combos.Core.Cqrs.Comments.PostComment;
+using Smash_Combos.Core.Cqrs.Comments.DeleteComment;
+using System;
 
 namespace Smash_Combos.Controllers
 {
@@ -20,12 +27,14 @@ namespace Smash_Combos.Controllers
     {
         // This is the variable you use to have access to your database
         private readonly IDbContext _context;
+        private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CommentsController(IDbContext context)
+        public CommentsController(IDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/Comments
@@ -33,11 +42,23 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Comments
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        public async Task<IActionResult> GetComments()
         {
-            // Uses the database context in `_context` to request all of the Comments and
-            // return them as a JSON array.
-            return await _context.Comments.Include(comment => comment.User).ToListAsync();
+            var response = await _mediator.Send(new GetCommentsRequest());
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // GET: api/Comments/5
@@ -47,20 +68,23 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(int id)
+        public async Task<IActionResult> GetComment([FromRoute] int id)
         {
-            // Find the comment in the database using `FindAsync` to look it up by id
-            var comment = await _context.Comments.Where(combo => combo.Id == id).Include(comment => comment.User).FirstOrDefaultAsync();
+            var response = await _mediator.Send(new GetCommentRequest { CommentId = id });
 
-            // If we didn't find anything, we receive a `null` in return
-            if (comment == null)
+            switch (response.ResponseStatus)
             {
-                // Return a `404` response to the client indicating we could not find a comment with this id
-                return NotFound();
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
-
-            //  Return the comment as a JSON object.
-            return comment;
         }
 
         // PUT: api/Comments/5
@@ -76,45 +100,26 @@ namespace Smash_Combos.Controllers
         //
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
+        public async Task<IActionResult> PutComment([FromRoute] int id, [FromBody] PutCommentRequest request)
         {
-            // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (id != comment.Id || comment.UserId != GetCurrentUserId())
-            {
+            if (id != request.CommentId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
-            }
 
-            _context.Entry(comment).State = EntityState.Modified;
+            var response = await _mediator.Send(request);
 
-            try
+            switch (response.ResponseStatus)
             {
-                // Try to save these changes.
-                await _context.SaveChangesAsync(CancellationToken.None);
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                // Ooops, looks like there was an error, so check to see if the record we were
-                // updating no longer exists.
-                if (!CommentExists(id))
-                {
-                    // If the record we tried to update was already deleted by someone else,
-                    // return a `404` not found
-                    return NotFound();
-                }
-                else
-                {
-                    // Otherwise throw the error back, which will cause the request to fail
-                    // and generate an error to the client.
-                    throw;
-                }
-            }
-
-            // return NoContent to indicate the update was done. Alternatively you can use the
-            // following to send back a copy of the updated data.
-            //
-            return Ok(comment);
-            //
-            // return NoContent();
         }
 
         // POST: api/Comments
@@ -129,16 +134,26 @@ namespace Smash_Combos.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<IActionResult> PostComment(PostCommentRequest request)
         {
-            comment.UserId = GetCurrentUserId();
-            // Indicate to the database context we want to add this new record
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync(CancellationToken.None);
 
-            // Return a response that indicates the object was created (status code `201`) and some additional
-            // headers with details of the newly created object.
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
+            request.UserId = GetCurrentUserId();
+
+            var response = await _mediator.Send(request);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return CreatedAtAction("GetComment", new { id = response.Data.Id }, response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // DELETE: api/Comments/5
@@ -150,38 +165,27 @@ namespace Smash_Combos.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            // Find this comment by looking for the specific id
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
+            var response = await _mediator.Send(new DeleteCommentRequest { CommentId = id, UserId = GetCurrentUserId() });
+
+            switch (response.ResponseStatus)
             {
-                // There wasn't a comment with that id so return a `404` not found
-                return NotFound();
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
-
-            // Tell the database we want to remove this record
-            _context.Comments.Remove(comment);
-
-            // Tell the database to perform the deletion
-            await _context.SaveChangesAsync(CancellationToken.None);
-
-            // return NoContent to indicate the update was done. Alternatively you can use the
-            // following to send back a copy of the deleted data.
-            //
-            // return Ok(comment)
-            //
-            return NoContent();
-        }
-
-        // Private helper method that looks up an existing comment by the supplied id
-        private bool CommentExists(int id)
-        {
-            return _context.Comments.Any(comment => comment.Id == id);
         }
 
         private int GetCurrentUserId()
         {
             // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

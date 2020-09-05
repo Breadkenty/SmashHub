@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,17 +25,25 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
 
         public async Task<GetUserResponse> Handle(GetUserRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users
-                        .Include(user => user.Combos)
-                            .ThenInclude(combo => combo.Reports)
-                        .Include(user => user.Combos)
-                            .ThenInclude(combo => combo.Character)
-                        .Include(user => user.Comments)
-                            .ThenInclude(comment => comment.Reports)
-                        .Include(user => user.Infractions)
-                            .ThenInclude(infraction => infraction.Moderator)
-                        .Where(user => user.DisplayName == request.DisplayName)
-                        .SingleOrDefaultAsync();
+            User user = null;
+            try
+            {
+                user = await _dbContext.Users
+                    .Include(user => user.Combos)
+                        .ThenInclude(combo => combo.Reports)
+                    .Include(user => user.Combos)
+                        .ThenInclude(combo => combo.Character)
+                    .Include(user => user.Comments)
+                        .ThenInclude(comment => comment.Reports)
+                    .Include(user => user.Infractions)
+                        .ThenInclude(infraction => infraction.Moderator)
+                    .Where(user => user.DisplayName == request.DisplayName)
+                    .SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return null; //This is temporary. If everyone agrees with my proposed ResponseBase object we will be able to return a nice error message here.
+            }
 
             if (user == null)
                 return null;

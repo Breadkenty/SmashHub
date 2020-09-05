@@ -11,9 +11,9 @@ namespace Smash_Combos.Domain.Models
             this.DatePosted = DateTime.Now;
         }
         public int Id { get; set; }
-        public int UserId { get; set; }
+        [Required]
         public User User { get; set; }
-        public int ComboId { get; set; }
+        [Required]
         public Combo Combo { get; set; }
         public DateTime DatePosted { get; private set; }
 

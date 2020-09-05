@@ -31,11 +31,21 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
             if (moderator == null || (moderator.UserType != UserType.Moderator && moderator.UserType != UserType.Admin))
                 return null;
 
-            var user = await _dbContext.Users.Include(user => user.Combos)
-                                .Include(user => user.Comments)
-                                .Include(user => user.Combos)
-                                .Include(user => user.Infractions)
-                                .FirstOrDefaultAsync(user => user.DisplayName == unbanRequest.DisplayName);
+            User user = null;
+
+            try
+            {
+                user = await _dbContext.Users.Include(user => user.Combos)
+                    .Include(user => user.Comments)
+                    .Include(user => user.Combos)
+                    .Include(user => user.Infractions)
+                    .SingleOrDefaultAsync(user => user.DisplayName == unbanRequest.DisplayName);
+
+            }
+            catch (InvalidOperationException)
+            {
+                return null; //This is temporary. If everyone agrees with my proposed ResponseBase object we will be able to return a nice error message here.
+            }
 
             if (user == null)
                 return null;

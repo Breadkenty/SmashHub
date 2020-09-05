@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,25 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
 
         public async Task<DeleteComboResponse> Handle(DeleteComboRequest request, CancellationToken cancellationToken)
         {
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId && combo.User.Id == request.UserId).FirstOrDefaultAsync();
+            User user = null;
+            try
+            {
+                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return new DeleteComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
+            }
+
+            if (user == null)
+                return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
+
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
             if (combo == null)
                 return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
+
+            if (combo.User.Id != user.Id && user.UserType == UserType.User)
+                return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete this combo" };
 
             _dbContext.Combos.Remove(combo);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
