@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { authHeader } from '../auth'
+import { authHeader, isLoggedIn } from '../auth'
 
 export function Comment(props) {
   const [editedComment, setEditedComment] = useState({
     id: props.comment.id,
     user: {
-      displayName: props.comment.user.id,
+      displayName: props.comment.user.displayName,
     },
-    body: props.comment.id,
+    body: props.comment.body,
   })
 
   const [editingComment, setEditingComment] = useState(false)
@@ -125,7 +125,7 @@ export function Comment(props) {
             >
               report
             </button>
-            {props.loggedInUser.id === props.comment.user.id && (
+            {isLoggedIn() && props.loggedInUser.id === props.comment.user.id && (
               <>
                 <button
                   className="edit"

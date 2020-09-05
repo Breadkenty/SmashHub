@@ -51,10 +51,10 @@ export function CharacterCombo() {
     body: '',
   })
 
-  const [comment, setComment] = useState({
+  const [commentToSubmit, setCommentToSubmit] = useState({
     comboId: parseInt(comboId),
     user: {
-      displayName: loggedInUser.displayName,
+      displayName: isLoggedIn() && loggedInUser.displayName,
     },
     body: '',
   })
@@ -100,7 +100,7 @@ export function CharacterCombo() {
     fetch('/api/Comments', {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
-      body: JSON.stringify(comment),
+      body: JSON.stringify(commentToSubmit),
     })
       .then(response => {
         if (response.status === 401) {
@@ -115,7 +115,7 @@ export function CharacterCombo() {
           setErrorMessage(newMessage)
         } else {
           getCombo()
-          setComment({ ...comment, body: '' })
+          setCommentToSubmit({ ...commentToSubmit, body: '' })
           setSortType('newest')
           setErrorMessage(undefined)
         }
@@ -212,7 +212,7 @@ export function CharacterCombo() {
             <h5>
               Posted by {combo.user.displayName}{' '}
               {moment(combo.datePosted).fromNow()}
-              {loggedInUser.id === combo.user.id && (
+              {isLoggedIn() && loggedInUser.id === combo.user.id && (
                 <Link
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
                 >
@@ -283,9 +283,12 @@ export function CharacterCombo() {
           <form className="add-comment bg-grey" onSubmit={handleSubmit}>
             <textarea
               placeholder="Add a comment"
-              value={comment.body}
+              value={commentToSubmit.body}
               onChange={event => {
-                setComment({ ...comment, body: event.target.value })
+                setCommentToSubmit({
+                  ...commentToSubmit,
+                  body: event.target.value,
+                })
               }}
             />
             <button className="bg-yellow button black-text" type="submit">
