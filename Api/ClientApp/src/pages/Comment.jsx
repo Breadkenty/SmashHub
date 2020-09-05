@@ -64,8 +64,6 @@ export function Comment(props) {
     console.log(commentReport)
   }
 
-  console.log(props.comment)
-
   return (
     <div className="comment" id={props.comment.id}>
       <div>

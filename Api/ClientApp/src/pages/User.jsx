@@ -7,7 +7,6 @@ import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
 import { returnDifficulty } from '../components/returnDifficulty'
 
-import { sortingFunctions } from '../components/sortingFunctions'
 import { Report } from './Report'
 
 import moment from 'moment'
@@ -76,14 +75,6 @@ export function User() {
       .then(response => response.json())
       .then(apiData => {
         setReports(apiData)
-      })
-  }
-
-  function getCharacter(characterVariableName) {
-    fetch(`/api/Characters/${characterVariableName}`)
-      .then(response => response.json())
-      .then(apiData => {
-        console.log(apiData)
       })
   }
 

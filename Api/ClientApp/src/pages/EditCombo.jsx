@@ -368,8 +368,6 @@ export function EditCombo() {
   // Get all characters from API
   useEffect(getCombo, [])
 
-  console.log(comboToEdit)
-
   return (
     <div className="submit-combo">
       <header>
