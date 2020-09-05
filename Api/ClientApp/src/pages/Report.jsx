@@ -9,7 +9,7 @@ export function Report(props) {
     combo: {
       id: {},
       character: {
-        variableName: 'hi',
+        variableName: '',
       },
       title: '',
     },
@@ -17,7 +17,7 @@ export function Report(props) {
       combo: {
         id: 0,
         character: {
-          variableName: 'hi',
+          variableName: '',
         },
       },
       body: '',
