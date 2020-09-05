@@ -12,7 +12,7 @@ import { User } from './pages/User'
 import { Character } from './pages/Character'
 import { Characters } from './pages/Characters'
 
-import { CharacterCombo } from './pages/CharacterCombo'
+import { Combo } from './pages/Combo'
 
 import { SubmitCombo } from './pages/SubmitCombo'
 
@@ -55,7 +55,7 @@ export function App() {
             <Character />
           </Route>
           <Route exact path="/character/:characterVariableName/:comboId">
-            <CharacterCombo />
+            <Combo />
           </Route>
           <Route exact path="/submit/:characterVariableName">
             <SubmitCombo />

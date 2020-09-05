@@ -17,7 +17,7 @@ import { sortingFunctions } from '../components/sortingFunctions'
 
 import { Comment } from './Comment'
 
-export function CharacterCombo() {
+export function Combo() {
   const params = useParams()
   const loggedInUser = getUser()
   const characterVariableName = params.characterVariableName
