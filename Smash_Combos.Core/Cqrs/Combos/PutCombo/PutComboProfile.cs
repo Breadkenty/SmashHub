@@ -11,6 +11,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
         public PutComboProfile()
         {
             CreateMap<Combo, ComboDto>();
+            CreateMap<Character, CharacterDto>();
             CreateMap<User, UserDto>();
             CreateMap<Comment, CommentDto>();
         }

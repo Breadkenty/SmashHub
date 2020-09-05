@@ -212,7 +212,7 @@ export function CharacterCombo() {
             <h5>
               Posted by {combo.user.displayName}{' '}
               {moment(combo.datePosted).fromNow()}
-              {loggedInUser.id === combo.userId && (
+              {loggedInUser.id === combo.user.id && (
                 <Link
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
                 >

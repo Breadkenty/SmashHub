@@ -24,6 +24,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
         {
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId)
                 .Include(combo => combo.User)
+                .Include(combo => combo.Character)
                 .Include(combo => combo.Comments)
                     .ThenInclude(comment => comment.User)
                 .FirstOrDefaultAsync();
@@ -31,7 +32,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
             if (combo == null)
                 return new GetComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
 
-            return new GetComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo found" }; 
+            return new GetComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo found" };
         }
     }
 }

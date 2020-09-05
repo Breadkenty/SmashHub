@@ -25,22 +25,22 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 
         public async Task<PutComboResponse> Handle(PutComboRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+            var user = await _dbContext.Users.Where(user => user.Id == request.User.Id).SingleOrDefaultAsync();
 
             if (user == null)
                 return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find User" };
 
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.Id).FirstOrDefaultAsync();
 
             if (combo == null)
                 return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Combo" };
 
-            if(combo.User.Id != user.Id && user.UserType != UserType.Admin)
+            if (combo.User.Id != user.Id && user.UserType != UserType.Admin)
                 return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this Combo" };
 
-            var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
+            var character = await _dbContext.Characters.Where(character => character.VariableName == request.Character.VariableName).FirstOrDefaultAsync();
 
-            if(character == null)
+            if (character == null)
                 return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Character" };
 
             combo.Character = character;
@@ -59,7 +59,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
             try
             {
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.Id).FirstOrDefaultAsync();
                 return new PutComboResponse { Data = _mapper.Map<ComboDto>(comboToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo updated" };
             }
             catch (DbUpdateConcurrencyException)

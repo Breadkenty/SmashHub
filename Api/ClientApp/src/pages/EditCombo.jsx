@@ -25,15 +25,17 @@ export function EditCombo() {
   const characterVariableName = params.characterVariableName
   const comboId = params.comboId
 
-  const [characterSelected, setCharacterSelected] = useState({
-    name: '',
-    variableName: '',
-    yPosition: 0,
-  })
-
   const [comboToEdit, setComboToEdit] = useState({
-    characterId: 1,
     title: '',
+    user: {
+      id: 0,
+      displayName: '',
+      email: '',
+    },
+    character: {
+      variableName: characterVariableName,
+      yPosition: 0,
+    },
     videoId: '',
     videoStartTime: 0,
     videoEndTime: 0,
@@ -133,19 +135,6 @@ export function EditCombo() {
   function removeInput() {
     const lastIndex = inputs.lastIndexOf(' ')
     setInputs(inputs.substring(0, lastIndex))
-  }
-
-  function getCharacter() {
-    fetch(`/api/Characters/${characterVariableName}`)
-      .then(response => response.json())
-      .then(apiData => {
-        setCharacterSelected({
-          ...characterSelected,
-          name: apiData.name,
-          variableName: characterVariableName,
-          yPosition: apiData.yPosition,
-        })
-      })
   }
 
   function getCombo() {
@@ -326,10 +315,10 @@ export function EditCombo() {
         } else if (
           apiData.items[0].snippet.title
             .toLowerCase()
-            .includes(characterSelected.name.toLowerCase()) ||
+            .includes(comboToEdit.character.name.toLowerCase()) ||
           apiData.items[0].snippet.description
             .toLowerCase()
-            .includes(characterSelected.name.toLowerCase()) ||
+            .includes(comboToEdit.character.name.toLowerCase()) ||
           keyWords.some(keyWord =>
             apiData.items[0].snippet.title.toLowerCase().includes(keyWord)
           ) ||
@@ -378,7 +367,9 @@ export function EditCombo() {
 
   // Get all characters from API
   useEffect(getCombo, [])
-  useEffect(getCharacter, [])
+
+  console.log(comboToEdit)
+
   return (
     <div className="submit-combo">
       <header>
@@ -391,11 +382,11 @@ export function EditCombo() {
             <div
               style={{
                 backgroundImage: `url(${allCharacterPortrait[characterVariableName]})`,
-                backgroundPositionY: `${characterSelected.yPosition}%`,
+                backgroundPositionY: `${comboToEdit.character.yPosition}%`,
               }}
               className="character bg-black"
             >
-              <h2>{characterSelected.name}</h2>
+              <h2>{comboToEdit.character.name}</h2>
             </div>
           </div>
 
@@ -640,6 +631,7 @@ export function EditCombo() {
                 type="number"
                 placeholder="0"
                 id="damage"
+                value={comboToEdit.damage}
                 onChange={handleFieldChange}
                 required
               />

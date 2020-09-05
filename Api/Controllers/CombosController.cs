@@ -99,9 +99,8 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCombo([FromRoute] int id, [FromBody] PutComboRequest putComboRequest)
         {
-            if (id != putComboRequest.ComboId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != putComboRequest.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
-
             var response = await _mediator.Send(putComboRequest);
 
             switch (response.ResponseStatus)
