@@ -27,27 +27,35 @@ export function Combo() {
 
   const [combo, setCombo] = useState({
     id: 0,
-    userId: 0,
-    characterId: 0,
-    user: {},
-    datePosted: '',
-    title: '',
-    videoId: '',
-    videoStartTime: 0,
-    videoEndTime: 0,
+    character: {
+      name: '',
+      variableName: '',
+      yPosition: 0,
+    },
     comboInput: '',
-    trueCombo: false,
-    difficulty: '',
-    damage: 0,
-    notes: '',
     comments: [],
+    damage: 0,
+    datePosted: '',
+    difficulty: '',
     netVote: 0,
+    notes: '',
+    title: '',
+    trueCombo: false,
+    user: {},
+    videoEndTime: 0,
+    videoStartTime: 0,
+    videoId: '',
   })
 
   const [reportingCombo, setReportingCombo] = useState(false)
   const [comboReport, setComboReport] = useState({
-    userId: 0,
-    reporterId: 0,
+    user: {
+      displayName: '',
+    },
+    reporter: {
+      displayName: isLoggedIn() && loggedInUser.displayName,
+    },
+    comboId: 0,
     body: '',
   })
 
@@ -135,8 +143,28 @@ export function Combo() {
 
   function handleReportSubmit(event) {
     event.preventDefault()
-    console.log('Combo Report: ')
-    console.log(comboReport)
+    fetch(`/api/Reports/combo/${combo.id}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(comboReport),
+    })
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Log in to report' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          setReportingCombo(false)
+          setComboReport({ ...comboReport, body: '' })
+          setErrorMessage(undefined)
+        }
+      })
   }
 
   combo.comments.sort(sortingFunctions[sortType])
@@ -254,7 +282,14 @@ export function Combo() {
             placeholder="reason..."
             value={comboReport.body}
             onChange={event => {
-              setComboReport({ ...comboReport, body: event.target.value })
+              setComboReport({
+                ...comboReport,
+                comboId: combo.id,
+                user: {
+                  displayName: combo.user.displayName,
+                },
+                body: event.target.value,
+              })
             }}
           />
           <button className="button">Submit</button>
