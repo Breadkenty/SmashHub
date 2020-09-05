@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { authHeader, isLoggedIn } from '../auth'
+import { authHeader, isLoggedIn, getUser } from '../auth'
 
 export function Comment(props) {
+  const loggedInUser = getUser()
+
   const [editedComment, setEditedComment] = useState({
     id: props.comment.id,
     user: {
@@ -16,8 +18,13 @@ export function Comment(props) {
 
   const [reportingComment, setReportingComment] = useState(false)
   const [commentReport, setCommentReport] = useState({
-    userId: 0,
-    reporterId: 0,
+    user: {
+      displayName: props.comment.user.displayName,
+    },
+    reporter: {
+      displayName: isLoggedIn() && loggedInUser.displayName,
+    },
+    commentId: props.comment.id,
     body: '',
   })
 
@@ -60,8 +67,28 @@ export function Comment(props) {
 
   function handleSubmitCommentReport(event) {
     event.preventDefault()
-    console.log('Comment Report:')
-    console.log(commentReport)
+    fetch(`/api/Reports/comment/${props.comment.id}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(commentReport),
+    })
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Log in to report' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          setReportingComment(false)
+          setCommentReport({ ...commentReport, body: '' })
+          setErrorMessage(undefined)
+        }
+      })
   }
 
   return (
@@ -173,7 +200,10 @@ export function Comment(props) {
           placeholder="reason..."
           value={commentReport.body}
           onChange={event => {
-            setCommentReport({ ...commentReport, body: event.target.value })
+            setCommentReport({
+              ...commentReport,
+              body: event.target.value,
+            })
           }}
         />
         <button className="button">Submit</button>
