@@ -8,9 +8,9 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 {
     public class PostComboReportRequest : IRequest<PostComboReportResponse>
     {
-        public int UserId { get; set; }
+        public UserDto User { get; set; }
 
-        public int ReporterId { get; set; }
+        public UserDto Reporter { get; set; }
 
         public int ComboId { get; set; }
 

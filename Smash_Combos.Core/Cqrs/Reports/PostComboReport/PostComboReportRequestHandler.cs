@@ -25,11 +25,11 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 
         public async Task<PostComboReportResponse> Handle(PostComboReportRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
-            var reporter = await _dbContext.Users.Where(user => user.Id == request.ReporterId).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).FirstOrDefaultAsync();
+            var reporter = await _dbContext.Users.Where(user => user.DisplayName == request.Reporter.DisplayName).FirstOrDefaultAsync();
             var reportCombo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
-            if(user == null || reporter == null || reportCombo == null)
+            if (user == null || reporter == null || reportCombo == null)
                 return new PostComboReportResponse { User = null, Reporter = null };
 
             var report = new Report

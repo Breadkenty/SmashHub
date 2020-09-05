@@ -25,11 +25,11 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
 
         public async Task<PostCommentReportResponse> Handle(PostCommentReportRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
-            var reporter = await _dbContext.Users.Where(user => user.Id == request.ReporterId).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).FirstOrDefaultAsync();
+            var reporter = await _dbContext.Users.Where(user => user.DisplayName == request.Reporter.DisplayName).FirstOrDefaultAsync();
             var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
 
-            if(user == null || reporter == null)
+            if (user == null || reporter == null)
                 return new PostCommentReportResponse { User = null, Reporter = null };
 
             var report = new Report
