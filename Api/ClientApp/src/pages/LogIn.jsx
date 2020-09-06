@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import { recordAuthentication } from '../auth'
-import { useHistory } from 'react-router'
 
 export function LogIn() {
-  const history = useHistory()
-
   const [errorMessage, setErrorMessage] = useState()
 
   const [user, setUser] = useState({
@@ -43,7 +40,7 @@ export function LogIn() {
       <h3 className="white-text">Log in</h3>
       {errorMessage && (
         <div className="error-message">
-          <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+          <i className="fas fa-exclamation-triangle"></i> {errorMessage}
         </div>
       )}
       <form onSubmit={handleSubmit}>

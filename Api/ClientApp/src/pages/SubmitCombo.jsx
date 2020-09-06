@@ -170,7 +170,7 @@ export function SubmitCombo() {
 
   function renderInputCategoryComponents() {
     switch (inputCategorySelected) {
-      case 'Basic':
+      default:
         return (
           <>
             <Basic key={inputCategories['Basic']} addInput={addInput} />
@@ -701,7 +701,7 @@ export function SubmitCombo() {
               />
               {errorMessage && (
                 <div className="error-message">
-                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+                  <i className="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
               <button type="submit" className="button bg-yellow black-text">

@@ -96,7 +96,7 @@ export function AddCharacter() {
 
       {errorMessage && (
         <div className="error-message">
-          <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+          <i className="fas fa-exclamation-triangle"></i> {errorMessage}
         </div>
       )}
 

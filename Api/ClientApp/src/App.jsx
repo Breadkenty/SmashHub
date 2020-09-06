@@ -88,8 +88,8 @@ export function App() {
       </div>
       <footer className="bottom-footer">
         <p>
-          Made with <i class="fas fa-heart"></i> by{' '}
-          <a href="#">Kento Kawakami</a>
+          Made with <i className="fas fa-heart"></i> by{' '}
+          <a href="https://github.com/Breadkenty">Kento Kawakami</a>
         </p>
         <div>
           <a href="https://github.com/Breadkenty">

@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { allCharacterPortrait } from '../components/allCharacterPortrait'
+import React from 'react'
 
 export function Notes() {
   return (
@@ -8,14 +7,17 @@ export function Notes() {
         <header>
           <h2>Welcome to Smash Combos</h2>
           <div className="error-message">
-            <i class="fas fa-exclamation-triangle"></i>
+            <i className="fas fa-exclamation-triangle"></i>
             <p className="red-text">
               This a beta version with a limited data storage plan. When the app
               is ready for a full release, all combos saved here will be
               deleted. More information coming soon.
             </p>
           </div>
-          <img src="https://media.giphy.com/media/AFpghpBCYEAwM/giphy.gif" />
+          <img
+            src="https://media.giphy.com/media/AFpghpBCYEAwM/giphy.gif"
+            alt="animation of pikachu walking with a ketchup"
+          />
           <p>
             Hi thanks for checking this app out! This app was created as my
             final project for Suncoast Developers Guild, a coding bootcamp in

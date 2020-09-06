@@ -64,7 +64,7 @@ export function Character() {
       <div className="search-container bg-grey">
         <div className="search-container-items">
           <div className="search-bar">
-            <i class="fas fa-search"></i>
+            <i className="fas fa-search"></i>
             <input
               type="search"
               placeholder="Search"

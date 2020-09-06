@@ -24,7 +24,7 @@ export function Characters() {
     <div className="character-select">
       <header>
         <div className="search-bar">
-          <i class="fas fa-search"></i>
+          <i className="fas fa-search"></i>
           <input
             className="bg-yellow"
             type="search"
@@ -64,15 +64,19 @@ export function Characters() {
 
       <h3>Choose your character</h3>
       <div className="characters">
-        {characters.sort((a, b) => a.releaseOrder - b.releaseOrder)
+        {characters
+          .sort((a, b) => a.releaseOrder - b.releaseOrder)
           .map(character => (
-            <Link key={character.id} to={`/character/${character.variableName}`}>
+            <Link
+              key={character.id}
+              to={`/character/${character.variableName}`}
+            >
               <img
                 src={allCharacterCloseUp[character.variableName]}
                 alt={`${character.name}'s portrait`}
               />
             </Link>
-        ))}
+          ))}
       </div>
     </div>
   )

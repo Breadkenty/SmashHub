@@ -57,7 +57,7 @@ export function Report(props) {
     <div className="reports-row">
       {errorMessage && (
         <div className="error-message">
-          <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+          <i className="fas fa-exclamation-triangle"></i> {errorMessage}
         </div>
       )}
       <p>{moment(props.report.dateReported).format('L')}</p>

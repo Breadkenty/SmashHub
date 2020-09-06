@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
-import video from '../graphics/demo/video.gif'
-import combo from '../graphics/demo/combo.gif'
-import smashComboInterface from '../graphics/demo/interface.gif'
 
 export function Tutorial() {
   return (
@@ -127,7 +124,7 @@ export function Tutorial() {
 
         <h4>Examples:</h4>
         <div className="input-example-container">
-          <h4>Jab > jab > jab</h4>
+          <h4>Jab &gt; jab &gt; jab</h4>
           <div className="inputs">
             <div
               className="input-example"
@@ -163,7 +160,7 @@ export function Tutorial() {
         </div>
 
         <div className="input-example-container">
-          <h4>Down tilt > up smash</h4>
+          <h4>Down tilt &gt; up smash</h4>
           <div className="inputs">
             <div
               className="input-example"

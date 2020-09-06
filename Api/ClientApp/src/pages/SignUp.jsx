@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router'
 import { recordAuthentication } from '../auth'
 
 export function SignUp() {
-  const history = useHistory()
-
   const [newUser, setNewUser] = useState({
     displayName: '',
     email: '',
@@ -57,7 +54,7 @@ export function SignUp() {
       <form onSubmit={handleSubmit}>
         {errorMessage && (
           <div className="error-message">
-            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+            <i className="fas fa-exclamation-triangle"></i> {errorMessage}
           </div>
         )}
         <input

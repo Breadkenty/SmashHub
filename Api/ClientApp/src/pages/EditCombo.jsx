@@ -156,7 +156,7 @@ export function EditCombo() {
 
   function renderInputCategoryComponents() {
     switch (inputCategory) {
-      case 'Basic':
+      default:
         return (
           <>
             <Basic key={inputCategories['Basic']} addInput={addInput} />
@@ -688,7 +688,7 @@ export function EditCombo() {
               />
               {errorMessage && (
                 <div className="error-message">
-                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+                  <i className="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
               <div className="submit-buttons">
@@ -714,7 +714,7 @@ export function EditCombo() {
                     }}
                   ></i>
                   <div className="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>{' '}
+                    <i className="fas fa-exclamation-triangle"></i>{' '}
                     <h3>Danger zone</h3>
                   </div>
                   <label>

@@ -145,7 +145,7 @@ export function Comment(props) {
             Posted by {props.comment.user.displayName}{' '}
             {moment(props.comment.datePosted).fromNow()}
             {isLoggedIn() &&
-              loggedInUser.displayName != props.comment.user.displayName && (
+              loggedInUser.displayName !== props.comment.user.displayName && (
                 <button
                   className="edit"
                   onClick={() => {
@@ -179,7 +179,7 @@ export function Comment(props) {
               </button>
               {errorMessage && (
                 <div className="error-message">
-                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+                  <i className="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
             </form>

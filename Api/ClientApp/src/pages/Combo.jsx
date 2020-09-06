@@ -248,7 +248,7 @@ export function Combo() {
                 </Link>
               )}
               {isLoggedIn() &&
-                loggedInUser.displayName != combo.user.displayName && (
+                loggedInUser.displayName !== combo.user.displayName && (
                   <button
                     onClick={() => {
                       setReportingCombo(true)
@@ -341,7 +341,7 @@ export function Combo() {
 
         {errorMessage && (
           <div className="error-message">
-            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+            <i className="fas fa-exclamation-triangle"></i> {errorMessage}
           </div>
         )}
         <section className="sort">
