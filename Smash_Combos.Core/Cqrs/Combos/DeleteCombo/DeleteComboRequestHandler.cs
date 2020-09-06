@@ -36,11 +36,11 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
             }
 
             if (user == null)
-                return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
+                return new DeleteComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
             if (combo == null)
-                return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
+                return new DeleteComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
 
             if (combo.User.Id == user.Id || user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
             {

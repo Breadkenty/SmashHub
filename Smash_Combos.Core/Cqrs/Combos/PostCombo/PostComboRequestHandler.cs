@@ -25,13 +25,23 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
 
         public async Task<PostComboResponse> Handle(PostComboRequest request, CancellationToken cancellationToken)
         {
-            var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
-            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+            User user = null;
+            try
+            {
+                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return new PostComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
+            }
 
             if (user == null)
-                return new PostComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
-            if(character == null)
-                return new PostComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Character not found" };
+                return new PostComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+
+            var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
+
+            if (character == null)
+                return new PostComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
 
             var combo = new Combo
             {

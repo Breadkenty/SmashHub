@@ -49,7 +49,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractions
             }
             else
             {
-                return new GetInfractionsResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to get infractions" };
+                return new GetInfractionsResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to get infractions" };
             }
         }
     }

@@ -53,7 +53,7 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
                 {
                     if (infraction.IsActiveBan())
                     {
-                        infraction.BanLiftDate = DateTime.Now;
+                        infraction.DismissDate = DateTime.Now;
                     }
                 }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction;
+using Smash_Combos.Core.Cqrs.Infractions.DismissInfraction;
 using Smash_Combos.Core.Cqrs.Infractions.GetInfraction;
 using Smash_Combos.Core.Cqrs.Infractions.GetInfractions;
 using Smash_Combos.Core.Cqrs.Infractions.GetInfractionsByUser;
@@ -77,7 +78,7 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetInfractionsByUser([FromRoute] string userName)
         {
-            var response = await _mediator.Send(new GetInfractionsByUserRequest { DisplayName = userName, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new GetInfractionsByUserRequest { DisplayName = userName, UserId = GetCurrentUserId() });
             
             switch (response.ResponseStatus)
             {
@@ -123,7 +124,7 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutInfraction([FromRoute] int id, [FromBody] PutInfractionRequest request)
         {
-            if (id != request.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != request.InfractionId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
             request.ModeratorId = GetCurrentUserId();
@@ -134,6 +135,33 @@ namespace Smash_Combos.Controllers
             {
                 case Core.Cqrs.ResponseStatus.Ok:
                     return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
+        }
+
+        // PUT api/<InfractionsController>/5
+        [HttpPut("dismiss/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DismissInfraction([FromRoute] int id, [FromBody] DismissInfractionRequest request)
+        {
+            if (id != request.InfractionId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+                return BadRequest();
+
+            request.ModeratorId = GetCurrentUserId();
+
+            var response = await _mediator.Send(request);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok();
                 case Core.Cqrs.ResponseStatus.NotFound:
                     return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
                 case Core.Cqrs.ResponseStatus.BadRequest:

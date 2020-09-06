@@ -36,12 +36,12 @@ namespace Smash_Combos.Core.Cqrs.Comments.PostComment
             }
 
             if (user == null)
-                return new PostCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
+                return new PostCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
             if (combo == null)
-                return new PostCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
+                return new PostCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
 
             var comment = new Comment
             {

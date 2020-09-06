@@ -11,7 +11,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
     {
         public int ModeratorId { get; set; }
         [Required]
-        public int Id { get; set; }
+        public int InfractionId { get; set; }
         [Required]
         public int? BanDuration { get; set; }
         [Required]
@@ -20,6 +20,5 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
         public InfractionCategory Category { get; set; }
         [Required]
         public string Body { get; set; }
-        public bool LiftBan { get; set; }
     }
 }

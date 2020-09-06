@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Reports.PutReport
+namespace Smash_Combos.Core.Cqrs.Reports.DismissReport
 {
-    public class PutReportRequest : IRequest<PutReportResponse>
+    public class DismissReportRequest : IRequest<DismissReportResponse>
     {
         public int ReportId { get; set; }
         public int ModeratorId { get; set; }

@@ -37,12 +37,12 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
             }
 
             if (user == null)
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
+                return new PutCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
             var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
 
             if (comment == null)
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
+                return new PutCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Comment does not exist" };
 
             if (comment.User.Id != user.Id)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this comment" };

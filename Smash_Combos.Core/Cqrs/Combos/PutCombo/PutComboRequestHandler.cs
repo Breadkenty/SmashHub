@@ -36,19 +36,19 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
             }
 
             if (user == null)
-                return new PutComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find User" };
+                return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
             if (combo == null)
-                return new PutComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Combo" };
+                return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
 
             if (combo.User.Id == user.Id)
             {
                 var character = await _dbContext.Characters.Where(character => character.VariableName == request.CharacterName).FirstOrDefaultAsync();
 
                 if (character == null)
-                    return new PutComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Character" };
+                    return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
 
                 combo.Character = character;
                 combo.Title = request.Title;

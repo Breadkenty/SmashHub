@@ -26,21 +26,21 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractionsByUser
         public async Task<GetInfractionsByUserResponse> Handle(GetInfractionsByUserRequest request, CancellationToken cancellationToken)
         {
             User user = null;
-            User moderator = null;
+            User currentUser = null;
             try
             {
                 user = await _dbContext.Users.FirstOrDefaultAsync(user => user.DisplayName == request.DisplayName);
-                moderator = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.ModeratorId);
+                currentUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.UserId);
             }
             catch (InvalidOperationException)
             {
                 return new GetInfractionsByUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
             }
 
-            if(user == null || moderator == null)
+            if(user == null || currentUser == null)
                 return new GetInfractionsByUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            if (moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            if (currentUser.Id == user.Id || currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 var infractions = await _dbContext.Infractions
                     .Where(infraction => infraction.User.DisplayName == request.DisplayName)

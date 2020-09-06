@@ -14,7 +14,7 @@ using Smash_Combos.Core.Cqrs.Reports.GetReportsByUser;
 using Smash_Combos.Core.Cqrs.Reports.GetReports;
 using Smash_Combos.Core.Cqrs.Reports.PostComboReport;
 using Smash_Combos.Core.Cqrs.Reports.PostCommentReport;
-using Smash_Combos.Core.Cqrs.Reports.PutReport;
+using Smash_Combos.Core.Cqrs.Reports.DismissReport;
 using Smash_Combos.Domain.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -146,9 +146,9 @@ namespace Smash_Combos.Controllers
         }
 
         // PUT api/<ReportsController>/5
-        [HttpPut("{id}")]
+        [HttpPut("dismiss/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PutReportResponse>> PutReport([FromRoute] int id, [FromBody] PutReportRequest request)
+        public async Task<ActionResult<DismissReportResponse>> DismissReport([FromRoute] int id, [FromBody] DismissReportRequest request)
         {
             if (id != request.ReportId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
@@ -160,7 +160,7 @@ namespace Smash_Combos.Controllers
             switch (response.ResponseStatus)
             {
                 case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
+                    return Ok();
                 case Core.Cqrs.ResponseStatus.NotFound:
                     return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
                 case Core.Cqrs.ResponseStatus.BadRequest:

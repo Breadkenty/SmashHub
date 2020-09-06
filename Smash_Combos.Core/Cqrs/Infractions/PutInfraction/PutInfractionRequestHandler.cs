@@ -38,7 +38,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
             if(user == null)
                 return new PutInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.Id).FirstOrDefaultAsync();
+            var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId).FirstOrDefaultAsync();
 
             if (infraction == null)
                 return new PutInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Infraction does not exist" };
@@ -50,9 +50,6 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
                 infraction.Category = request.Category;
                 infraction.Body = request.Body;
 
-                if (request.LiftBan)
-                    infraction.BanLiftDate = DateTime.Now;
-
                 _dbContext.Entry(infraction).State = EntityState.Modified;
 
                 try
@@ -61,7 +58,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
                     var infractionToReturn = await _dbContext.Infractions
                         .Include(infraction => infraction.User)
                         .Include(infraction => infraction.Moderator)
-                        .Where(infraction => infraction.Id == request.Id)
+                        .Where(infraction => infraction.Id == request.InfractionId)
                         .FirstOrDefaultAsync();
                     return new PutInfractionResponse { Data = _mapper.Map<InfractionDto>(infractionToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction updated" };
                 }

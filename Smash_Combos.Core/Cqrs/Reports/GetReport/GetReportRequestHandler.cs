@@ -50,7 +50,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
                 if (report == null)
                     return new GetReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Report does not exist" };
 
-                return new GetReportResponse {Data = _mapper.Map<ReportDto>(report), ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Report does not exist" };
+                return new GetReportResponse {Data = _mapper.Map<ReportDto>(report), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Report found" };
             }
             else
             {
