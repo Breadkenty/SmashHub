@@ -83,11 +83,6 @@ export function User() {
       })
   }
 
-  const handleDismiss = event => {
-    event.preventDefault()
-    console.log('Dismiss:')
-  }
-
   function handleVote(event, id, upOrDown) {
     event.preventDefault()
 
@@ -143,7 +138,9 @@ export function User() {
         <header>
           <div>
             <h3>Reports: </h3>
-            <h3 className="points">{reports.length}</h3>
+            <h3 className="points">
+              {reports.filter(report => report.dismiss == false).length}
+            </h3>
           </div>
           <button
             onClick={() => {
@@ -384,9 +381,16 @@ export function User() {
             <h5>Reported By</h5>
           </div>
 
-          {reports.map(report => (
-            <Report report={report} />
-          ))}
+          {reports.map(
+            report =>
+              report.dismiss == false && (
+                <Report
+                  report={report}
+                  getUserData={getUserData}
+                  getUserReports={getUserReports}
+                />
+              )
+          )}
         </div>
       </section>
 
@@ -433,7 +437,7 @@ export function User() {
             <h5>Date</h5>
           </div>
           {user.infractions.map(infraction => (
-            <Infraction infraction={infraction} handleDismiss={handleDismiss} />
+            <Infraction infraction={infraction} />
           ))}
         </div>
       </section>

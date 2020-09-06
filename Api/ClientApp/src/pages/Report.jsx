@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { authHeader } from '../auth'
 import moment from 'moment'
 
 export function Report(props) {
+  const [errorMessage, setErrorMessage] = useState()
   const [confirmDismiss, setConfirmDismiss] = useState(false)
   const [report, setReport] = useState({
     body: '',
@@ -29,12 +31,35 @@ export function Report(props) {
     user: {},
   })
 
+  const handleDismiss = event => {
+    event.preventDefault()
+
+    fetch(`/api/Reports/${report.id}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify({
+        id: report.id,
+        dismiss: true,
+      }),
+    })
+    window.location.reload(false)
+  }
+
   useEffect(() => {
     setReport(props.report)
   }, [])
+  useEffect(() => {
+    props.getUserData()
+    props.getUserReports()
+  }, [confirmDismiss])
 
   return (
     <div className="reports-row">
+      {errorMessage && (
+        <div className="error-message">
+          <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+        </div>
+      )}
       <p>{moment(props.report.dateReported).format('L')}</p>
       <Link
         to={
@@ -54,7 +79,7 @@ export function Report(props) {
       {confirmDismiss ? (
         <div className="report-dismiss">
           <p>Are you sure you want to dismiss this report?: </p>
-          <button onClick={props.handleDismiss}>yes</button>
+          <button onClick={handleDismiss}>yes</button>
           <button
             onClick={() => {
               setConfirmDismiss(false)

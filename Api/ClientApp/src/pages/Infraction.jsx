@@ -1,9 +1,24 @@
 import React, { useState } from 'react'
+import { authHeader } from '../auth'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 export function Infraction(props) {
   const [confirmDismiss, setConfirmDismiss] = useState(false)
+
+  const handleDismiss = event => {
+    event.preventDefault()
+
+    fetch(`/api/Infraction/${props.infraction.id}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify({
+        id: props.infraction.id,
+        dismiss: true,
+      }),
+    })
+    // window.location.reload(false)
+  }
 
   return (
     <div className="reports-row">
@@ -16,7 +31,7 @@ export function Infraction(props) {
       {confirmDismiss ? (
         <div className="report-dismiss">
           <p>Are you sure you want to dismiss this infraction?: </p>
-          <button onClick={props.handleDismiss}>yes</button>
+          <button onClick={handleDismiss}>yes</button>
           <button
             onClick={() => {
               setConfirmDismiss(false)

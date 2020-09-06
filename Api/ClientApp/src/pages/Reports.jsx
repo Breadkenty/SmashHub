@@ -15,10 +15,16 @@ export function Reports() {
   function sumReports(user) {
     let totalReports = 0
     user.combos.forEach(
-      combo => (totalReports = totalReports + combo.reports.length)
+      combo =>
+        (totalReports =
+          totalReports +
+          combo.reports.filter(report => report.dismiss == false).length)
     )
     user.comments.forEach(
-      comment => (totalReports = totalReports + comment.reports.length)
+      comment =>
+        (totalReports =
+          totalReports +
+          comment.reports.filter(report => report.dismiss == false).length)
     )
     return totalReports
   }
