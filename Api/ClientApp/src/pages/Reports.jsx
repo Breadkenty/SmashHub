@@ -18,13 +18,13 @@ export function Reports() {
       combo =>
         (totalReports =
           totalReports +
-          combo.reports.filter(report => report.dismiss == false).length)
+          combo.reports.filter(report => report.dismiss === false).length)
     )
     user.comments.forEach(
       comment =>
         (totalReports =
           totalReports +
-          comment.reports.filter(report => report.dismiss == false).length)
+          comment.reports.filter(report => report.dismiss === false).length)
     )
     return totalReports
   }
