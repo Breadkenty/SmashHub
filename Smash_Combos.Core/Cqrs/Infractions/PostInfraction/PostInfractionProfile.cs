@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
     {
         public PostInfractionProfile()
         {
-            CreateMap<Infraction, PostInfractionResponse>();
+            CreateMap<Infraction, InfractionDto>();
             CreateMap<User, UserDto>();
         }
     }

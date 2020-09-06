@@ -29,7 +29,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
             User user = null;
             try
             {
-                user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).SingleOrDefaultAsync();
+                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
             }
             catch (InvalidOperationException)
             {
@@ -39,12 +39,12 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
             if (user == null)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
 
-            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.Id).FirstOrDefaultAsync();
+            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
 
             if (comment == null)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
 
-            if (comment.User.Id != user.Id && user.UserType == UserType.User)
+            if (comment.User.Id != user.Id)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this comment" };
 
             comment.Body = request.Body;
@@ -56,7 +56,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
                 var commentToReturn = await _dbContext.Comments
                     .Include(comment => comment.User)
-                    .Where(comment => comment.Id == request.Id)
+                    .Where(comment => comment.Id == request.CommentId)
                     .FirstOrDefaultAsync();
                 return new PutCommentResponse { Data = _mapper.Map<CommentDto>(commentToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment edited" };
             }

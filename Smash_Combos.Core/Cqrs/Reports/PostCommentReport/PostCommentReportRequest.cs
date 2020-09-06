@@ -8,9 +8,9 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
 {
     public class PostCommentReportRequest : IRequest<PostCommentReportResponse>
     {
-        public UserDto User { get; set; }
+        public int UserId { get; set; }
 
-        public UserDto Reporter { get; set; }
+        public int ReporterId { get; set; }
 
         public int CommentId { get; set; }
 

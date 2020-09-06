@@ -26,14 +26,12 @@ namespace Smash_Combos.Controllers
     public class CommentsController : ControllerBase
     {
         // This is the variable you use to have access to your database
-        private readonly IDbContext _context;
         private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
-        public CommentsController(IDbContext context, IMediator mediator)
+        public CommentsController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -102,8 +100,10 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutComment([FromRoute] int id, [FromBody] PutCommentRequest request)
         {
-            if (id != request.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != request.CommentId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
+
+            request.UserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
@@ -136,7 +136,6 @@ namespace Smash_Combos.Controllers
 
         public async Task<IActionResult> PostComment(PostCommentRequest request)
         {
-
             request.UserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
@@ -184,8 +183,7 @@ namespace Smash_Combos.Controllers
 
         private int GetCurrentUserId()
         {
-            // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

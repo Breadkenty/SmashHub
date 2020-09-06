@@ -25,12 +25,25 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
 
         public async Task<PostCommentReportResponse> Handle(PostCommentReportRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).FirstOrDefaultAsync();
-            var reporter = await _dbContext.Users.Where(user => user.DisplayName == request.Reporter.DisplayName).FirstOrDefaultAsync();
-            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+            User user = null;
+            User reporter = null;
+            try
+            {
+                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+                reporter = await _dbContext.Users.Where(user => user.Id == request.ReporterId).SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return new PostCommentReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same name found" };
+            }
 
             if (user == null || reporter == null)
-                return new PostCommentReportResponse { User = null, Reporter = null };
+                return new PostCommentReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+
+            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+
+            if (comment == null)
+                return new PostCommentReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Comment does not exist" };
 
             var report = new Report
             {
@@ -45,7 +58,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return _mapper.Map<PostCommentReportResponse>(report);
+            return new PostCommentReportResponse { Data = _mapper.Map<ReportDto>(report), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"User '{user.DisplayName}' reported" };
         }
     }
 }

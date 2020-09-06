@@ -7,7 +7,7 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
 {
     public class UnbanUserRequest : IRequest<UnbanUserResponse>
     {
-        public string DisplayName { get; set; }
-        public string ModeratorDisplayName { get; set; }
+        public int UserId { get; set; }
+        public int ModeratorId { get; set; }
     }
 }

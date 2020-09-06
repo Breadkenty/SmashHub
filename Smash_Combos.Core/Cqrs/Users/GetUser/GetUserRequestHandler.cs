@@ -42,13 +42,13 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
             }
             catch (InvalidOperationException)
             {
-                return null; //This is temporary. If everyone agrees with my proposed ResponseBase object we will be able to return a nice error message here.
+                return new GetUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same name found" };
             }
 
             if (user == null)
-                return null;
+                return new GetUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            var response = new GetUserResponse
+            var userDto = new UserFullDto
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName,
@@ -58,7 +58,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
                 Infractions = _mapper.Map<List<InfractionDto>>(user.Infractions)
             };
 
-            return response;
+            return new GetUserResponse { Data = userDto, ResponseStatus = ResponseStatus.Ok, ResponseMessage = "User found" };
         }
     }
 }

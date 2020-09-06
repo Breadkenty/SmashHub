@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Users.GetUsers
 {
-    public class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, IEnumerable<GetUsersResponse>>
+    public class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, GetUsersResponse>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUsers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<GetUsersResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
+        public async Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
         {
             var users = await _dbContext.Users
                         .Include(user => user.Combos)
@@ -35,11 +35,11 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUsers
                             .ThenInclude(infraction => infraction.Moderator)
                         .ToListAsync();
 
-            var responseList = new List<GetUsersResponse>();
+            var responseList = new List<UserFullDto>();
 
             foreach(var user in users)
             {
-                var response = new GetUsersResponse
+                var dto = new UserFullDto
                 {
                     Id = user.Id,
                     DisplayName = user.DisplayName,
@@ -48,10 +48,10 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUsers
                     Comments = _mapper.Map<List<CommentDto>>(user.Comments),
                     Infractions = _mapper.Map<List<InfractionDto>>(user.Infractions)
                 };
-                responseList.Add(response);
+                responseList.Add(dto);
             }
 
-            return responseList;
+            return new GetUsersResponse { Data = responseList, ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{responseList.Count} found" };
         }
     }
 }

@@ -4,9 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
 {
-    public class DeleteInfractionResponse
+    public class DeleteInfractionResponse : ResponseBase<InfractionDto>
     {
-        public bool Success { get; set; }
-        public InfractionDto Infraction { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
     public class DeleteInfractionRequest : IRequest<DeleteInfractionResponse>
     {
         public int InfractionId { get; set; }
-        public int UserId { get; set; }
+        public int ModeratorId { get; set; }
     }
 }

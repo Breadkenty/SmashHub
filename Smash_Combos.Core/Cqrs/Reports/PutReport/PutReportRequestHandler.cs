@@ -25,35 +25,49 @@ namespace Smash_Combos.Core.Cqrs.Reports.PutReport
 
         public async Task<PutReportResponse> Handle(PutReportRequest request, CancellationToken cancellationToken)
         {
-            var report = await _dbContext.Reports.Where(report => report.Id == request.Id).FirstOrDefaultAsync();
-
-            if (report == null)
-                return new PutReportResponse { Success = false };
-
-            report.Dismiss = request.Dismiss;
-
-            _dbContext.Entry(report).State = EntityState.Modified;
-
+            User user = null;
             try
             {
-                await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var reportToReturn = await _dbContext.Reports
-                                            .Include(report => report.User)
-                                            .Include(report => report.Reporter)
-                                            .Where(dbReport => dbReport.Id == report.Id)
-                                            .FirstOrDefaultAsync();
-                return new PutReportResponse { Success = true, Report = _mapper.Map<ReportDto>(reportToReturn) };
+                user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.ModeratorId);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (InvalidOperationException)
             {
-                if (!_dbContext.Reports.Any(report => report.Id == request.Id))
+                return new PutReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
+            }
+
+            if (user == null)
+                return new PutReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+
+            var report = await _dbContext.Reports.Where(report => report.Id == request.ReportId).FirstOrDefaultAsync();
+
+            if (report == null)
+                return new PutReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Report does not exist" };
+
+            if (user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            {
+                report.Dismiss = request.Dismiss;
+
+                _dbContext.Entry(report).State = EntityState.Modified;
+
+                try
                 {
-                    return new PutReportResponse { Success = false };
+                    await _dbContext.SaveChangesAsync(CancellationToken.None);
+                    var reportToReturn = await _dbContext.Reports
+                                                .Include(report => report.User)
+                                                .Include(report => report.Reporter)
+                                                .Where(dbReport => dbReport.Id == report.Id)
+                                                .FirstOrDefaultAsync();
+                    return new PutReportResponse { Data = _mapper.Map<ReportDto>(reportToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Report does not exist" };
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    return new PutReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
+
                 }
+            }
+            else
+            {
+                return new PutReportResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit reports" };
             }
         }
     }

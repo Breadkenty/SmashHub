@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractionsByUser
 {
-    public class GetInfractionsByUserRequestHandler : IRequestHandler<GetInfractionsByUserRequest, IEnumerable<GetInfractionsByUserResponse>>
+    public class GetInfractionsByUserRequestHandler : IRequestHandler<GetInfractionsByUserRequest, GetInfractionsByUserResponse>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,15 +23,37 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractionsByUser
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<GetInfractionsByUserResponse>> Handle(GetInfractionsByUserRequest request, CancellationToken cancellationToken)
+        public async Task<GetInfractionsByUserResponse> Handle(GetInfractionsByUserRequest request, CancellationToken cancellationToken)
         {
-            var infractions = await _dbContext.Infractions
-                .Where(infraction => infraction.User.DisplayName == request.UserName)
-                .Include(infraction => infraction.User)
-                .Include(infraction => infraction.Moderator)
-                .ToListAsync();
+            User user = null;
+            User moderator = null;
+            try
+            {
+                user = await _dbContext.Users.FirstOrDefaultAsync(user => user.DisplayName == request.DisplayName);
+                moderator = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.ModeratorId);
+            }
+            catch (InvalidOperationException)
+            {
+                return new GetInfractionsByUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
+            }
 
-            return _mapper.Map<IEnumerable<GetInfractionsByUserResponse>>(infractions);
+            if(user == null || moderator == null)
+                return new GetInfractionsByUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+
+            if (moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            {
+                var infractions = await _dbContext.Infractions
+                    .Where(infraction => infraction.User.DisplayName == request.DisplayName)
+                    .Include(infraction => infraction.User)
+                    .Include(infraction => infraction.Moderator)
+                    .ToListAsync();
+
+                return new GetInfractionsByUserResponse { Data = _mapper.Map<IEnumerable<InfractionDto>>(infractions), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{infractions.Count} found" };
+            }
+            else
+            {
+                return new GetInfractionsByUserResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to get infractions" };
+            }
         }
     }
 }

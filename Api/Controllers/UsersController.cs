@@ -1,18 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Smash_Combos.Domain.Models;
-using Smash_Combos.Core.Services;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Smash_Combos.Core.Cqrs.Users.GetUser;
 using Smash_Combos.Core.Cqrs.Users.GetUsers;
 using Smash_Combos.Core.Cqrs.Users.PostUser;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Smash_Combos.Core.Cqrs.Users.UnbanUser;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Smash_Combos.Controllers
 {
@@ -23,110 +19,98 @@ namespace Smash_Combos.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // This is the variable you use to have access to your database
-        private readonly IDbContext _context;
         private readonly IMediator _mediator;
 
-        // Constructor that recives a reference to your database context
-        // and stores it in _context for you to use in your API methods
-        public UsersController(IDbContext context, IMediator mediator)
+        public UsersController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
             var response = await _mediator.Send(new GetUsersRequest());
-            return Ok(response);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         [HttpGet("{displayName}")]
-        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName)
+        public async Task<IActionResult> GetUser([FromRoute] string displayName)
         {
             var response = await _mediator.Send(new GetUserRequest { DisplayName = displayName });
 
-            if (response == null)
+            switch (response.ResponseStatus)
             {
-                // Return a `404` response to the client indicating we could not find a combo with this id
-                return NotFound();
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
-
-            //  Return the combo as a JSON object.
-            return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody] User user)
+        public async Task<IActionResult> PostUser([FromBody] PostUserRequest request)
         {
-            var response = await _mediator.Send(new PostUserRequest { User = user });
+            var response = await _mediator.Send(request);
 
-            if (response.DisplayNameAlreadyExists)
+            switch (response.ResponseStatus)
             {
-                var httpResponse = new
-                {
-                    status = 400,
-                    errors = new List<string>() { "There's already an account with this display name" }
-                };
-                return BadRequest(httpResponse);
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return CreatedAtAction("GetUser", new { id = response.Data.Id }, response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
-
-            if (response.EmailAlreadyExists)
-            {
-                var httpResponse = new
-                {
-                    status = 400,
-                    errors = new List<string>() { "There's already an account with this email" }
-                };
-                return BadRequest(httpResponse);
-            }
-
-            if (response.PasswordDoesntMeetCriteria)
-            {
-                var httpResponse = new
-                {
-                    status = 400,
-                    errors = new List<string>() { "Password must be at least 8 characters" }
-                };
-                return BadRequest(httpResponse);
-            }
-
-            if (response.User == null)
-            {
-                var httpResponse = new
-                {
-                    status = 500,
-                    errors = new List<string>() { "Internal server error" }
-                };
-                return StatusCode(500, httpResponse);
-            }
-
-            // Return a response that indicates the object was created (status code `201`) and some additional
-            // headers with details of the newly created object.
-            return CreatedAtAction("GetUser", new { id = user.Id }, response.User);
         }
 
-        [HttpPut("unban/{displayName}")]
+        [HttpPut("unban/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<UnbanUserResponse>> UnbanUser([FromRoute] string displayName)
+        public async Task<IActionResult> UnbanUser([FromRoute] int id)
         {
-            var response = await _mediator.Send(new UnbanUserRequest { DisplayName = displayName, ModeratorDisplayName = GetCurrentUserDisplayName() });
+            var response = await _mediator.Send(new UnbanUserRequest { UserId = id, ModeratorId = GetCurrentUserId() });
 
-            if (response == null)
-                return BadRequest();
-
-            return Ok(response);
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
-        private bool UserExists(string displayName)
+        private int GetCurrentUserId()
         {
-            return _context.Users.Any(user => user.DisplayName == displayName);
-        }
-
-        private string GetCurrentUserDisplayName()
-        {
-            return User.Claims.SingleOrDefault(claim => claim.Type == "DisplayName").Value;
+            // Get the User Id from the claim and then parse it as an integer.
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

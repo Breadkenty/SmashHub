@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +25,36 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfraction
 
         public async Task<GetInfractionResponse> Handle(GetInfractionRequest request, CancellationToken cancellationToken)
         {
-            var infraction = await _dbContext.Infractions
-                .Where(infraction => infraction.Id == request.InfractionId)
-                .Include(infraction => infraction.User)
-                .Include(infraction => infraction.Moderator)
-                .FirstOrDefaultAsync();
+            User moderator = null;
+            try
+            {
+                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return new GetInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
+            }
 
-            if (infraction == null)
-                return null;
+            if (moderator == null)
+                return new GetInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            return _mapper.Map<GetInfractionResponse>(infraction);
+            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            {
+                var infraction = await _dbContext.Infractions
+                    .Where(infraction => infraction.Id == request.InfractionId)
+                    .Include(infraction => infraction.User)
+                    .Include(infraction => infraction.Moderator)
+                    .FirstOrDefaultAsync();
+
+                if (infraction == null)
+                    return new GetInfractionResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Infraction not found" };
+
+                return new GetInfractionResponse { Data = _mapper.Map<InfractionDto>(infraction), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction found" };
+            }
+            else
+            {
+                return new GetInfractionResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to get infractions" };
+            }
         }
     }
 }
