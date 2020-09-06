@@ -44,7 +44,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
             if (comment == null)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
 
-            if (comment.User.Id != user.Id && user.UserType == UserType.User)
+            if (comment.User.Id != user.Id)
                 return new PutCommentResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this comment" };
 
             comment.Body = request.Body;

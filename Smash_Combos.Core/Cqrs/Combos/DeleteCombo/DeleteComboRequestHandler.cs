@@ -42,13 +42,17 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
             if (combo == null)
                 return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
 
-            if (combo.User.Id != user.Id && user.UserType == UserType.User)
+            if (combo.User.Id == user.Id || user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            {
+                _dbContext.Combos.Remove(combo);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return new DeleteComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"Combo '{combo.Title}' was deleted" };
+            }
+            else
+            {
                 return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete this combo" };
-
-            _dbContext.Combos.Remove(combo);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return new DeleteComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"Combo '{combo.Title}' was deleted" };
+            }
         }
     }
 }

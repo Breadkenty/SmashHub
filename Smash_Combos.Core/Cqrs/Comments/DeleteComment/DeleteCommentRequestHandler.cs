@@ -42,13 +42,17 @@ namespace Smash_Combos.Core.Cqrs.Comments.DeleteComment
             if (comment == null)
                 return new DeleteCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
 
-            if (comment.User.Id != user.Id && user.UserType == UserType.User)
+            if (comment.User.Id == user.Id || user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            {
+                _dbContext.Comments.Remove(comment);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return new DeleteCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment was deleted" };
+            }
+            else
+            {
                 return new DeleteCommentResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete this comment" };
-
-            _dbContext.Comments.Remove(comment);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return new DeleteCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment was deleted" };
+            }
         }
     }
 }
