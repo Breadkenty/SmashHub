@@ -5,7 +5,7 @@ import moment from 'moment'
 import YouTube from 'react-youtube'
 
 import { useParams } from 'react-router'
-import { authHeader, getUserId, getUser, isLoggedIn } from '../auth'
+import { authHeader, getUser, isLoggedIn } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -247,13 +247,16 @@ export function Combo() {
                   <h5>edit</h5>
                 </Link>
               )}
-              <button
-                onClick={() => {
-                  setReportingCombo(true)
-                }}
-              >
-                <h5>report</h5>
-              </button>
+              {isLoggedIn() &&
+                loggedInUser.displayName != combo.user.displayName && (
+                  <button
+                    onClick={() => {
+                      setReportingCombo(true)
+                    }}
+                  >
+                    <h5>report</h5>
+                  </button>
+                )}
             </h5>
 
             <h2>{combo.title}</h2>

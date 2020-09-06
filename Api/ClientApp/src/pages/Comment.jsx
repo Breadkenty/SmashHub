@@ -144,14 +144,17 @@ export function Comment(props) {
           <h5>
             Posted by {props.comment.user.displayName}{' '}
             {moment(props.comment.datePosted).fromNow()}
-            <button
-              className="edit"
-              onClick={() => {
-                setReportingComment(true)
-              }}
-            >
-              report
-            </button>
+            {isLoggedIn() &&
+              loggedInUser.displayName != props.comment.user.displayName && (
+                <button
+                  className="edit"
+                  onClick={() => {
+                    setReportingComment(true)
+                  }}
+                >
+                  report
+                </button>
+              )}
             {isLoggedIn() && props.loggedInUser.id === props.comment.user.id && (
               <>
                 <button
