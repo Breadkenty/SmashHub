@@ -25,23 +25,31 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 
         public async Task<PutComboResponse> Handle(PutComboRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.Id == request.User.Id).SingleOrDefaultAsync();
+            User user = null;
+            try
+            {
+                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+            }
+            catch(InvalidOperationException)
+            {
+                return new PutComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same name found" };
+            }
 
             if (user == null)
-                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find User" };
+                return new PutComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find User" };
 
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.Id).FirstOrDefaultAsync();
+            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
             if (combo == null)
-                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Combo" };
+                return new PutComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Combo" };
 
-            if (combo.User.Id != user.Id && user.UserType != UserType.Admin)
-                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this Combo" };
+            if (combo.User.Id != user.Id && user.UserType == UserType.User)
+                return new PutComboResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this Combo" };
 
-            var character = await _dbContext.Characters.Where(character => character.VariableName == request.Character.VariableName).FirstOrDefaultAsync();
+            var character = await _dbContext.Characters.Where(character => character.VariableName == request.CharacterName).FirstOrDefaultAsync();
 
             if (character == null)
-                return new PutComboResponse { Data = null, ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Character" };
+                return new PutComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Couldn't find Character" };
 
             combo.Character = character;
             combo.Title = request.Title;
@@ -59,7 +67,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
             try
             {
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.Id).FirstOrDefaultAsync();
+                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
                 return new PutComboResponse { Data = _mapper.Map<ComboDto>(comboToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo updated" };
             }
             catch (DbUpdateConcurrencyException)

@@ -7,7 +7,6 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
     public class ComboDto
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
         public CharacterDto Character { get; set; }
         public UserDto User { get; set; }
         public DateTime DatePosted { get; set; }

@@ -97,11 +97,14 @@ namespace Smash_Combos.Controllers
         //
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutCombo([FromRoute] int id, [FromBody] PutComboRequest putComboRequest)
+        public async Task<IActionResult> PutCombo([FromRoute] int id, [FromBody] PutComboRequest request)
         {
-            if (id != putComboRequest.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != request.ComboId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
-            var response = await _mediator.Send(putComboRequest);
+
+            request.UserId = GetCurrentUserId();
+
+            var response = await _mediator.Send(request);
 
             switch (response.ResponseStatus)
             {
@@ -179,7 +182,6 @@ namespace Smash_Combos.Controllers
 
         private int GetCurrentUserId()
         {
-            // Get the User Id from the claim and then parse it as an integer.
             return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
         }
     }
