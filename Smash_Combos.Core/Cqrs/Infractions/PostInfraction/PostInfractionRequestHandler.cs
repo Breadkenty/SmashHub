@@ -25,8 +25,8 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 
         public async Task<PostInfractionResponse> Handle(PostInfractionRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
-            var moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).FirstOrDefaultAsync();
+            var moderator = await _dbContext.Users.Where(user => user.DisplayName == request.Moderator.DisplayName).FirstOrDefaultAsync();
 
             if (user == null || moderator == null)
                 return new PostInfractionResponse { User = null, Moderator = null };

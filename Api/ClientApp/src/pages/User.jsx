@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, getUser, isLoggedIn } from '../auth'
 
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
 import { allCharacterCloseUp } from '../components/allCharacterCloseUp'
@@ -14,7 +14,11 @@ import { Infraction } from './Infraction'
 
 export function User() {
   const params = useParams()
+  const loggedInUser = getUser()
+
   const displayName = params.displayName
+
+  const [errorMessage, setErrorMessage] = useState()
 
   const [user, setUser] = useState({
     combos: [],
@@ -32,18 +36,51 @@ export function User() {
   )
   const [infractionType, setInfractionType] = useState('warn')
   const [infraction, setInfraction] = useState({
-    userId: 0,
-    moderatorId: 0,
+    user: {
+      displayName: displayName,
+    },
+    moderator: {
+      displayName: isLoggedIn() && loggedInUser.displayName,
+    },
     banDuration: 0,
     points: 0,
-    category: '',
+    category: 0,
     body: '',
   })
 
   const handleSubmit = event => {
     event.preventDefault()
-    console.log('Submit:')
-    console.log(infraction)
+
+    fetch(`/api/Infractions`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(infraction),
+    })
+      .then(response => {
+        if (response.status === 401) {
+          return { status: 401, errors: { login: 'Log in to infract' } }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        if (apiData.status === 400 || apiData.status === 401) {
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
+        } else {
+          setInfractionType('warn')
+          setInfraction({
+            ...infraction,
+            banDuration: 0,
+            points: 0,
+            category: 0,
+            body: '',
+          })
+          setErrorMessage(undefined)
+          getUserData()
+          getUserReports()
+        }
+      })
   }
 
   const handleDismiss = event => {
@@ -58,11 +95,11 @@ export function User() {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
     }).then(() => {
-      getUser()
+      getUserData()
     })
   }
 
-  function getUser() {
+  function getUserData() {
     fetch(`/api/Users/${displayName}`)
       .then(response => response.json())
       .then(apiData => {
@@ -86,7 +123,7 @@ export function User() {
     return totalInfraction
   }
 
-  useEffect(getUser, [])
+  useEffect(getUserData, [])
   useEffect(getUserReports, [])
 
   reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
@@ -95,6 +132,11 @@ export function User() {
     <div className="user">
       <header>
         <h1>{displayName}</h1>
+        {errorMessage && (
+          <div className="error-message">
+            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+          </div>
+        )}
       </header>
 
       <section className="user-details">
@@ -139,13 +181,7 @@ export function User() {
                 className="button bg-yellow"
                 onClick={() => {
                   setInfractionType('warn')
-                  setInfraction({
-                    ...infraction,
-                    category: '',
-                    banDuration: 0,
-                    body: '',
-                    points: 0,
-                  })
+                  setInfraction({ ...infraction, banDuration: 0 })
                 }}
               >
                 Warn
@@ -160,13 +196,7 @@ export function User() {
                 className="button bg-red white-text"
                 onClick={() => {
                   setInfractionType('ban')
-                  setInfraction({
-                    ...infraction,
-                    category: '',
-                    banDuration: 0,
-                    body: '',
-                    points: 0,
-                  })
+                  setInfraction({ ...infraction, banDuration: 172800 })
                 }}
               >
                 Ban
@@ -177,7 +207,7 @@ export function User() {
             <div className="types">
               <div
                 className={`button-wrapper ${
-                  infraction.category === 'Spam/Abuse' ? 'active-button' : ''
+                  infraction.category === 0 ? 'active-button' : ''
                 }`}
               >
                 <button
@@ -186,7 +216,7 @@ export function User() {
                     event.preventDefault()
                     setInfraction({
                       ...infraction,
-                      category: 'Spam/Abuse',
+                      category: 0,
                       points: 1,
                     })
                   }}
@@ -197,7 +227,7 @@ export function User() {
 
               <div
                 className={`button-wrapper ${
-                  infraction.category === 'Harassment' ? 'active-button' : ''
+                  infraction.category === 2 ? 'active-button' : ''
                 }`}
               >
                 <button
@@ -206,7 +236,7 @@ export function User() {
                     event.preventDefault()
                     setInfraction({
                       ...infraction,
-                      category: 'Harassment',
+                      category: 2,
                       points: 2,
                     })
                   }}
@@ -217,7 +247,7 @@ export function User() {
 
               <div
                 className={`button-wrapper ${
-                  infraction.category === 'Inappropriate' ? 'active-button' : ''
+                  infraction.category === 1 ? 'active-button' : ''
                 }`}
               >
                 <button
@@ -226,7 +256,7 @@ export function User() {
                     event.preventDefault()
                     setInfraction({
                       ...infraction,
-                      category: 'Inappropriate',
+                      category: 1,
                       points: 1,
                     })
                   }}
@@ -237,7 +267,7 @@ export function User() {
 
               <div
                 className={`button-wrapper ${
-                  infraction.category === 'Off-topic' ? 'active-button' : ''
+                  infraction.category === 3 ? 'active-button' : ''
                 }`}
               >
                 <button
@@ -246,12 +276,12 @@ export function User() {
                     event.preventDefault()
                     setInfraction({
                       ...infraction,
-                      category: 'Off-topic',
-                      points: 1,
+                      category: 3,
+                      points: 4,
                     })
                   }}
                 >
-                  Off-topic
+                  Other
                 </button>
               </div>
             </div>
