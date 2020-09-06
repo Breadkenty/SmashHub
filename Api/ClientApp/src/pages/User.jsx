@@ -110,6 +110,39 @@ export function User() {
       })
   }
 
+  function unbanUser(event) {
+    event.preventDefault()
+    console.log(user.infractions)
+
+    // fetch(`/api/Users/unban/${user.displayName}`, {
+    //   method: 'PUT',
+    //   headers: { 'content-type': 'application/json', ...authHeader() },
+    //   body: JSON.stringify({
+    //     userDisplayName: user.displayName,
+    //     moderatorDisplayName: loggedInUser.displayName,
+    //   }),
+    // })
+  }
+
+  function isUserBanned() {
+    const currentDate = new Date()
+
+    user.infractions.forEach(infraction => {
+      if (
+        infraction.banLiftDate != null &&
+        currentDate > infraction.banLiftDate
+      ) {
+        return false
+      }
+
+      var date = new Date(infraction.DateInfracted)
+      date = new Date(date.getTime() + infraction.BanDuration)
+      if (currentDate > date) {
+        return true
+      }
+    })
+  }
+
   function sumInfraction(user) {
     let totalInfraction = 0
     user.infractions.forEach(
@@ -123,13 +156,20 @@ export function User() {
 
   reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
 
+  console.log(isUserBanned())
+
   return (
     <div className="user">
       <header>
+        {
+          <button className="unban button bg-red" onClick={unbanUser}>
+            Unban
+          </button>
+        }
         <h1>{displayName}</h1>
         {errorMessage && (
           <div className="error-message">
-            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+            <i className="fas fa-exclamation-triangle"></i> {errorMessage}
           </div>
         )}
       </header>
@@ -139,7 +179,7 @@ export function User() {
           <div>
             <h3>Reports: </h3>
             <h3 className="points">
-              {reports.filter(report => report.dismiss == false).length}
+              {reports.filter(report => report.dismiss === false).length}
             </h3>
           </div>
           <button
@@ -383,7 +423,7 @@ export function User() {
 
           {reports.map(
             report =>
-              report.dismiss == false && (
+              report.dismiss === false && (
                 <Report
                   report={report}
                   getUserData={getUserData}
