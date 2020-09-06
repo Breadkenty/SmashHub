@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
     {
         public PostCommentReportProfile()
         {
-            CreateMap<Report, PostCommentReportResponse>();
+            CreateMap<Report, ReportDto>();
             CreateMap<User, UserDto>();
         }
     }

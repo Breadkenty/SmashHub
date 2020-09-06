@@ -36,88 +36,138 @@ namespace Smash_Combos.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports()
         {
-            var response = await _mediator.Send(new GetReportsRequest());
-            return Ok(response);
+            var response = await _mediator.Send(new GetReportsRequest { ModeratorId = GetCurrentUserId() });
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // GET api/<ReportsController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
         {
-            var response = await _mediator.Send(new GetReportRequest { ReportId = id });
-            if (response == null)
-                return NotFound();
-
-            return Ok(response);
+            var response = await _mediator.Send(new GetReportRequest { ReportId = id, ModeratorId = GetCurrentUserId() });
+            
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // Get api/<ReportsController/displayName
         [HttpGet("user/{userName}")]
         public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName)
         {
-            var response = await _mediator.Send(new GetReportsByUserRequest { UserName = userName });
-            if (response == null)
-                return NotFound();
-            
-            return Ok(response);
+            var response = await _mediator.Send(new GetReportsByUserRequest { UserName = userName, ModeratorId = GetCurrentUserId() });
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // POST api/<ReportsControler>/combo/5
         [HttpPost("combo/{comboId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostComboReportResponse>> PostComboReport([FromRoute] int comboId, [FromBody] PostComboReportRequest postComboReportRequest)
+        public async Task<ActionResult<PostComboReportResponse>> PostComboReport([FromRoute] int comboId, [FromBody] PostComboReportRequest request)
         {
-            if (comboId != postComboReportRequest.ComboId)
+            if (comboId != request.ComboId)
                 return BadRequest();
 
-            var response = await _mediator.Send(postComboReportRequest);
+            var response = await _mediator.Send(request);
 
-            if (response.User == null || response.Reporter == null)
-                return NotFound();
-
-            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
-            return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return CreatedAtAction("GetReport", new { id = response.Data.Id }, response);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // POST api/<ReportsControler>/comment/5
         [HttpPost("comment/{commentId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostCommentReportResponse>> PostCommentReport([FromRoute] int commentId, [FromBody] PostCommentReportRequest postCommentReportRequest)
+        public async Task<ActionResult<PostCommentReportResponse>> PostCommentReport([FromRoute] int commentId, [FromBody] PostCommentReportRequest request)
         {
-            if (commentId != postCommentReportRequest.CommentId)
+            if (commentId != request.CommentId)
                 return BadRequest();
 
-            var response = await _mediator.Send(postCommentReportRequest);
+            var response = await _mediator.Send(request);
 
-            if (response.User == null || response.Reporter == null)
-                return NotFound();
-
-            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
-            return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return CreatedAtAction("GetReport", new { id = response.Data.Id }, response);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // PUT api/<ReportsController>/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PutReportResponse>> PutReport([FromRoute] int id, [FromBody] PutReportRequest putReportRequest)
+        public async Task<ActionResult<PutReportResponse>> PutReport([FromRoute] int id, [FromBody] PutReportRequest request)
         {
-            if (id != putReportRequest.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+            if (id != request.ReportId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
-            try
-            {
-                var response = await _mediator.Send(putReportRequest);
+            request.ModeratorId = GetCurrentUserId();
 
-                if (response.Success)
-                    return Ok(response.Report); // Return the updated report.
-                else if (response.Report == null)
-                    return NotFound();
-                else
-                    return StatusCode(500); // The report was found, but couldn't be updated -> something went wrong. How should we handle this?
-            }
-            catch (DbUpdateConcurrencyException)
+            var response = await _mediator.Send(request);
+
+            switch (response.ResponseStatus)
             {
-                throw; // Should we throw the exception here or deal with it otherwise?
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
             }
         }
 
@@ -126,12 +176,21 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> DeleteReport([FromRoute] int id)
         {
-            var response = await _mediator.Send(new DeleteReportRequest { ReportId = id, UserId = GetCurrentUserId() });
+            var response = await _mediator.Send(new DeleteReportRequest { ReportId = id, ModeratorId = GetCurrentUserId() });
 
-            if (response.Report == null) // There wasn't a report with that id so return a `404` not found
-                return NotFound();
-
-            return Ok(response.Report); // Send back a copy of the deleted data.
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         private int GetCurrentUserId()

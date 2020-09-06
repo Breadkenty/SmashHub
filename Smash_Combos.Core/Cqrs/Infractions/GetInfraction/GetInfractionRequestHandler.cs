@@ -25,20 +25,20 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfraction
 
         public async Task<GetInfractionResponse> Handle(GetInfractionRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
+            User moderator = null;
             try
             {
-                user = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
+                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
             }
             catch (InvalidOperationException)
             {
                 return new GetInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
             }
 
-            if (user == null)
+            if (moderator == null)
                 return new GetInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            if(user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
             {
                 var infraction = await _dbContext.Infractions
                     .Where(infraction => infraction.Id == request.InfractionId)

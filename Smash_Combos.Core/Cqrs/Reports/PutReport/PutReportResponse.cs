@@ -4,9 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Reports.PutReport
 {
-    public class PutReportResponse
+    public class PutReportResponse : ResponseBase<ReportDto>
     {
-        public ReportDto Report { get; set; }
-        public bool Success { get; set; }
     }
 }

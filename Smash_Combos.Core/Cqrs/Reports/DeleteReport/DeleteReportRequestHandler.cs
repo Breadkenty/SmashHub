@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Linq;
 using System.Threading;
@@ -22,20 +23,37 @@ namespace Smash_Combos.Core.Cqrs.Reports.DeleteReport
 
         public async Task<DeleteReportResponse> Handle(DeleteReportRequest request, CancellationToken cancellationToken)
         {
-            var report = await _dbContext.Reports
-                                .Include(report => report.User)
-                                .Include(report => report.Reporter)
-                                .Where(report => report.Id == request.ReportId && report.User.Id == request.UserId)
-                                .FirstOrDefaultAsync();
-            if (report == null)
+            User moderator = null;
+            try
             {
-                return new DeleteReportResponse { Success = false };
+                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return new DeleteReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
             }
 
-            _dbContext.Reports.Remove(report);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            if (moderator == null)
+                return new DeleteReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            return new DeleteReportResponse { Success = true, Report = _mapper.Map<ReportDto>(report) };
+            if (moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            {
+                var report = await _dbContext.Reports
+                    .Where(report => report.Id == request.ReportId && report.User.Id == request.ModeratorId)
+                    .FirstOrDefaultAsync();
+                
+                if (report == null)
+                    return new DeleteReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Report does not exist" };
+
+                _dbContext.Reports.Remove(report);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return new DeleteReportResponse { Data = _mapper.Map<ReportDto>(report), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Report deleted" };
+            }
+            else
+            {
+                return new DeleteReportResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to delete reports" };
+            }
         }
     }
 }

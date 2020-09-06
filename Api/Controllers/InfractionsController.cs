@@ -34,7 +34,20 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> GetInfractions()
         {
             var response = await _mediator.Send(new GetInfractionsRequest { ModeratorId = GetCurrentUserId() });
-            return Ok(response);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return Ok(response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
         }
 
         // GET api/<InfractionsController>/5

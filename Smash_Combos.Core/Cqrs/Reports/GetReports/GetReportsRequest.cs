@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Reports.GetReports
 {
-    public class GetReportsRequest : IRequest<IEnumerable<GetReportsResponse>>
+    public class GetReportsRequest : IRequest<GetReportsResponse>
     {
+        public int ModeratorId { get; set; }
     }
 }

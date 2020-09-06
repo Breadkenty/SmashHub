@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
     {
         public GetReportProfile()
         {
-            CreateMap<Report, GetReportResponse>();
+            CreateMap<Report, ReportDto>();
             CreateMap<User, UserDto>();
             CreateMap<Combo, ComboDto>();
             CreateMap<Comment, CommentDto>();

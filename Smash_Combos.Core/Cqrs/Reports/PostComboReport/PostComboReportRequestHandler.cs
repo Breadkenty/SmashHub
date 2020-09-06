@@ -25,12 +25,25 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 
         public async Task<PostComboReportResponse> Handle(PostComboReportRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).FirstOrDefaultAsync();
-            var reporter = await _dbContext.Users.Where(user => user.DisplayName == request.Reporter.DisplayName).FirstOrDefaultAsync();
+            User user = null;
+            User reporter = null;
+            try
+            {
+                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
+                reporter = await _dbContext.Users.Where(user => user.Id == request.ReporterId).SingleOrDefaultAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return new PostComboReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same name found" };
+            }
+
+            if(user == null || reporter == null)
+                return new PostComboReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+
             var reportCombo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
-            if (user == null || reporter == null || reportCombo == null)
-                return new PostComboReportResponse { User = null, Reporter = null };
+            if (reportCombo == null)
+                return new PostComboReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
 
             var report = new Report
             {
@@ -45,7 +58,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return _mapper.Map<PostComboReportResponse>(report);
+            return new PostComboReportResponse { Data = _mapper.Map<ReportDto>(report), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"User '{user.DisplayName}' reported" };
         }
     }
 }

@@ -8,7 +8,8 @@ namespace Smash_Combos.Core.Cqrs.Reports.PutReport
 {
     public class PutReportRequest : IRequest<PutReportResponse>
     {
-        public int Id { get; set; }
+        public int ReportId { get; set; }
+        public int ModeratorId { get; set; }
         public bool Dismiss { get; set; }
     }
 }

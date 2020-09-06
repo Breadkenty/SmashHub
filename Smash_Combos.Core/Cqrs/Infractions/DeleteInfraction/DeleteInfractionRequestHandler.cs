@@ -25,27 +25,27 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
 
         public async Task<DeleteInfractionResponse> Handle(DeleteInfractionRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
+            User moderator = null;
             try
             {
-                user = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
+                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
             }
             catch (InvalidOperationException)
             {
                 return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
             }
 
-            if(user == null)
+            if(moderator == null)
                 return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            if(user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
             {
                 var infraction = await _dbContext.Infractions
                                 .Where(infraction => infraction.Id == request.InfractionId)
                                 .FirstOrDefaultAsync();
 
                 if (infraction == null)
-                    return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Infraction not found" };
+                    return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Infraction does not exist" };
 
                 _dbContext.Infractions.Remove(infraction);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
