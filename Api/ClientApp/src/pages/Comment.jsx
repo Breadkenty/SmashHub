@@ -6,10 +6,8 @@ export function Comment(props) {
   const loggedInUser = getUser()
 
   const [editedComment, setEditedComment] = useState({
-    id: props.comment.id,
-    user: {
-      displayName: props.comment.user.displayName,
-    },
+    commentId: props.comment.id,
+    userId: props.comment.user.id,
     body: props.comment.body,
   })
 
@@ -18,12 +16,8 @@ export function Comment(props) {
 
   const [reportingComment, setReportingComment] = useState(false)
   const [commentReport, setCommentReport] = useState({
-    user: {
-      displayName: props.comment.user.displayName,
-    },
-    reporter: {
-      displayName: isLoggedIn() && loggedInUser.displayName,
-    },
+    userId: props.comment.user.id,
+    reporterId: isLoggedIn() && loggedInUser.id,
     commentId: props.comment.id,
     body: '',
   })
@@ -36,6 +30,8 @@ export function Comment(props) {
   }
   function submitComment(event) {
     event.preventDefault()
+
+    console.log(editedComment)
 
     fetch(`/api/Comments/${parseInt(props.comment.id)}`, {
       method: 'PUT',

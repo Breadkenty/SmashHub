@@ -26,6 +26,7 @@ export function User() {
     displayName: '',
     infractions: [],
     userType: 1,
+    id: 0,
   })
 
   const [reports, setReports] = useState([])
@@ -36,16 +37,11 @@ export function User() {
   )
   const [infractionType, setInfractionType] = useState('warn')
   const [infraction, setInfraction] = useState({
-    user: {
-      displayName: displayName,
-    },
-    moderator: {
-      displayName: isLoggedIn() && loggedInUser.displayName,
-    },
     banDuration: 0,
-    points: 0,
+    points: 1,
     category: 0,
     body: '',
+    userId: 0,
   })
 
   const handleSubmit = event => {
@@ -103,7 +99,9 @@ export function User() {
   }
 
   function getUserReports() {
-    fetch(`api/Reports/user/${displayName}`)
+    fetch(`api/Reports/user/${displayName}`, {
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    })
       .then(response => response.json())
       .then(apiData => {
         setReports(apiData)
@@ -155,8 +153,6 @@ export function User() {
   useEffect(getUserReports, [])
 
   reports.sort((a, b) => new Date(b.dateReported) - new Date(a.dateReported))
-
-  console.log(isUserBanned())
 
   return (
     <div className="user">
@@ -254,7 +250,7 @@ export function User() {
                     setInfraction({
                       ...infraction,
                       category: 0,
-                      points: 1,
+                      points: infractionType === 'ban' ? 0 : 1,
                     })
                   }}
                 >
@@ -274,7 +270,7 @@ export function User() {
                     setInfraction({
                       ...infraction,
                       category: 2,
-                      points: 2,
+                      points: infractionType === 'ban' ? 0 : 2,
                     })
                   }}
                 >
@@ -294,7 +290,7 @@ export function User() {
                     setInfraction({
                       ...infraction,
                       category: 1,
-                      points: 1,
+                      points: infractionType === 'ban' ? 0 : 1,
                     })
                   }}
                 >
@@ -314,7 +310,7 @@ export function User() {
                     setInfraction({
                       ...infraction,
                       category: 3,
-                      points: 4,
+                      points: infractionType === 'ban' ? 0 : 4,
                     })
                   }}
                 >
@@ -406,7 +402,11 @@ export function User() {
               placeholder="reason"
               value={infraction.body}
               onChange={event => {
-                setInfraction({ ...infraction, body: event.target.value })
+                setInfraction({
+                  ...infraction,
+                  body: event.target.value,
+                  userId: user.id,
+                })
               }}
             />
             <button className="button" type="submit">

@@ -233,10 +233,19 @@ export function EditCombo() {
     event.preventDefault()
 
     const comboToSubmit = {
-      ...comboToEdit,
+      userId: comboToEdit.user.id,
+      comboId: comboToEdit.id,
+      characterName: comboToEdit.character.variableName,
+      title: comboToEdit.title,
+      videoId: comboToEdit.videoId,
       videoStartTime:
         parseInt(startMinutes || 0) * 60 + parseInt(startSeconds || 0),
       videoEndTime: parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0),
+      comboInput: comboToEdit.comboInput,
+      trueCombo: comboToEdit.trueCombo,
+      difficulty: comboToEdit.difficulty,
+      damage: comboToEdit.damage,
+      notes: comboToEdit.notes,
     }
 
     fetch(`/api/Combos/${comboId}`, {

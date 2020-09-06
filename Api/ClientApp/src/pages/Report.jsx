@@ -38,7 +38,7 @@ export function Report(props) {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify({
-        id: report.id,
+        reportId: report.id,
         dismiss: true,
       }),
     })

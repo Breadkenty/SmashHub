@@ -48,11 +48,11 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReports
                     .Include(report => report.Comment)
                     .ToListAsync();
 
-                return new GetReportsResponse { Data = _mapper.Map<IEnumerable<ReportDto>>(reports), ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = $"{reports.Count} found" };
+                return new GetReportsResponse { Data = _mapper.Map<IEnumerable<ReportDto>>(reports), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{reports.Count} found" };
             }
             else
             {
-                return new GetReportsResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to get reports" };
+                return new GetReportsResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to get reports" };
             }
         }
     }

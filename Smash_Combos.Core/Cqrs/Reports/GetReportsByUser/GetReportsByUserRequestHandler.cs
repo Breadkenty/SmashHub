@@ -52,11 +52,11 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
                         .ThenInclude(combo => combo.Character)
                     .ToListAsync();
 
-                return new GetReportsByUserResponse { Data = _mapper.Map<IEnumerable<ReportDto>>(reports), ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = $"{reports.Count} found" };
+                return new GetReportsByUserResponse { Data = _mapper.Map<IEnumerable<ReportDto>>(reports), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{reports.Count} found" };
             }
             else
             {
-                return new GetReportsByUserResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to get reports" };
+                return new GetReportsByUserResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to get reports" };
             }
         }
     }

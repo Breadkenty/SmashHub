@@ -57,7 +57,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetReportRequest { ReportId = id, ModeratorId = GetCurrentUserId() });
-            
+
             switch (response.ResponseStatus)
             {
                 case Core.Cqrs.ResponseStatus.Ok:
@@ -75,6 +75,7 @@ namespace Smash_Combos.Controllers
 
         // Get api/<ReportsController/displayName
         [HttpGet("user/{userName}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName)
         {
             var response = await _mediator.Send(new GetReportsByUserRequest { UserName = userName, ModeratorId = GetCurrentUserId() });

@@ -49,12 +49,8 @@ export function Combo() {
 
   const [reportingCombo, setReportingCombo] = useState(false)
   const [comboReport, setComboReport] = useState({
-    user: {
-      displayName: '',
-    },
-    reporter: {
-      displayName: isLoggedIn() && loggedInUser.displayName,
-    },
+    userId: 0,
+    reporterId: isLoggedIn() && loggedInUser.id,
     comboId: 0,
     body: '',
   })
@@ -288,9 +284,7 @@ export function Combo() {
               setComboReport({
                 ...comboReport,
                 comboId: combo.id,
-                user: {
-                  displayName: combo.user.displayName,
-                },
+                userId: combo.user.id,
                 body: event.target.value,
               })
             }}
