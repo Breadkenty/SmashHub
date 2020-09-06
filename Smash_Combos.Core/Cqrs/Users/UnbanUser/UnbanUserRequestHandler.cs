@@ -24,45 +24,47 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<UnbanUserResponse> Handle(UnbanUserRequest unbanRequest, CancellationToken cancellationToken)
+        public async Task<UnbanUserResponse> Handle(UnbanUserRequest request, CancellationToken cancellationToken)
         {
-            var moderator = await _dbContext.Users.Where(user => user.DisplayName == unbanRequest.ModeratorDisplayName).FirstOrDefaultAsync();
-
-            if (moderator == null || (moderator.UserType != UserType.Moderator && moderator.UserType != UserType.Admin))
-                return null;
-
+            User moderator = null;
             User user = null;
-
             try
             {
+                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
                 user = await _dbContext.Users.Include(user => user.Combos)
                     .Include(user => user.Comments)
                     .Include(user => user.Combos)
                     .Include(user => user.Infractions)
-                    .SingleOrDefaultAsync(user => user.DisplayName == unbanRequest.DisplayName);
-
+                    .SingleOrDefaultAsync(user => user.Id == request.UserId);
             }
             catch (InvalidOperationException)
             {
-                return null; //This is temporary. If everyone agrees with my proposed ResponseBase object we will be able to return a nice error message here.
+                return new UnbanUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
             }
 
-            if (user == null)
-                return null;
+            if (user == null || moderator == null)
+                return new UnbanUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User doesn't exist" };
 
-            var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.DisplayName == unbanRequest.DisplayName).ToListAsync();
-
-            foreach (var infraction in infractions)
+            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
             {
-                if (infraction.IsActiveBan())
+                var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.Id == request.UserId).ToListAsync();
+
+                foreach (var infraction in infractions)
                 {
-                    infraction.BanLiftDate = DateTime.Now;
+                    if (infraction.IsActiveBan())
+                    {
+                        infraction.BanLiftDate = DateTime.Now;
+                    }
                 }
+
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return new UnbanUserResponse { Data = _mapper.Map<UserFullDto>(user), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"User '{user.DisplayName}' unbanned" };
             }
-
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return _mapper.Map<UnbanUserResponse>(user);
+            else
+            {
+                return new UnbanUserResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to unban Users" };
+            }
         }
     }
 }

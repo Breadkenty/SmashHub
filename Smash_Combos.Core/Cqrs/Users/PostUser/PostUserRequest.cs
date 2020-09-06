@@ -9,6 +9,8 @@ namespace Smash_Combos.Core.Cqrs.Users.PostUser
 {
     public class PostUserRequest : IRequest<PostUserResponse>
     {
-        public User User { get; set; }
+        public string DisplayName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

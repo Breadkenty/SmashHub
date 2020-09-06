@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Users.PostUser
 {
-    public class PostUserResponse : ResponseBase<UserDto>
+    public class UserDto
     {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public UserType UserType { get; private set; }
     }
 }

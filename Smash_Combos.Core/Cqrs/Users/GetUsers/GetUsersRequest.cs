@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Users.GetUsers
 {
-    public class GetUsersRequest : IRequest<IEnumerable<GetUsersResponse>>
+    public class GetUsersRequest : IRequest<GetUsersResponse>
     {
     }
 }
