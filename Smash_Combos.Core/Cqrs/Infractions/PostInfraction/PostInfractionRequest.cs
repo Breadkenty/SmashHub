@@ -8,9 +8,9 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 {
     public class PostInfractionRequest : IRequest<PostInfractionResponse>
     {
-        public UserDto User { get; set; }
+        public int UserId { get; set; }
 
-        public UserDto Moderator { get; set; }
+        public int ModeratorId { get; set; }
 
         public int? BanDuration { get; set; }
 

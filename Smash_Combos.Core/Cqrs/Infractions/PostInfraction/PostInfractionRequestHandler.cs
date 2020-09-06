@@ -25,29 +25,36 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 
         public async Task<PostInfractionResponse> Handle(PostInfractionRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.Where(user => user.DisplayName == request.User.DisplayName).FirstOrDefaultAsync();
-            var moderator = await _dbContext.Users.Where(user => user.DisplayName == request.Moderator.DisplayName).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
+            var moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).FirstOrDefaultAsync();
 
             if (user == null || moderator == null)
-                return new PostInfractionResponse { User = null, Moderator = null };
+                return new PostInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
 
-            var infraction = new Infraction
+            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
             {
-                User = user,
-                Moderator = moderator,
-                Body = request.Body,
-                BanDuration = request.BanDuration,
-                Category = request.Category,
-                Points = DeterminePoints(request)
-            };
-            _dbContext.Infractions.Add(infraction);
+                var infraction = new Infraction
+                {
+                    User = user,
+                    Moderator = moderator,
+                    Body = request.Body,
+                    BanDuration = request.BanDuration,
+                    Category = request.Category,
+                    Points = DeterminePoints(request)
+                };
+                _dbContext.Infractions.Add(infraction);
 
-            user.Infractions.Add(infraction);
-            _dbContext.Entry(user).State = EntityState.Modified;
+                user.Infractions.Add(infraction);
+                _dbContext.Entry(user).State = EntityState.Modified;
 
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return _mapper.Map<PostInfractionResponse>(infraction);
+                return new PostInfractionResponse { Data = _mapper.Map<InfractionDto>(infraction), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction created" };
+            }
+            else
+            {
+                return new PostInfractionResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to create infractions" };
+            }
         }
 
         private int? DeterminePoints(PostInfractionRequest request)
