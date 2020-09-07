@@ -15,7 +15,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
         public int ComboId { get; set; }
 
         [Required]
-        public string CharacterName { get; set; }
+        public string CharacterVariableName { get; set; }
 
         [Required]
         [MaxLength(128)]

@@ -45,7 +45,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 
             if (combo.User.Id == user.Id)
             {
-                var character = await _dbContext.Characters.Where(character => character.VariableName == request.CharacterName).FirstOrDefaultAsync();
+                var character = await _dbContext.Characters.Where(character => character.VariableName == request.CharacterVariableName).FirstOrDefaultAsync();
 
                 if (character == null)
                     return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
