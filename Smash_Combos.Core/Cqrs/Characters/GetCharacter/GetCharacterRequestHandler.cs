@@ -24,22 +24,15 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
 
         public async Task<GetCharacterResponse> Handle(GetCharacterRequest request, CancellationToken cancellationToken)
         {
-            if (request.VariableName == null)
-            {
-                return null;
-            }
-            else
-            {
-                var character = await _dbContext.Characters.Where(character => character.VariableName == request.VariableName)
+            var character = await _dbContext.Characters.Where(character => character.VariableName == request.VariableName)
                     .Include(character => character.Combos)
                         .ThenInclude(combo => combo.User)
                     .FirstOrDefaultAsync();
 
-                if (character == null)
-                    return null;
+            if (character == null)
+                return new GetCharacterResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Character not found" };
 
-                return _mapper.Map<GetCharacterResponse>(character);
-            }
+            return new GetCharacterResponse { Data = _mapper.Map<CharacterDto>(character), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Character found" };
         }
     }
 }

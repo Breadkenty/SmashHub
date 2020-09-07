@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Characters.GetCharacters
 {
-    public class GetCharactersRequestHandler : IRequestHandler<GetCharactersRequest, IEnumerable<GetCharactersResponse>>
+    public class GetCharactersRequestHandler : IRequestHandler<GetCharactersRequest, GetCharactersResponse>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,17 +22,19 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacters
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<GetCharactersResponse>> Handle(GetCharactersRequest request, CancellationToken cancellationToken)
+        public async Task<GetCharactersResponse> Handle(GetCharactersRequest request, CancellationToken cancellationToken)
         {
             if (request.Filter == null)
             {
                 var characters = await _dbContext.Characters.ToListAsync();
-                return _mapper.Map<IEnumerable<GetCharactersResponse>>(characters);
+                return new GetCharactersResponse { Data = _mapper.Map<IEnumerable<CharacterDto>>(characters), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{characters.Count} found" };
             }
             else
             {
-                var characters = await _dbContext.Characters.Where(character => character.Name.ToLower().Contains(request.Filter) || character.VariableName.ToLower().Contains(request.Filter)).ToListAsync();
-                return _mapper.Map<IEnumerable<GetCharactersResponse>>(characters);
+                var characters = await _dbContext.Characters
+                    .Where(character => character.Name.ToLower().Contains(request.Filter) || character.VariableName.ToLower().Contains(request.Filter))
+                    .ToListAsync();
+                return new GetCharactersResponse { Data = _mapper.Map<IEnumerable<CharacterDto>>(characters), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{characters.Count} found" };
             }
         }
     }

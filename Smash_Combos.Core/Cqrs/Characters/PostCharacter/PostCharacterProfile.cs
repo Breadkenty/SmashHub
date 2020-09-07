@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smash_Combos.Core.Cqrs.Characters.GetCharacters
+namespace Smash_Combos.Core.Cqrs.Characters.PostCharacter
 {
-    public class GetCharactersProfile : Profile
+    public class PostCharacterProfile : Profile
     {
-        public GetCharactersProfile()
+        public PostCharacterProfile()
         {
             CreateMap<Character, CharacterDto>();
         }
