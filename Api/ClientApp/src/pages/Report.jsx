@@ -34,7 +34,7 @@ export function Report(props) {
   const handleDismiss = event => {
     event.preventDefault()
 
-    fetch(`/api/Reports/${report.id}`, {
+    fetch(`/api/Reports/dismiss/${report.id}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify({
