@@ -15,7 +15,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
 
         public int? BanDuration { get; set; }
 
-        public DateTime? BanLiftDate { get; set; }
+        public DateTime? DismissDate { get; set; }
 
         public int? Points { get; private set; }
 

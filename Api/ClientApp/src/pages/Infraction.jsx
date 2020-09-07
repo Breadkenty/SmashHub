@@ -8,12 +8,13 @@ export function Infraction(props) {
 
   const handleDismiss = event => {
     event.preventDefault()
+    // console.log(props.infraction.id)
 
-    fetch(`/api/Infraction/${props.infraction.id}`, {
+    fetch(`/api/Infractions/dismiss/${props.infraction.id}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify({
-        id: props.infraction.id,
+        infractionId: props.infraction.id,
         dismiss: true,
       }),
     })

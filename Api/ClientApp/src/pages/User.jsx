@@ -143,9 +143,11 @@ export function User() {
 
   function sumInfraction(user) {
     let totalInfraction = 0
-    user.infractions.forEach(
-      infraction => (totalInfraction = totalInfraction + infraction.points)
-    )
+    user.infractions
+      .filter(infraction => infraction.dismissDate == null)
+      .forEach(
+        infraction => (totalInfraction = totalInfraction + infraction.points)
+      )
     return totalInfraction
   }
 
@@ -476,9 +478,11 @@ export function User() {
             <h5>Moderator</h5>
             <h5>Date</h5>
           </div>
-          {user.infractions.map(infraction => (
-            <Infraction infraction={infraction} />
-          ))}
+          {user.infractions
+            .filter(infraction => infraction.dismissDate == null)
+            .map(infraction => (
+              <Infraction infraction={infraction} />
+            ))}
         </div>
       </section>
 
