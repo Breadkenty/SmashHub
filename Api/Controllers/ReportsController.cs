@@ -36,41 +36,18 @@ namespace Smash_Combos.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports()
         {
-            var response = await _mediator.Send(new GetReportsRequest { ModeratorId = GetCurrentUserId() });
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            var response = await _mediator.Send(new GetReportsRequest { CurrentUserId = GetCurrentUserId() });
+
+            return Ok(response);
         }
 
         // GET api/<ReportsController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
         {
-            var response = await _mediator.Send(new GetReportRequest { ReportId = id, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new GetReportRequest { ReportId = id, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            return Ok(response);
         }
 
         // Get api/<ReportsController/displayName
@@ -78,21 +55,9 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName)
         {
-            var response = await _mediator.Send(new GetReportsByUserRequest { UserName = userName, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new GetReportsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            return Ok(response);
         }
 
         // POST api/<ReportsControler>/combo/5
@@ -105,19 +70,10 @@ namespace Smash_Combos.Controllers
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return CreatedAtAction("GetReport", new { id = response.Data.Id }, response);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response == null)
+                return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // POST api/<ReportsControler>/comment/5
@@ -130,19 +86,10 @@ namespace Smash_Combos.Controllers
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return CreatedAtAction("GetReport", new { id = response.Data.Id }, response);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response == null)
+                return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // PUT api/<ReportsController>/5
@@ -153,23 +100,14 @@ namespace Smash_Combos.Controllers
             if (id != request.ReportId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
-            request.ModeratorId = GetCurrentUserId();
+            request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok();
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // DELETE api/<ReportsController>/5
@@ -177,21 +115,12 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> DeleteReport([FromRoute] int id)
         {
-            var response = await _mediator.Send(new DeleteReportRequest { ReportId = id, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new DeleteReportRequest { ReportId = id, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()

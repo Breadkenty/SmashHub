@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Reports.DismissReport
 {
-    public class DismissReportResponse : ResponseBase
+    public class DismissReportResponse
     {
+        public bool Success { get; set; }
     }
 }

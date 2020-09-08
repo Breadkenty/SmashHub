@@ -6,12 +6,13 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
 {
-    public class GetReportsByUserRequestHandler : IRequestHandler<GetReportsByUserRequest, GetReportsByUserResponse>
+    public class GetReportsByUserRequestHandler : IRequestHandler<GetReportsByUserRequest, IEnumerable<GetReportsByUserResponse>>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,27 +23,20 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<GetReportsByUserResponse> Handle(GetReportsByUserRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetReportsByUserResponse>> Handle(GetReportsByUserRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            User moderator = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.DisplayName == request.UserName).SingleOrDefaultAsync();
-                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new GetReportsByUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
-            }
+            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.CurrentUserId);
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            if (user == null || moderator == null)
-                return new GetReportsByUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.DisplayName == request.DisplayName);
+            if (user == null)
+                throw new KeyNotFoundException($"User with name {request.DisplayName} does not exist");
 
-            if (moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 var reports = await _dbContext.Reports
-                    .Where(report => report.User.DisplayName == request.UserName)
+                    .Where(report => report.User.DisplayName == request.DisplayName)
                     .Include(report => report.User)
                     .Include(report => report.Reporter)
                     .Include(report => report.Comment)
@@ -52,11 +46,11 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
                         .ThenInclude(combo => combo.Character)
                     .ToListAsync();
 
-                return new GetReportsByUserResponse { Data = _mapper.Map<IEnumerable<ReportDto>>(reports), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{reports.Count} found" };
+                return _mapper.Map<IEnumerable<GetReportsByUserResponse>>(reports);
             }
             else
             {
-                return new GetReportsByUserResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to get reports" };
+                throw new SecurityException($"Not authorized to get reports");
             }
         }
     }
