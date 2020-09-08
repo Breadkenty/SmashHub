@@ -12,6 +12,7 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
         {
             CreateMap<User, UnbanUserResponse>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UserFullDto>();
             CreateMap<Combo, ComboDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<Infraction, InfractionDto>();

@@ -34,6 +34,7 @@ namespace Smash_Combos.Controllers
 
         // GET: api/<ReportsController>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports()
         {
             var response = await _mediator.Send(new GetReportsRequest { ModeratorId = GetCurrentUserId() });
@@ -54,6 +55,7 @@ namespace Smash_Combos.Controllers
 
         // GET api/<ReportsController>/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetReportRequest { ReportId = id, ModeratorId = GetCurrentUserId() });
