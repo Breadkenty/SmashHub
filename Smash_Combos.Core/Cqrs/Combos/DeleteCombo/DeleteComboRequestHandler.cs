@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,33 +26,25 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
 
         public async Task<DeleteComboResponse> Handle(DeleteComboRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new DeleteComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (user == null)
-                return new DeleteComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
             if (combo == null)
-                return new DeleteComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
+                throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
 
-            if (combo.User.Id == user.Id || user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if (combo.User.Id == currentUser.Id || currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 _dbContext.Combos.Remove(combo);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"Combo '{combo.Title}' was deleted" };
+                return new DeleteComboResponse { Success = true };
             }
             else
             {
-                return new DeleteComboResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete this combo" };
+                throw new SecurityException("Not authorized to delete this combo");
             }
         }
     }

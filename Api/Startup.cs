@@ -36,6 +36,7 @@ namespace Smash_Combos
         {
 
             services.AddControllersWithViews();
+            
             services.AddProblemDetails(configure =>
             {
                 configure.MapToStatusCode<ArgumentException>(StatusCodes.Status400BadRequest);

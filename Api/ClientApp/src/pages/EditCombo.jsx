@@ -235,7 +235,7 @@ export function EditCombo() {
     const comboToSubmit = {
       userId: comboToEdit.user.id,
       comboId: comboToEdit.id,
-      characterName: comboToEdit.character.variableName,
+      characterVariableName: comboToEdit.character.variableName,
       title: comboToEdit.title,
       videoId: comboToEdit.videoId,
       videoStartTime:
