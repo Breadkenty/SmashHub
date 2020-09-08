@@ -49,7 +49,6 @@ export function Report(props) {
     setReport(props.report)
   }, [])
   useEffect(() => {
-    props.getUserData()
     props.getUserReports()
   }, [confirmDismiss])
 
