@@ -9,7 +9,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 {
     public class PutInfractionRequest : IRequest<PutInfractionResponse>
     {
-        public int ModeratorId { get; set; }
+        public int CurrentUserId { get; set; }
         [Required]
         public int InfractionId { get; set; }
         [Required]

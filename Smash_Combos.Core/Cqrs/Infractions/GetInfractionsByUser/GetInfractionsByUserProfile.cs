@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractionsByUser
     {
         public GetInfractionsByUserProfile()
         {
-            CreateMap<Infraction, InfractionDto>();
+            CreateMap<Infraction, GetInfractionsByUserResponse>();
             CreateMap<User, UserDto>();
         }
     }

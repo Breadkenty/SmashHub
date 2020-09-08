@@ -32,67 +32,31 @@ namespace Smash_Combos.Controllers
         // GET: api/<InfractionsController>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetInfractions()
+        public async Task<ActionResult<IEnumerable<GetInfractionsResponse>>> GetInfractions()
         {
-            var response = await _mediator.Send(new GetInfractionsRequest { ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new GetInfractionsRequest { CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            return Ok(response);
         }
 
         // GET api/<InfractionsController>/5
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetInfraction([FromRoute] int id)
+        public async Task<ActionResult<GetInfractionResponse>> GetInfraction([FromRoute] int id)
         {
-            var response = await _mediator.Send(new GetInfractionRequest { InfractionId = id, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new GetInfractionRequest { InfractionId = id, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            return Ok(response);
         }
 
         // GET api/<InfractionsController>/user/Username
         [HttpGet("user/{userName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetInfractionsByUser([FromRoute] string userName)
+        public async Task<ActionResult<IEnumerable<GetInfractionsByUserResponse>>> GetInfractionsByUser([FromRoute] string userName)
         {
-            var response = await _mediator.Send(new GetInfractionsByUserRequest { DisplayName = userName, UserId = GetCurrentUserId() });
-            
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            var response = await _mediator.Send(new GetInfractionsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() });
+
+            return Ok(response);
         }
 
         // POST api/<InfractionsController>
@@ -100,23 +64,14 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostInfraction([FromBody] PostInfractionRequest request)
         {
-            request.ModeratorId = GetCurrentUserId();
+            request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return CreatedAtAction("GetInfraction", new { id = response.Data.Id }, response);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response != null)
+                return CreatedAtAction("GetInfraction", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // PUT api/<InfractionsController>/5
@@ -127,23 +82,14 @@ namespace Smash_Combos.Controllers
             if (id != request.InfractionId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
-            request.ModeratorId = GetCurrentUserId();
+            request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // PUT api/<InfractionsController>/5
@@ -154,23 +100,14 @@ namespace Smash_Combos.Controllers
             if (id != request.InfractionId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
-            request.ModeratorId = GetCurrentUserId();
+            request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok();
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // DELETE api/<InfractionsController>/5
@@ -178,21 +115,12 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteInfraction(int id)
         {
-            var response = await _mediator.Send(new DeleteInfractionRequest { InfractionId = id, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new DeleteInfractionRequest { InfractionId = id, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()

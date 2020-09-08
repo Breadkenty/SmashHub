@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractions
 {
-    public class GetInfractionsRequest : IRequest<GetInfractionsResponse>
+    public class GetInfractionsRequest : IRequest<IEnumerable<GetInfractionsResponse>>
     {
-        public int ModeratorId { get; set; }
+        public int CurrentUserId { get; set; }
     }
 }

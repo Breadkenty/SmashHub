@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,36 +26,28 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
 
         public async Task<DeleteInfractionResponse> Handle(DeleteInfractionRequest request, CancellationToken cancellationToken)
         {
-            User moderator = null;
-            try
-            {
-                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            if(moderator == null)
-                return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if(currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 var infraction = await _dbContext.Infractions
-                                .Where(infraction => infraction.Id == request.InfractionId)
-                                .FirstOrDefaultAsync();
+                    .Where(infraction => infraction.Id == request.InfractionId)
+                    .FirstOrDefaultAsync();
 
                 if (infraction == null)
-                    return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Infraction does not exist" };
+                    throw new KeyNotFoundException($"Incraftion with id {request.InfractionId} does not exist");
 
                 _dbContext.Infractions.Remove(infraction);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteInfractionResponse { Data = _mapper.Map<InfractionDto>(infraction), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction deleted" };
+                return new DeleteInfractionResponse { Success = true };
             }
             else
             {
-                return new DeleteInfractionResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to delete infractions" };
+                throw new SecurityException("Not authorized to delete infractions");
             }
         }
     }
