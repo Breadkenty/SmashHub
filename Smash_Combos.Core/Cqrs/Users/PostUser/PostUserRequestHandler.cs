@@ -29,21 +29,20 @@ namespace Smash_Combos.Core.Cqrs.Users.PostUser
             var displayNameExists = _dbContext.Users.Any(existingUser => existingUser.DisplayName.ToLower() == request.DisplayName.ToLower());
 
             if (displayNameExists)
-                return new PostUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "There's already an account with this name" };
+                throw new ArgumentException("User with this name already exists");
 
             if (emailExists)
-                return new PostUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "There's already an account with this email" };
+                throw new ArgumentException("User with this email already exists");
 
             var user = _mapper.Map<User>(request);
 
             if (!user.PasswordMeetsCriteria)
-                return new PostUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Password must be at least 8 characters" };
+                throw new ArgumentException("Password must be at least 8 characters");
 
-            // Indicate to the database context we want to add this new record
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return new PostUserResponse { Data = _mapper.Map<UserDto>(user), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"User '{user.DisplayName}' created" };
+            return _mapper.Map<PostUserResponse>(user);
         }
     }
 }

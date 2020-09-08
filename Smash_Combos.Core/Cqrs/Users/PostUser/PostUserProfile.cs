@@ -11,7 +11,7 @@ namespace Smash_Combos.Core.Cqrs.Users.PostUser
         public PostUserProfile()
         {
             CreateMap<PostUserRequest, User>();
-            CreateMap<User, UserDto>();
+            CreateMap<User, PostUserResponse>();
         }
     }
 }
