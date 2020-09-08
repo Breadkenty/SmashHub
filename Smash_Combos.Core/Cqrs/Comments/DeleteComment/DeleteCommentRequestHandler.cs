@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,33 +26,25 @@ namespace Smash_Combos.Core.Cqrs.Comments.DeleteComment
 
         public async Task<DeleteCommentResponse> Handle(DeleteCommentRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new DeleteCommentResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if(user == null)
-                return new DeleteCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "User not found" };
+            if(currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
             if (comment == null)
-                return new DeleteCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
+                throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 
-            if (comment.User.Id == user.Id || user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if (comment.User.Id == currentUser.Id || currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 _dbContext.Comments.Remove(comment);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment was deleted" };
+                return new DeleteCommentResponse { Success = true };
             }
             else
             {
-                return new DeleteCommentResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete this comment" };
+                throw new SecurityException($"Not authorized to delete this comment");
             }
         }
     }

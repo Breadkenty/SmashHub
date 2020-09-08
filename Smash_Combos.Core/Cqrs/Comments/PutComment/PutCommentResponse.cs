@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Comments.PutComment
 {
-    public class PutCommentResponse : ResponseBase<CommentDto>
+    public class PutCommentResponse
     {
+        public bool Success { get; set; }
     }
 }

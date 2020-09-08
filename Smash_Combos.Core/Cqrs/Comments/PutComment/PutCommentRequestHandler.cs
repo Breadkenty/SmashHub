@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
@@ -26,43 +27,28 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
 
         public async Task<PutCommentResponse> Handle(PutCommentRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (user == null)
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
 
             if (comment == null)
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Comment does not exist" };
+                throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 
-            if (comment.User.Id != user.Id)
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this comment" };
-
-            comment.Body = request.Body;
-
-            _dbContext.Entry(comment).State = EntityState.Modified;
-
-            try
+            if (comment.User.Id == currentUser.Id)
             {
+                comment.Body = request.Body;
+
+                _dbContext.Entry(comment).State = EntityState.Modified;
+
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var commentToReturn = await _dbContext.Comments
-                    .Include(comment => comment.User)
-                    .Where(comment => comment.Id == request.CommentId)
-                    .FirstOrDefaultAsync();
-                return new PutCommentResponse { Data = _mapper.Map<CommentDto>(commentToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment edited" };
+                return new PutCommentResponse { Success = true };
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                return new PutCommentResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
+                throw new SecurityException("Not authorized to edit this comment");
             }
         }
     }

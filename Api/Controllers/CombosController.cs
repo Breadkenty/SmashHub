@@ -131,7 +131,7 @@ namespace Smash_Combos.Controllers
 
         private int GetCurrentUserId()
         {
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

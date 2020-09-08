@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.GetComments
     {
         public GetCommentsProfile()
         {
-            CreateMap<Comment, CommentDto>();
+            CreateMap<Comment, GetCommentsResponse>();
             CreateMap<User, UserDto>();
             CreateMap<Report, ReportDto>();
         }

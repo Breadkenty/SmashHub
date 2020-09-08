@@ -25,27 +25,19 @@ namespace Smash_Combos.Core.Cqrs.Comments.PostComment
 
         public async Task<PostCommentResponse> Handle(PostCommentRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new PostCommentResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (user == null)
-                return new PostCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
             if (combo == null)
-                return new PostCommentResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
+                throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
 
             var comment = new Comment
             {
-                User = user,
+                User = currentUser,
                 Combo = combo,
                 Body = request.Body
             };
@@ -57,7 +49,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PostComment
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return new PostCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment created" };
+            return _mapper.Map<PostCommentResponse>(comment);
         }
     }
 }

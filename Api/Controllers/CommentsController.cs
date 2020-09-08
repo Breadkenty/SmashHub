@@ -40,23 +40,11 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Comments
         //
         [HttpGet]
-        public async Task<IActionResult> GetComments()
+        public async Task<ActionResult<IEnumerable<GetCommentsResponse>>> GetComments()
         {
             var response = await _mediator.Send(new GetCommentsRequest());
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            return Ok(response);
         }
 
         // GET: api/Comments/5
@@ -66,23 +54,11 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetComment([FromRoute] int id)
+        public async Task<ActionResult<GetCommentResponse>> GetComment([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetCommentRequest { CommentId = id });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            return Ok(response);
         }
 
         // PUT: api/Comments/5
@@ -103,23 +79,14 @@ namespace Smash_Combos.Controllers
             if (id != request.CommentId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
                 return BadRequest();
 
-            request.UserId = GetCurrentUserId();
+            request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // POST: api/Comments
@@ -133,26 +100,16 @@ namespace Smash_Combos.Controllers
         //
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
         public async Task<IActionResult> PostComment(PostCommentRequest request)
         {
-            request.UserId = GetCurrentUserId();
+            request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request);
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return CreatedAtAction("GetComment", new { id = response.Data.Id }, response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response != null)
+                return CreatedAtAction("GetComment", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // DELETE: api/Comments/5
@@ -164,26 +121,17 @@ namespace Smash_Combos.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            var response = await _mediator.Send(new DeleteCommentRequest { CommentId = id, UserId = GetCurrentUserId() });
+            var response = await _mediator.Send(new DeleteCommentRequest { CommentId = id, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case Core.Cqrs.ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case Core.Cqrs.ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case Core.Cqrs.ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response.Success)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()
         {
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

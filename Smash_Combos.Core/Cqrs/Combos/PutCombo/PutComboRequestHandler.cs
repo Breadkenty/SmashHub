@@ -57,7 +57,6 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
                 _dbContext.Entry(combo).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
                 return new PutComboResponse { Success = true };
             }
             else
