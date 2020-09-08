@@ -5,6 +5,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,18 +23,10 @@ namespace Smash_Combos.Core.Cqrs.Characters.DeleteCharacter
 
         public async Task<DeleteCharacterResponse> Handle(DeleteCharacterRequest request, CancellationToken cancellationToken)
         {
-            User currentUser = null;
-            try
-            {
-                currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new DeleteCharacterResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
             if (currentUser == null)
-                return new DeleteCharacterResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             if (currentUser.UserType == UserType.Admin)
             {
@@ -42,16 +35,16 @@ namespace Smash_Combos.Core.Cqrs.Characters.DeleteCharacter
                     .FirstOrDefaultAsync();
 
                 if (character == null)
-                    return new DeleteCharacterResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
+                    throw new KeyNotFoundException($"User with id {request.CharacterId} does not exist");
 
                 _dbContext.Characters.Remove(character);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteCharacterResponse { ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Character deleted" };
+                return new DeleteCharacterResponse { Success = true };
             }
             else
             {
-                return new DeleteCharacterResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete characters" };
+                throw new SecurityException("Not authorized to create characters");
             }
         }
     }

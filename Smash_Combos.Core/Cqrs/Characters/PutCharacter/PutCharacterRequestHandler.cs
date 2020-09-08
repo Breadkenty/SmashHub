@@ -5,6 +5,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,25 +23,17 @@ namespace Smash_Combos.Core.Cqrs.Characters.PutCharacter
 
         public async Task<PutCharacterResponse> Handle(PutCharacterRequest request, CancellationToken cancellationToken)
         {
-            User currentUser = null;
-            try
-            {
-                currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new PutCharacterResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
             if (currentUser == null)
-                return new PutCharacterResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             if (currentUser.UserType == UserType.Admin)
             {
                 var character = await _dbContext.Characters.Where(character => character.VariableName == request.VariableName).FirstOrDefaultAsync();
 
-                if(character == null)
-                    return new PutCharacterResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
+                if (character == null)
+                    throw new KeyNotFoundException($"Character with name {request.VariableName} does not exist");
 
                 character.Name = request.Name;
                 character.VariableName = request.VariableName;
@@ -49,19 +42,12 @@ namespace Smash_Combos.Core.Cqrs.Characters.PutCharacter
 
                 _dbContext.Entry(character).State = EntityState.Modified;
 
-                try
-                {
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
-                    return new PutCharacterResponse { ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Character updated" };
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return new PutCharacterResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
-                }
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PutCharacterResponse { Success = true };
             }
             else
             {
-                return new PutCharacterResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit characters" };
+                throw new SecurityException("Not authorized to edit characters");
             }
         }
     }

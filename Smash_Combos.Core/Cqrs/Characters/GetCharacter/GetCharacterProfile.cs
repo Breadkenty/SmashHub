@@ -11,7 +11,7 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
     {
         public GetCharacterProfile()
         {
-            CreateMap<Character, CharacterDto>();
+            CreateMap<Character, GetCharacterResponse>();
             CreateMap<Combo, ComboDto>();
             CreateMap<User, UserDto>();
         }
