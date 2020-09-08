@@ -35,15 +35,16 @@ namespace Smash_Combos
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllersWithViews();
-            
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .ConfigureApiBehaviorOptions(options => options.SuppressMapClientErrors = true);
+
             services.AddProblemDetails(configure =>
             {
-                configure.MapToStatusCode<ArgumentException>(StatusCodes.Status400BadRequest);
-                configure.MapToStatusCode<AuthenticationException>(StatusCodes.Status401Unauthorized);
-                configure.MapToStatusCode<SecurityException>(StatusCodes.Status403Forbidden);
-                configure.MapToStatusCode<KeyNotFoundException>(StatusCodes.Status404NotFound);
-                configure.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
+                configure.Map<ArgumentException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest));
+                configure.Map<AuthenticationException>(ex => new StatusCodeProblemDetails(StatusCodes.Status401Unauthorized));
+                configure.Map<SecurityException>(ex => new StatusCodeProblemDetails(StatusCodes.Status403Forbidden));
+                configure.Map<KeyNotFoundException>(ex => new StatusCodeProblemDetails(StatusCodes.Status404NotFound));
+                configure.Map<Exception>(ex => new StatusCodeProblemDetails(StatusCodes.Status500InternalServerError));
             });
 
             // In production, the React files will be served from this directory
@@ -76,6 +77,8 @@ namespace Smash_Combos
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseProblemDetails();
+
+            app.UseMvc();
 
             if (env.IsDevelopment())
             {
