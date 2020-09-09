@@ -14,7 +14,6 @@ import { Infractions } from './Infractions'
 
 export function User() {
   const params = useParams()
-  const history = useHistory()
   const loggedInUser = getUser()
 
   const displayName = params.displayName
@@ -40,8 +39,12 @@ export function User() {
     fetch(`/api/ComboVotes/${id}/${upOrDown}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
-    }).then(() => {
-      getUserData()
+    }).then(response => {
+      if (response.status === 204) {
+        getUserData()
+      } else {
+        setErrorMessage('login to vote')
+      }
     })
   }
 
@@ -62,9 +65,13 @@ export function User() {
       body: JSON.stringify({
         userDisplayName: user.id,
       }),
+    }).then(response => {
+      if (response.status === 200) {
+        window.location.reload(false)
+      } else {
+        setErrorMessage(response.statusText)
+      }
     })
-
-    window.location.reload(false)
   }
 
   function sumInfraction(user) {
@@ -94,7 +101,7 @@ export function User() {
   return (
     <div className="user">
       <header>
-        {isBanned && (
+        {isLoggedIn() && isBanned && loggedInUser.userType > 1 && (
           <button className="unban button bg-red" onClick={unbanUser}>
             Unban
           </button>

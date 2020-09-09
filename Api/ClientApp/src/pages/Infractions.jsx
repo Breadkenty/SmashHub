@@ -58,7 +58,7 @@ export function Infractions(props) {
         {props.user.infractions
           .filter(infraction => infraction.dismissDate == null)
           .map(infraction => (
-            <Infraction infraction={infraction} />
+            <Infraction key={infraction.id} infraction={infraction} />
           ))}
       </div>
     </section>

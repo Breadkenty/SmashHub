@@ -329,6 +329,7 @@ export function UserReports(props) {
           report =>
             report.dismiss === false && (
               <Report
+                key={report.id}
                 report={report}
                 getUserData={props.getUserData}
                 getUserReports={getUserReports}
