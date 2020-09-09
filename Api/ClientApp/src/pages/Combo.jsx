@@ -234,10 +234,14 @@ export function Combo() {
           {/* Combo detail */}
           <div className="detail">
             <h5>
-              Posted by {combo.user.displayName}{' '}
+              Posted by{' '}
+              <Link to={`/user/${combo.user.displayName}`}>
+                {combo.user.displayName}
+              </Link>{' '}
               {moment(combo.datePosted).fromNow()}
               {isLoggedIn() && loggedInUser.id === combo.user.id && (
                 <Link
+                  className="edit"
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
                 >
                   <h5>edit</h5>

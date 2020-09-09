@@ -45,6 +45,14 @@ body {
   position: relative;
 }
 
+a {
+  color: white;
+  text-decoration: underline;
+}
+a:hover {
+  color: $yellow;
+}
+
 .none {
   display: flex;
   flex-direction: column;

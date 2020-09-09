@@ -134,7 +134,10 @@ export function Character() {
 
                 <footer>
                   <h5 className="white-text">
-                    Posted by {combo.user.displayName}{' '}
+                    Posted by{' '}
+                    <Link to={`/user/${combo.user.displayName}`}>
+                      {combo.user.displayName}
+                    </Link>{' '}
                     {moment(combo.datePosted).fromNow()}
                   </h5>
                 </footer>
