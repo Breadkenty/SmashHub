@@ -1,6 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 export function Notes() {
+  const [contributors, setContributors] = useState([])
+
+  function getContributors() {
+    fetch('https://api.github.com/repos/Breadkenty/Smash_Combos/contributors')
+      .then(response => {
+        return response.json()
+      })
+      .then(apiData => {
+        setContributors(apiData)
+      })
+  }
+
+  useEffect(getContributors, [])
+
   return (
     <div className="notes">
       <section className="header">
@@ -55,14 +69,13 @@ export function Notes() {
       </section>
 
       <section>
-        <h4>Source Code</h4>
+        <h3>Source Code</h3>
         <ul>
           <li>
             <a href="https://github.com/Breadkenty/Smash_Combos">Github</a>
           </li>
         </ul>
       </section>
-
       <section>
         <h3>Credits:</h3>
         <ul>
@@ -97,6 +110,19 @@ export function Notes() {
               </span>
             </a>
           </li>
+        </ul>
+      </section>
+      <section>
+        <h3>Contributors:</h3>
+        <ul className="contributors">
+          {contributors.map(contributor => (
+            <li>
+              <img src={contributor.avatar_url} />
+              <a href={contributor.url}>
+                <h4>{contributor.login}</h4>
+              </a>
+            </li>
+          ))}
         </ul>
       </section>
     </div>
