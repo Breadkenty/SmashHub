@@ -39,6 +39,12 @@ namespace Smash_Combos
 
             services.AddProblemDetails(configure =>
             {
+                configure.IncludeExceptionDetails = (context, ex) =>
+                {
+                    var env = context.RequestServices.GetRequiredService<IHostEnvironment>();
+                    return env.IsDevelopment() || env.IsStaging();
+                };
+
                 configure.Map<ArgumentException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest));
                 configure.Map<AuthenticationException>(ex => new StatusCodeProblemDetails(StatusCodes.Status401Unauthorized));
                 configure.Map<SecurityException>(ex => new StatusCodeProblemDetails(StatusCodes.Status403Forbidden));
