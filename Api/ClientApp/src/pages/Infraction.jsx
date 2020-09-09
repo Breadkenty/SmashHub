@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { authHeader } from '../auth'
+import { authHeader, getUser } from '../auth'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 export function Infraction(props) {
+  const loggedInUser = getUser()
+
   const [confirmDismiss, setConfirmDismiss] = useState(false)
 
   const handleDismiss = event => {
     event.preventDefault()
-    // console.log(props.infraction.id)
 
     fetch(`/api/Infractions/dismiss/${props.infraction.id}`, {
       method: 'PUT',
@@ -29,29 +30,31 @@ export function Infraction(props) {
         {props.infraction.moderator.displayName}
       </Link>
       <p>{moment(props.infraction.dateInfracted).format('L')}</p>
-      {confirmDismiss ? (
-        <div className="report-dismiss">
-          <p>Are you sure you want to dismiss this infraction?: </p>
-          <button onClick={handleDismiss}>yes</button>
-          <button
-            onClick={() => {
-              setConfirmDismiss(false)
-            }}
-          >
-            no
-          </button>
-        </div>
-      ) : (
-        <div className="report-dismiss">
-          <button
-            onClick={() => {
-              setConfirmDismiss(true)
-            }}
-          >
-            dismiss
-          </button>
-        </div>
-      )}
+      {loggedInUser.userType > 1 ? (
+        confirmDismiss ? (
+          <div className="report-dismiss">
+            <p>Are you sure you want to dismiss this infraction?: </p>
+            <button onClick={handleDismiss}>yes</button>
+            <button
+              onClick={() => {
+                setConfirmDismiss(false)
+              }}
+            >
+              no
+            </button>
+          </div>
+        ) : (
+          <div className="report-dismiss">
+            <button
+              onClick={() => {
+                setConfirmDismiss(true)
+              }}
+            >
+              dismiss
+            </button>
+          </div>
+        )
+      ) : null}
     </div>
   )
 }

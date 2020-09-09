@@ -1,19 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 export function Notes() {
+  const [contributors, setContributors] = useState([])
+
+  function getContributors() {
+    fetch('https://api.github.com/repos/Breadkenty/Smash_Combos/contributors')
+      .then(response => {
+        return response.json()
+      })
+      .then(apiData => {
+        setContributors(apiData)
+      })
+  }
+
+  useEffect(getContributors, [])
+
   return (
     <div className="notes">
       <section className="header">
         <header>
           <h2>Welcome to Smash Combos</h2>
-          <div className="error-message">
-            <i className="fas fa-exclamation-triangle"></i>
-            <p className="red-text">
-              This a beta version with a limited data storage plan. When the app
-              is ready for a full release, all combos saved here will be
-              deleted. More information coming soon.
-            </p>
-          </div>
+
           <img
             src="https://media.giphy.com/media/AFpghpBCYEAwM/giphy.gif"
             alt="animation of pikachu walking with a ketchup"
@@ -33,19 +40,34 @@ export function Notes() {
             progress. I hope this app will help you in the journey of learning a
             new character :)
           </p>
-          <p>Love,</p> <p>Kento</p>
+          <br />
+          <p>Love,</p>
+          <p>Kento</p>
         </header>
       </section>
 
       <section>
-        <h3>Reporting Issues</h3>
+        <h3>Presentation:</h3>
+        <a href="https://www.youtube.com/watch?v=fdlWmefqX_s">
+          Video Presentation on how this app works!
+        </a>
+      </section>
+
+      <section>
+        <h3>Reporting Issues/Feature Requests</h3>
         <p>
-          Please report any known issues on the{' '}
+          Please report any known issues/bugs on our{' '}
           <a href="https://github.com/Breadkenty/Smash_Combos">
             Github repository
           </a>{' '}
-          or on our <a href="https://discord.gg/VbnAwUg">Discord Server</a>{' '}
-          issues as well as suggesting feedback.
+          or on our <a href="https://discord.gg/VbnAwUg">Discord Server</a>.
+        </p>
+        <br />
+        <p>
+          For feature requests, you can tweet{' '}
+          <a href="https://twitter.com/KentoKawakami/">@KentoKawakami</a> or
+          request it in the #feature-requests channel in our
+          <a href="https://discord.gg/VbnAwUg"> Discord Server</a>.
         </p>
       </section>
 
@@ -55,48 +77,52 @@ export function Notes() {
       </section>
 
       <section>
-        <h4>Source Code</h4>
+        <h3>Source Code</h3>
         <ul>
           <li>
             <a href="https://github.com/Breadkenty/Smash_Combos">Github</a>
           </li>
         </ul>
       </section>
-
       <section>
         <h3>Credits:</h3>
         <ul>
           <li>
-            <a href="https://www.ssbwiki.com/">
-              Smash Wiki <span>: Controller buttons</span>
-            </a>
+            <a href="https://www.ssbwiki.com/">Smash Wiki</a>
+            <p>: Controller buttons</p>
           </li>
           <li>
-            <a href="https://www.spriters-resource.com/">
-              Spriters Resource<span>: Character images</span>
-            </a>
+            <a href="https://www.spriters-resource.com/">Spriters Resource</a>
+            <p>: Character images</p>
           </li>
           <li>
-            <a href="https://ultimateframedata.com/">
-              Ultimate Frame Data
-              <span>: Was really inspired by MetalMusicMan's work!</span>
-            </a>
+            <a href="https://ultimateframedata.com/">Ultimate Frame Data</a>
+            <p>: Was really inspired by MetalMusicMan's work!</p>
           </li>
           <li>
-            <a href="https://twitter.com/Samsora_">
-              eU Samsora
-              <span>: Videos for examples, and bc I'm also a Peach main</span>
-            </a>
+            <a href="https://twitter.com/Samsora_">eU Samsora</a>
+            <p>: Videos for examples, and bc I'm also a Peach main</p>
           </li>
           <li>
-            <a href="https://suncoast.io/">
-              Suncoast Developers Guild
-              <span>
-                : Where I learned to make this app in 3 months from no
-                experience whatsoever
-              </span>
-            </a>
+            <a href="https://suncoast.io/">Suncoast Developers Guild</a>
+            <p>
+              : Where I learned to make this app in 3 months from no experience
+              whatsoever
+            </p>
           </li>
+        </ul>
+      </section>
+      <section>
+        <h3>Contributors:</h3>
+        <ul className="contributors">
+          {contributors.map(contributor => (
+            <li>
+              <img src={contributor.avatar_url} />
+              <a href={contributor.url}>
+                <h4>{contributor.login}</h4>
+              </a>
+            </li>
+          ))}
         </ul>
       </section>
     </div>

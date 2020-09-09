@@ -20,12 +20,17 @@ import { SideNav } from './components/SideNav'
 import { AddCharacter } from './pages/AddCharacter'
 import { EditCharacter } from './pages/EditCharacter'
 import { Reports } from './pages/Reports'
+import { Forbidden } from './pages/Forbidden'
 import { EditCombo } from './pages/EditCombo'
 import { Notes } from './pages/Notes'
 import { About } from './pages/About'
 import { Tutorial } from './pages/Tutorial'
 
+import { isLoggedIn, getUser } from './auth'
+
 export function App() {
+  const loggedInUser = getUser()
+
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
 
   const handleSideBar = () => {
@@ -83,6 +88,9 @@ export function App() {
           </Route>
           <Route exact path="/user/:displayName">
             <User />
+          </Route>
+          <Route exact path="/forbidden">
+            <Forbidden />
           </Route>
         </Switch>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { authHeader, isLoggedIn, getUser } from '../auth'
 
@@ -138,7 +139,10 @@ export function Comment(props) {
 
         <div className="body">
           <h5>
-            Posted by {props.comment.user.displayName}{' '}
+            Posted by{' '}
+            <Link to={`/user/${props.comment.user.displayName}`}>
+              {props.comment.user.displayName}
+            </Link>{' '}
             {moment(props.comment.datePosted).fromNow()}
             {isLoggedIn() &&
               loggedInUser.displayName !== props.comment.user.displayName && (

@@ -12,12 +12,13 @@ export function TopNav(props) {
       <button onClick={props.handleSideBar}>
         <i className="fas fa-bars"></i>
       </button>
-      <Link to="/">
+      <Link className="logo" to="/">
         <img src={logo} alt="Smash combos logo" />
       </Link>
       {(isLoggedIn() && (
-        <div>
-          <h5>Welcome</h5> <p>{user.displayName}</p>
+        <div className="nav-user">
+          <h5>Welcome</h5>{' '}
+          <Link to={`/user/${user.displayName}`}>{user.displayName}</Link>
         </div>
       )) || <div></div>}
     </nav>
