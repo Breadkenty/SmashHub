@@ -15,6 +15,7 @@ using Smash_Combos.Core.Cqrs.Comments.PutComment;
 using Smash_Combos.Core.Cqrs.Comments.PostComment;
 using Smash_Combos.Core.Cqrs.Comments.DeleteComment;
 using System;
+using Hellang.Middleware.ProblemDetails;
 
 namespace Smash_Combos.Controllers
 {
@@ -67,7 +68,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutComment([FromRoute] int id, [FromBody] PutCommentRequest request)
         {
             if (id != request.CommentId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Comment don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 

@@ -35,8 +35,7 @@ namespace Smash_Combos
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-                .ConfigureApiBehaviorOptions(options => options.SuppressMapClientErrors = true);
+            services.AddMvc(options => options.EnableEndpointRouting = false);
 
             services.AddProblemDetails(configure =>
             {
@@ -78,6 +77,8 @@ namespace Smash_Combos
         {
             app.UseProblemDetails();
 
+            app.UseMvc();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -101,8 +102,6 @@ namespace Smash_Combos
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {

@@ -16,6 +16,7 @@ using Smash_Combos.Core.Cqrs.Reports.PostComboReport;
 using Smash_Combos.Core.Cqrs.Reports.PostCommentReport;
 using Smash_Combos.Core.Cqrs.Reports.DismissReport;
 using Smash_Combos.Domain.Models;
+using Hellang.Middleware.ProblemDetails;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -53,7 +54,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<PostComboReportResponse>> PostComboReport([FromRoute] int comboId, [FromBody] PostComboReportRequest request)
         {
             if (comboId != request.ComboId)
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Combo don't match" });
 
             var response = await _mediator.Send(request);
 
@@ -69,7 +70,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<PostCommentReportResponse>> PostCommentReport([FromRoute] int commentId, [FromBody] PostCommentReportRequest request)
         {
             if (commentId != request.CommentId)
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Comment don't match" });
 
             var response = await _mediator.Send(request);
 
@@ -85,7 +86,7 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<DismissReportResponse>> DismissReport([FromRoute] int id, [FromBody] DismissReportRequest request)
         {
             if (id != request.ReportId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Report don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 

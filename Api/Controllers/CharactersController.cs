@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -63,7 +64,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutCharacter([FromRoute] string variableName, PutCharacterRequest request)
         {
             if (request.VariableName != variableName)
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Name in URL and Character don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 

@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -66,7 +67,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutCombo([FromRoute] int id, [FromBody] PutComboRequest request)
         {
             if (id != request.ComboId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Combo don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 

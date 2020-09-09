@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -65,7 +66,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutInfraction([FromRoute] int id, [FromBody] PutInfractionRequest request)
         {
             if (id != request.InfractionId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Infraction don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 
@@ -83,7 +84,7 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> DismissInfraction([FromRoute] int id, [FromBody] DismissInfractionRequest request)
         {
             if (id != request.InfractionId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Infraction don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 
