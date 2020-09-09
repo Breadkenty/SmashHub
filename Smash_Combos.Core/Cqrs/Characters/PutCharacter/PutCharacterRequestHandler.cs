@@ -43,7 +43,7 @@ namespace Smash_Combos.Core.Cqrs.Characters.PutCharacter
                 _dbContext.Entry(character).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                return new PutCharacterResponse { Success = true };
+                return new PutCharacterResponse();
             }
             else
             {

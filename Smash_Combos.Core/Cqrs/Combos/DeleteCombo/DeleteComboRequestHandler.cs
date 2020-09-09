@@ -40,7 +40,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
                 _dbContext.Combos.Remove(combo);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteComboResponse { Success = true };
+                return new DeleteComboResponse();
             }
             else
             {

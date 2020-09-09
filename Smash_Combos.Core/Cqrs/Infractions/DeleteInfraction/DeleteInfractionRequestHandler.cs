@@ -43,7 +43,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
                 _dbContext.Infractions.Remove(infraction);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteInfractionResponse { Success = true };
+                return new DeleteInfractionResponse();
             }
             else
             {

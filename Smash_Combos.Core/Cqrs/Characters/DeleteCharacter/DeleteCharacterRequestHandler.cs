@@ -40,7 +40,7 @@ namespace Smash_Combos.Core.Cqrs.Characters.DeleteCharacter
                 _dbContext.Characters.Remove(character);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteCharacterResponse { Success = true };
+                return new DeleteCharacterResponse();
             }
             else
             {

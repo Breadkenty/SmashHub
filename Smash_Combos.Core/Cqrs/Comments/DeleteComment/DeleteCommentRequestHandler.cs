@@ -40,7 +40,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.DeleteComment
                 _dbContext.Comments.Remove(comment);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteCommentResponse { Success = true };
+                return new DeleteCommentResponse();
             }
             else
             {

@@ -40,7 +40,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DismissInfraction
                 _dbContext.Entry(infraction).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                return new DismissInfractionResponse { Success = true };
+                return new DismissInfractionResponse();
             }
             else
             {

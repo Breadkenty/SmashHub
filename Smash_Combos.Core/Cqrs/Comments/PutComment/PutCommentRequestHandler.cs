@@ -44,7 +44,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
                 _dbContext.Entry(comment).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                return new PutCommentResponse { Success = true };
+                return new PutCommentResponse();
             }
             else
             {

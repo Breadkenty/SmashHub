@@ -7,6 +7,5 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 {
     public class PutInfractionResponse
     {
-        public bool Success { get; set; }
     }
 }

@@ -6,6 +6,5 @@ namespace Smash_Combos.Core.Cqrs.Characters.DeleteCharacter
 {
     public class DeleteCharacterResponse
     {
-        public bool Success { get; set; }
     }
 }

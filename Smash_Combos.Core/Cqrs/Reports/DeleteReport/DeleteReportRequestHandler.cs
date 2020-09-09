@@ -42,7 +42,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.DeleteReport
                 _dbContext.Reports.Remove(report);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new DeleteReportResponse { Success = true };
+                return new DeleteReportResponse();
             }
             else
             {

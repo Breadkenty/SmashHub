@@ -41,7 +41,7 @@ namespace Smash_Combos.Core.Cqrs.Reports.DismissReport
                 _dbContext.Entry(report).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                return new DismissReportResponse { Success = true };
+                return new DismissReportResponse();
             }
             else
             {

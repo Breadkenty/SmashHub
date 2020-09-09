@@ -6,6 +6,5 @@ namespace Smash_Combos.Core.Cqrs.Characters.PutCharacter
 {
     public class PutCharacterResponse
     {
-        public bool Success { get; set; }
     }
 }

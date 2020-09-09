@@ -6,6 +6,5 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
 {
     public class DeleteComboResponse
     {
-        public bool Success { get; set; }
     }
 }

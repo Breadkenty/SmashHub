@@ -73,7 +73,7 @@ namespace Smash_Combos.Controllers
 
             var response = await _mediator.Send(request);
 
-            if (response.Success)
+            if (response != null)
                 return Ok();
             else
                 return StatusCode(500);
@@ -114,7 +114,7 @@ namespace Smash_Combos.Controllers
         {
             var response = await _mediator.Send(new DeleteCommentRequest { CommentId = id, CurrentUserId = GetCurrentUserId() });
 
-            if (response.Success)
+            if (response != null)
                 return Ok();
             else
                 return StatusCode(500);

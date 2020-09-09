@@ -6,6 +6,5 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
 {
     public class PutCommentResponse
     {
-        public bool Success { get; set; }
     }
 }

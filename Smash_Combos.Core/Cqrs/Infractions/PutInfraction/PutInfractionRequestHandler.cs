@@ -46,7 +46,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
                 _dbContext.Entry(infraction).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                return new PutInfractionResponse { Success = true };
+                return new PutInfractionResponse();
             }
             else
             {
