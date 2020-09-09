@@ -119,6 +119,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteComment(int id)
         {
             var response = await _mediator.Send(new DeleteCommentRequest { CommentId = id, CurrentUserId = GetCurrentUserId() });

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace Smash_Combos.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsers()
         {
             var response = await _mediator.Send(new GetUsersRequest { CurrentUserId = GetCurrentUserId() });
@@ -35,6 +37,7 @@ namespace Smash_Combos.Controllers
         }
 
         [HttpGet("{displayName}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName)
         {
             var response = await _mediator.Send(new GetUserRequest { DisplayName = displayName, CurrentUserId = GetCurrentUserId() });

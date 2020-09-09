@@ -78,8 +78,6 @@ namespace Smash_Combos
         {
             app.UseProblemDetails();
 
-            app.UseMvc();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -105,6 +103,7 @@ namespace Smash_Combos
 
             app.UseAuthorization();
 
+            app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {
