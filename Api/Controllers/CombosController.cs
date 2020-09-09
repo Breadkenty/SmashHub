@@ -39,12 +39,7 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Combos
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCombosResponse>>> GetCombos()
-        {
-            var response = await _mediator.Send(new GetCombosRequest());
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetCombosResponse>>> GetCombos() => Ok(await _mediator.Send(new GetCombosRequest()));
 
         // GET: api/Combos/5
         //
@@ -53,12 +48,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetComboResponse>> GetCombo([FromRoute] int id)
-        {
-            var response = await _mediator.Send(new GetComboRequest { ComboId = id });
-
-            return response;
-        }
+        public async Task<ActionResult<GetComboResponse>> GetCombo([FromRoute] int id) => Ok(await _mediator.Send(new GetComboRequest { ComboId = id }));
 
         // PUT: api/Combos/5
         //

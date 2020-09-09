@@ -40,12 +40,7 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Comments
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCommentsResponse>>> GetComments()
-        {
-            var response = await _mediator.Send(new GetCommentsRequest());
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetCommentsResponse>>> GetComments() => Ok(await _mediator.Send(new GetCommentsRequest()));
 
         // GET: api/Comments/5
         //
@@ -54,12 +49,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetCommentResponse>> GetComment([FromRoute] int id)
-        {
-            var response = await _mediator.Send(new GetCommentRequest { CommentId = id });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<GetCommentResponse>> GetComment([FromRoute] int id) => Ok(await _mediator.Send(new GetCommentRequest { CommentId = id }));
 
         // PUT: api/Comments/5
         //

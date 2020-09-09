@@ -32,32 +32,17 @@ namespace Smash_Combos.Controllers
         // GET: api/<InfractionsController>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<IEnumerable<GetInfractionsResponse>>> GetInfractions()
-        {
-            var response = await _mediator.Send(new GetInfractionsRequest { CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetInfractionsResponse>>> GetInfractions() => Ok(await _mediator.Send(new GetInfractionsRequest { CurrentUserId = GetCurrentUserId() }));
 
         // GET api/<InfractionsController>/5
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<GetInfractionResponse>> GetInfraction([FromRoute] int id)
-        {
-            var response = await _mediator.Send(new GetInfractionRequest { InfractionId = id, CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<GetInfractionResponse>> GetInfraction([FromRoute] int id) => Ok(await _mediator.Send(new GetInfractionRequest { InfractionId = id, CurrentUserId = GetCurrentUserId() }));
 
         // GET api/<InfractionsController>/user/Username
         [HttpGet("user/{userName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<IEnumerable<GetInfractionsByUserResponse>>> GetInfractionsByUser([FromRoute] string userName)
-        {
-            var response = await _mediator.Send(new GetInfractionsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetInfractionsByUserResponse>>> GetInfractionsByUser([FromRoute] string userName) => Ok(await _mediator.Send(new GetInfractionsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() }));
 
         // POST api/<InfractionsController>
         [HttpPost]

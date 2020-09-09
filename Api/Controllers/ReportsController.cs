@@ -35,32 +35,17 @@ namespace Smash_Combos.Controllers
         // GET: api/<ReportsController>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports()
-        {
-            var response = await _mediator.Send(new GetReportsRequest { CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports() => Ok(await _mediator.Send(new GetReportsRequest { CurrentUserId = GetCurrentUserId() }));
 
         // GET api/<ReportsController>/5
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
-        {
-            var response = await _mediator.Send(new GetReportRequest { ReportId = id, CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id) => Ok(await _mediator.Send(new GetReportRequest { ReportId = id, CurrentUserId = GetCurrentUserId() }));
 
         // Get api/<ReportsController/displayName
         [HttpGet("user/{userName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName)
-        {
-            var response = await _mediator.Send(new GetReportsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName) => Ok(await _mediator.Send(new GetReportsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() }));
 
         // POST api/<ReportsControler>/combo/5
         [HttpPost("combo/{comboId}")]

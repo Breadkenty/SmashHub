@@ -29,21 +29,11 @@ namespace Smash_Combos.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsers()
-        {
-            var response = await _mediator.Send(new GetUsersRequest { CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsers() => Ok(await _mediator.Send(new GetUsersRequest { CurrentUserId = GetCurrentUserId() }));
 
         [HttpGet("{displayName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName)
-        {
-            var response = await _mediator.Send(new GetUserRequest { DisplayName = displayName, CurrentUserId = GetCurrentUserId() });
-
-            return Ok(response);
-        }
+        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName) => Ok(await _mediator.Send(new GetUserRequest { DisplayName = displayName, CurrentUserId = GetCurrentUserId() }));
 
         [HttpPost]
         public async Task<ActionResult<PostUserResponse>> PostUser([FromBody] PostUserRequest request)
