@@ -16,6 +16,10 @@
 
   a {
     color: $yellow;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }
 
   span {
@@ -24,7 +28,6 @@
 
   p {
     font-size: 0.9rem;
-    margin-bottom: 16px;
 
     text-shadow: 10px 10px 10px 1;
   }
@@ -35,6 +38,7 @@
 
   li {
     color: white;
+    display: flex;
   }
 
   img {
@@ -48,7 +52,7 @@
   }
 
   ul {
-    margin: 0 0 24px 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     padding: 0;
