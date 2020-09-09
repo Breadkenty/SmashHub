@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, getUser } from '../auth'
 import YouTube from 'react-youtube'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
@@ -20,7 +20,7 @@ import { Throw } from '../components/combo-inputs/Throw'
 
 export function EditCombo() {
   const history = useHistory()
-
+  const loggedInUser = getUser()
   const params = useParams()
   const characterVariableName = params.characterVariableName
   const comboId = params.comboId
@@ -141,16 +141,22 @@ export function EditCombo() {
     fetch(`/api/Combos/${comboId}`)
       .then(response => response.json())
       .then(apiData => {
-        setComboToEdit(apiData)
-        setSelectedDifficulty(apiData.difficulty)
-        setTrueCombo(apiData.trueCombo)
-        setInputs(apiData.comboInput)
-        setStartMinutes(
-          (apiData.videoStartTime - (apiData.videoStartTime % 60)) / 60
-        )
-        setStartSeconds(apiData.videoStartTime % 60)
-        setEndMinutes((apiData.videoEndTime - (apiData.videoEndTime % 60)) / 60)
-        setEndSeconds(apiData.videoEndTime % 60)
+        if (loggedInUser.id !== apiData.user.id) {
+          history.push('/forbidden')
+        } else {
+          setComboToEdit(apiData)
+          setSelectedDifficulty(apiData.difficulty)
+          setTrueCombo(apiData.trueCombo)
+          setInputs(apiData.comboInput)
+          setStartMinutes(
+            (apiData.videoStartTime - (apiData.videoStartTime % 60)) / 60
+          )
+          setStartSeconds(apiData.videoStartTime % 60)
+          setEndMinutes(
+            (apiData.videoEndTime - (apiData.videoEndTime % 60)) / 60
+          )
+          setEndSeconds(apiData.videoEndTime % 60)
+        }
       })
   }
 

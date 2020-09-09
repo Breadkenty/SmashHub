@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { isLoggedIn, getUser } from '../auth'
+import { useHistory } from 'react-router'
 
 export function Reports() {
+  const loggedInUser = getUser()
+  const history = useHistory()
+
   const [users, setUsers] = useState([])
 
   function getReports() {
@@ -29,7 +34,13 @@ export function Reports() {
     return totalReports
   }
 
-  useEffect(getReports, [])
+  useEffect(() => {
+    if (!isLoggedIn() || loggedInUser.userType < 2) {
+      history.push('/forbidden')
+    } else {
+      getReports()
+    }
+  }, [])
 
   return (
     <div className="reports">

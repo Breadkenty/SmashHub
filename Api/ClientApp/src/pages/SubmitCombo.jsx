@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, isLoggedIn } from '../auth'
 
 import YouTube from 'react-youtube'
 
@@ -355,7 +355,13 @@ export function SubmitCombo() {
   }, [endMinutes, endSeconds])
 
   // Get all characters from API
-  useEffect(getCharacters, [])
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      history.push('/login')
+    } else {
+      getCharacters()
+    }
+  }, [])
 
   return (
     <div className="submit-combo">

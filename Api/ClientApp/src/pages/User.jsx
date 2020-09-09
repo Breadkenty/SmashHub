@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useParams, useHistory } from 'react-router'
+import { useParams } from 'react-router'
 import { authHeader, isLoggedIn, getUser } from '../auth'
 
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
