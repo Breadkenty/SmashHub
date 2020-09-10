@@ -6,7 +6,6 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +36,9 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 
             if (reportCombo == null)
                 throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
+
+            if (reportCombo.Reports.Any(report => report.User.Id == request.ReporterId))
+                throw new ArgumentException($"Already reported this combo");
 
             var report = new Report
             {

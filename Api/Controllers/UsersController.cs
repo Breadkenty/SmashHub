@@ -32,9 +32,15 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsers() => Ok(await _mediator.Send(new GetUsersRequest { CurrentUserId = GetCurrentUserId() }));
 
+        [HttpGet("unauth")]
+        public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsersUnauthorized() => Ok(await _mediator.Send(new GetUsersRequest()));
+
         [HttpGet("{displayName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName) => Ok(await _mediator.Send(new GetUserRequest { DisplayName = displayName, CurrentUserId = GetCurrentUserId() }));
+
+        [HttpGet("unauth/{displayName}")]
+        public async Task<ActionResult<GetUserResponse>> GetUserUnauthorized([FromRoute] string displayName) => Ok(await _mediator.Send(new GetUserRequest { DisplayName = displayName }));
 
         [HttpPost]
         public async Task<ActionResult<PostUserResponse>> PostUser([FromBody] PostUserRequest request)
