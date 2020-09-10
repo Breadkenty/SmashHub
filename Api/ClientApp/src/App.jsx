@@ -28,11 +28,7 @@ import { Notes } from './pages/Notes'
 import { About } from './pages/About'
 import { Tutorial } from './pages/Tutorial'
 
-import { isLoggedIn, getUser } from './auth'
-
 export function App() {
-  const loggedInUser = getUser()
-
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
 
   const handleSideBar = () => {
