@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
 {
-    public class ForgotPasswordResponse : ResponseBase<UserDto>
+    public class ForgotPasswordResponse
     {
+        public string ResponseMessage { get; set; }
         public string Token { get; set; }
-        public int UserId { get; set; }
+        public UserDto User { get; set; }
     }
 }

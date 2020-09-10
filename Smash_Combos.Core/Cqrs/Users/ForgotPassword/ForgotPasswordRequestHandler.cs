@@ -30,7 +30,7 @@ namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
             user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == request.Email.ToLower());
 
             if (user == null)
-                return new ForgotPasswordResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+                return new ForgotPasswordResponse { ResponseMessage = "User does not exist" };
 
             var selectedUser = new UserDto
             {
@@ -47,7 +47,7 @@ namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
 
             var token = new TokenGenerator(secret).TokenFor(user);
 
-            return new ForgotPasswordResponse { Token = token, UserId = payload.Id };
+            return new ForgotPasswordResponse { Token = token, User = payload };
         }
     }
 }
