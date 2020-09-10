@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Smash_Combos.Core.Cqrs.Users.GetUser;
 using Smash_Combos.Core.Cqrs.Users.GetUsers;
 using Smash_Combos.Core.Cqrs.Users.PostUser;
+using Smash_Combos.Core.Cqrs.Users.ForgotPassword;
 using Smash_Combos.Core.Cqrs.Users.UnbanUser;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,26 @@ namespace Smash_Combos.Controllers
 
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] PostUserRequest request)
+        {
+            var response = await _mediator.Send(request);
+
+            switch (response.ResponseStatus)
+            {
+                case Core.Cqrs.ResponseStatus.Ok:
+                    return CreatedAtAction("GetUser", new { id = response.Data.Id }, response.Data);
+                case Core.Cqrs.ResponseStatus.NotFound:
+                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.BadRequest:
+                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
+                case Core.Cqrs.ResponseStatus.NotAuthorized:
+                    return Forbid();
+                default:
+                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
+            }
+        }
+
+        [HttpPost("forgot")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
             var response = await _mediator.Send(request);
 
