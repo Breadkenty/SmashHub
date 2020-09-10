@@ -55,6 +55,8 @@ namespace Smash_Combos
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWT_KEY"]))
                 };
             });
+
+            services.AddScoped<IMailSenderService, MailSenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

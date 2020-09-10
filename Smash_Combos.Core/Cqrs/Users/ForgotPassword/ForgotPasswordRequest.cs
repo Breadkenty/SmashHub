@@ -13,5 +13,7 @@ namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        public string NewPasswordUrl { get; set; }
     }
 }

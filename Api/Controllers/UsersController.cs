@@ -2,10 +2,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Smash_Combos.Core.Cqrs.Users.ForgotPassword;
 using Smash_Combos.Core.Cqrs.Users.GetUser;
 using Smash_Combos.Core.Cqrs.Users.GetUsers;
+using Smash_Combos.Core.Cqrs.Users.NewPassword;
 using Smash_Combos.Core.Cqrs.Users.PostUser;
-using Smash_Combos.Core.Cqrs.Users.ForgotPassword;
 using Smash_Combos.Core.Cqrs.Users.UnbanUser;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,26 +88,28 @@ namespace Smash_Combos.Controllers
             }
         }
 
-        [HttpPost("forgot")]
+        [HttpPost("forgotpassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
+            request.NewPasswordUrl = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Url.Content("/newpassword"));
+
             var response = await _mediator.Send(request);
 
-            return Ok(response);
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
+        }
 
-            // switch (response.ResponseStatus)
-            // {
-            //     case Core.Cqrs.ResponseStatus.Ok:
-            //         return CreatedAtAction("ForgotPassword", new { id = response.Data.Id }, response.Data);
-            //     case Core.Cqrs.ResponseStatus.NotFound:
-            //         return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-            //     case Core.Cqrs.ResponseStatus.BadRequest:
-            //         return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-            //     case Core.Cqrs.ResponseStatus.NotAuthorized:
-            //         return Forbid();
-            //     default:
-            //         return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            // }
+        [HttpPost("newpassword/{id}/{token}")]
+        public async Task<IActionResult> NewPassword([FromRoute] int id, [FromRoute] string token)
+        {
+            var response = await _mediator.Send(new NewPasswordRequest { Userid = id, Token = token });
+
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         [HttpPut("unban/{id}")]
