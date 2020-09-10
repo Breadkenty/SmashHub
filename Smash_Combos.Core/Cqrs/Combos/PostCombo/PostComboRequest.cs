@@ -12,7 +12,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
         [Required]
         public int CharacterId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public int CurrentUserId { get; set; }
         [Required]
         [MaxLength(128)]
         public string Title { get; set; }

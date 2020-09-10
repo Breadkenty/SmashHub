@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
 {
-    public class DeleteComboResponse : ResponseBase<ComboDto>
+    public class DeleteComboResponse
     {
     }
 }

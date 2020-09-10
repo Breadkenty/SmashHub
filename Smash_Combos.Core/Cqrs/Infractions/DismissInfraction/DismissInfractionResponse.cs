@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Infractions.DismissInfraction
 {
-    public class DismissInfractionResponse : ResponseBase
+    public class DismissInfractionResponse
     {
     }
 }

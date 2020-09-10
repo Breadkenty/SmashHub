@@ -7,7 +7,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PostComment
 {
     public class PostCommentRequest : IRequest<PostCommentResponse>
     {
-        public int UserId { get; set; }
+        public int CurrentUserId { get; set; }
         public int ComboId { get; set; }
         public string Body { get; set; }
     }

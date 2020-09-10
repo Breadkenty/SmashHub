@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,9 +31,9 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombo
                 .FirstOrDefaultAsync();
 
             if (combo == null)
-                return new GetComboResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Combo not found" };
+                throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
 
-            return new GetComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo found" };
+            return _mapper.Map<GetComboResponse>(combo);
         }
     }
 }

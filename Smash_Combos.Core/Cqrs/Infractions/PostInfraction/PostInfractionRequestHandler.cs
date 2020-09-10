@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,17 +27,20 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
         public async Task<PostInfractionResponse> Handle(PostInfractionRequest request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
-            var moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).FirstOrDefaultAsync();
+            if (user == null)
+                throw new KeyNotFoundException($"User with id {request.UserId} does not exist");
 
-            if (user == null || moderator == null)
-                return new PostInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).FirstOrDefaultAsync();
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 var infraction = new Infraction
                 {
                     User = user,
-                    Moderator = moderator,
+                    Moderator = currentUser,
                     Body = request.Body,
                     BanDuration = request.BanDuration,
                     Category = request.Category,
@@ -48,12 +52,11 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
                 _dbContext.Entry(user).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-                return new PostInfractionResponse { Data = _mapper.Map<InfractionDto>(infraction), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction created" };
+                return _mapper.Map<PostInfractionResponse>(infraction);
             }
             else
             {
-                return new PostInfractionResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to create infractions" };
+                throw new SecurityException("Not authorized to create infractions");
             }
         }
 

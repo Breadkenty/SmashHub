@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { isLoggedIn, getUser } from '../auth'
+import { authHeader, isLoggedIn, getUser } from '../auth'
 import { useHistory } from 'react-router'
 
 export function Reports() {
@@ -10,7 +10,10 @@ export function Reports() {
   const [users, setUsers] = useState([])
 
   function getReports() {
-    fetch('/api/Users')
+      fetch('/api/Users', {
+          method: 'GET',
+          headers: { 'content-type': 'application/json', ...authHeader() },
+      })
       .then(response => response.json())
       .then(apiData => {
         setUsers(apiData)
@@ -41,6 +44,8 @@ export function Reports() {
       getReports()
     }
   }, [])
+
+  console.log(users)
 
   return (
     <div className="reports">

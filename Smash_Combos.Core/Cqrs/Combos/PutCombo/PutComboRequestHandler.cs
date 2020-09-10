@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,30 +26,22 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 
         public async Task<PutComboResponse> Handle(PutComboRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
-            }
-            catch(InvalidOperationException)
-            {
-                return new PutComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same name found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (user == null)
-                return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
 
             if (combo == null)
-                return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Combo does not exist" };
+                throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
 
-            if (combo.User.Id == user.Id)
+            if (combo.User.Id == currentUser.Id)
             {
                 var character = await _dbContext.Characters.Where(character => character.VariableName == request.CharacterVariableName).FirstOrDefaultAsync();
 
                 if (character == null)
-                    return new PutComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
+                    throw new KeyNotFoundException($"Character with VariableName {request.CharacterVariableName} does not exist");
 
                 combo.Character = character;
                 combo.Title = request.Title;
@@ -63,20 +56,12 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 
                 _dbContext.Entry(combo).State = EntityState.Modified;
 
-                try
-                {
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
-                    var comboToReturn = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
-                    return new PutComboResponse { Data = _mapper.Map<ComboDto>(comboToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo updated" };
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return new PutComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
-                }
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PutComboResponse();
             }
             else
             {
-                return new PutComboResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit this Combo" };
+                throw new SecurityException("Not authorized to edit this Combo");
             }
         }
     }

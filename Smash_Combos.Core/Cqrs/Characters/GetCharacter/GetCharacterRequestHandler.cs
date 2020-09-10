@@ -30,9 +30,9 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacter
                     .FirstOrDefaultAsync();
 
             if (character == null)
-                return new GetCharacterResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Character not found" };
+                throw new KeyNotFoundException($"Character with name {request.VariableName} does not exist");
 
-            return new GetCharacterResponse { Data = _mapper.Map<CharacterDto>(character), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Character found" };
+            return _mapper.Map<GetCharacterResponse>(character);
         }
     }
 }

@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,20 +26,12 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfraction
 
         public async Task<GetInfractionResponse> Handle(GetInfractionRequest request, CancellationToken cancellationToken)
         {
-            User moderator = null;
-            try
-            {
-                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new GetInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            if (moderator == null)
-                return new GetInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 var infraction = await _dbContext.Infractions
                     .Where(infraction => infraction.Id == request.InfractionId)
@@ -47,13 +40,13 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfraction
                     .FirstOrDefaultAsync();
 
                 if (infraction == null)
-                    return new GetInfractionResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Infraction not found" };
+                    throw new KeyNotFoundException($"Infraction with id {request.InfractionId} does not exist");
 
-                return new GetInfractionResponse { Data = _mapper.Map<InfractionDto>(infraction), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction found" };
+                return _mapper.Map<GetInfractionResponse>(infraction);
             }
             else
             {
-                return new GetInfractionResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to get infractions" };
+                throw new SecurityException("Not authorized to get infractions");
             }
         }
     }

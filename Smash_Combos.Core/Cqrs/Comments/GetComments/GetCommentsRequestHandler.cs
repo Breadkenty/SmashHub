@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Comments.GetComments
 {
-    public class GetCommentsRequestHandler : IRequestHandler<GetCommentsRequest, GetCommentsResponse>
+    public class GetCommentsRequestHandler : IRequestHandler<GetCommentsRequest, IEnumerable<GetCommentsResponse>>
     {
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.GetComments
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<GetCommentsResponse> Handle(GetCommentsRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetCommentsResponse>> Handle(GetCommentsRequest request, CancellationToken cancellationToken)
         {
             var comments = await _dbContext.Comments
                 .Include(comment => comment.User)
@@ -30,7 +30,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.GetComments
                     .ThenInclude(report => report.User)
                 .ToListAsync();
 
-            return new GetCommentsResponse { Data = _mapper.Map<IEnumerable<CommentDto>>(comments), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"{comments.Count} Comments found" };
+            return _mapper.Map<IEnumerable<GetCommentsResponse>>(comments);
         }
     }
 }

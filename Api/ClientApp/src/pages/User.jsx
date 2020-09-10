@@ -49,7 +49,10 @@ export function User() {
   }
 
   function getUserData() {
-    fetch(`/api/Users/${displayName}`)
+      fetch(`/api/Users/${displayName}`, {
+          method: 'GET',
+          headers: { 'content-type': 'application/json', ...authHeader() },
+      })
       .then(response => {
         return response.json()
       })

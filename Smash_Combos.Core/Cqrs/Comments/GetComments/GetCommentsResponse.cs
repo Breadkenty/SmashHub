@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Comments.GetComments
 {
-    public class GetCommentsResponse : ResponseBase<IEnumerable<CommentDto>>
+    public class GetCommentsResponse
     {
+        public int Id { get; set; }
+        public UserDto User { get; set; }
+        public DateTime DatePosted { get; private set; }
+        public string Body { get; set; }
+        public int NetVote { get; private set; }
     }
 }

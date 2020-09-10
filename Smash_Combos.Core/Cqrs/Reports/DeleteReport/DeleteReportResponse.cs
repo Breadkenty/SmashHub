@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Reports.DeleteReport
 {
-    public class DeleteReportResponse : ResponseBase<ReportDto>
+    public class DeleteReportResponse
     {
     }
 }

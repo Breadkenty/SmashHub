@@ -32,9 +32,9 @@ namespace Smash_Combos.Core.Cqrs.Comments.GetComment
                 .FirstOrDefaultAsync();
 
             if (comment == null)
-                return new GetCommentResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Comment not found" };
+                throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 
-            return new GetCommentResponse { Data = _mapper.Map<CommentDto>(comment), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Comment found" };
+            return _mapper.Map<GetCommentResponse>(comment);
         }
     }
 }

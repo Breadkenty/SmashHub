@@ -8,7 +8,7 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
     public class PutCommentRequest : IRequest<PutCommentResponse>
     {
         public int CommentId { get; set; }
-        public int UserId { get; set; }
+        public int CurrentUserId { get; set; }
         public string Body { get; set; }
     }
 }

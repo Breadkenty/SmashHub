@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,25 +26,17 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 
         public async Task<PutInfractionResponse> Handle(PutInfractionRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.ModeratorId);
-            }
-            catch (InvalidOperationException)
-            {
-                return new PutInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
-            }
+            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            if(user == null)
-                return new PutInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if(currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId).FirstOrDefaultAsync();
 
             if (infraction == null)
-                return new PutInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Infraction does not exist" };
+                throw new KeyNotFoundException($"Infraction with id {request.InfractionId} does not exist");
 
-            if(user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 infraction.BanDuration = request.BanDuration;
                 infraction.Points = DeterminePoints(request);
@@ -52,24 +45,12 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 
                 _dbContext.Entry(infraction).State = EntityState.Modified;
 
-                try
-                {
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
-                    var infractionToReturn = await _dbContext.Infractions
-                        .Include(infraction => infraction.User)
-                        .Include(infraction => infraction.Moderator)
-                        .Where(infraction => infraction.Id == request.InfractionId)
-                        .FirstOrDefaultAsync();
-                    return new PutInfractionResponse { Data = _mapper.Map<InfractionDto>(infractionToReturn), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction updated" };
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return new PutInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
-                }
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PutInfractionResponse();
             }
             else
             {
-                return new PutInfractionResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to edit infractions" };
+                throw new SecurityException("Not authorized to edit infractions");
             }
         }
 

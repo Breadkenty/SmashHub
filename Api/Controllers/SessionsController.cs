@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,30 +26,10 @@ namespace Smash_Combos.Controllers
         public async Task<ActionResult<LoginResponse>> Login(LoginRequest loginRequest)
         {
             var response = await _mediator.Send(loginRequest);
-            if(response.User != null && response.Token != null)
+            if (response.User != null && response.Token != null)
                 return Ok(response);
-
-            if (response.User != null && !response.PasswordIsValid)
-            {
-                var responseObject = new
-                {
-                    status = 400,
-                    errors = new List<string>() { response.ResponseMessage }
-                };
-                // Return our error with the custom response
-                return BadRequest(responseObject);
-            }
             else
-            {
-                // Make a custom error response
-                var responseObject = new
-                {
-                    status = 400,
-                    errors = new List<string>() { response.ResponseMessage }
-                };
-                // Return our error with the custom response
-                return BadRequest(responseObject);
-            }
+                return StatusCode(500);
         }
     }
 }

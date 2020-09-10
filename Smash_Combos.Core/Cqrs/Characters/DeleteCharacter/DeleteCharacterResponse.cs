@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Characters.DeleteCharacter
 {
-    public class DeleteCharacterResponse : ResponseBase
+    public class DeleteCharacterResponse
     {
     }
 }

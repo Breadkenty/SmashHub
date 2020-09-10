@@ -25,30 +25,24 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
 
         public async Task<GetUserResponse> Handle(GetUserRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users
-                    .Include(user => user.Combos)
-                        .ThenInclude(combo => combo.Reports)
-                    .Include(user => user.Combos)
-                        .ThenInclude(combo => combo.Character)
-                    .Include(user => user.Comments)
-                        .ThenInclude(comment => comment.Reports)
-                    .Include(user => user.Infractions)
-                        .ThenInclude(infraction => infraction.Moderator)
-                    .Where(user => user.DisplayName == request.DisplayName)
-                    .SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new GetUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same name found" };
-            }
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
+
+            var user = await _dbContext.Users
+                .Include(user => user.Combos)
+                    .ThenInclude(combo => combo.Reports)
+                .Include(user => user.Combos)
+                    .ThenInclude(combo => combo.Character)
+                .Include(user => user.Comments)
+                    .ThenInclude(comment => comment.Reports)
+                .Include(user => user.Infractions)
+                    .ThenInclude(infraction => infraction.Moderator)
+                .Where(user => user.DisplayName == request.DisplayName)
+                .SingleOrDefaultAsync();
 
             if (user == null)
-                return new GetUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+                throw new KeyNotFoundException("User does not exist");
 
-            var userDto = new UserFullDto
+            var response = new GetUserResponse
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName,
@@ -58,7 +52,20 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
                 Infractions = _mapper.Map<List<InfractionDto>>(user.Infractions)
             };
 
-            return new GetUserResponse { Data = userDto, ResponseStatus = ResponseStatus.Ok, ResponseMessage = "User found" };
+            if(currentUser == null || (currentUser.UserType != UserType.Moderator && currentUser.UserType != UserType.Admin))
+            {
+                foreach(var combo in response.Combos)
+                {
+                    combo.Reports = new List<ReportDto>();
+                }
+
+                if(currentUser == null || currentUser.Id != user.Id)
+                {
+                    response.Infractions = new List<InfractionDto>();
+                }
+            }
+
+            return response;
         }
     }
 }

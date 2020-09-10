@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Characters.PostCharacter
 {
-    public class PostCharacterResponse : ResponseBase<CharacterDto>
+    public class PostCharacterResponse
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string VariableName { get; set; }
+        public int YPosition { get; set; }
+        public decimal ReleaseOrder { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Characters.PostCharacter
     {
         public PostCharacterProfile()
         {
-            CreateMap<Character, CharacterDto>();
+            CreateMap<Character, PostCharacterResponse>();
         }
     }
 }
