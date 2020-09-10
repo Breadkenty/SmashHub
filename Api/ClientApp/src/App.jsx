@@ -7,6 +7,8 @@ import { TopNav } from './components/TopNav'
 
 import { SignUp } from './pages/SignUp'
 import { LogIn } from './pages/LogIn'
+import { ForgotPassword } from './pages/ForgotPassword'
+import { ResetPassword } from './pages/ResetPassword'
 import { User } from './pages/User'
 
 import { Character } from './pages/Character'
@@ -52,6 +54,12 @@ export function App() {
           </Route>
           <Route exact path="/login">
             <LogIn />
+          </Route>
+          <Route exact path="/forgot">
+            <ForgotPassword />
+          </Route>
+          <Route exact path="/reset/:id/:token">
+            <ResetPassword />
           </Route>
           <Route exact path="/">
             <Characters />
