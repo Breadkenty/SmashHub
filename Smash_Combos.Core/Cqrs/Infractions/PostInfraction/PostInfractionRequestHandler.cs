@@ -37,6 +37,9 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 
             if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
+                if (user.Id == currentUser.Id)
+                    throw new ArgumentException("Moderators cannot infract themselves");
+
                 var infraction = new Infraction
                 {
                     User = user,
@@ -50,6 +53,14 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 
                 user.Infractions.Add(infraction);
                 _dbContext.Entry(user).State = EntityState.Modified;
+
+                var reportsForUser = await _dbContext.Reports.Where(report => report.User.Id == user.Id).ToListAsync();
+
+                foreach(var report in reportsForUser)
+                {
+                    report.Dismiss = true;
+                    _dbContext.Entry(report).State = EntityState.Modified;
+                }
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
                 return _mapper.Map<PostInfractionResponse>(infraction);
