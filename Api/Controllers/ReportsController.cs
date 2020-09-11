@@ -58,7 +58,7 @@ namespace Smash_Combos.Controllers
 
             var response = await _mediator.Send(request);
 
-            if (response == null)
+            if (response != null)
                 return CreatedAtAction("GetReport", new { id = response.Id }, response);
             else
                 return StatusCode(500);
@@ -74,7 +74,7 @@ namespace Smash_Combos.Controllers
 
             var response = await _mediator.Send(request);
 
-            if (response == null)
+            if (response != null)
                 return CreatedAtAction("GetReport", new { id = response.Id }, response);
             else
                 return StatusCode(500);

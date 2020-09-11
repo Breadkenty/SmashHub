@@ -32,12 +32,15 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
             if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.ReporterId} does not exist");
 
-            var reportCombo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+            var reportCombo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId)
+                .Include(combo => combo.Reports)
+                    .ThenInclude(report => report.Reporter)
+                .FirstOrDefaultAsync();
 
             if (reportCombo == null)
                 throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
 
-            if (reportCombo.Reports.Any(report => report.User.Id == request.ReporterId))
+            if (reportCombo.Reports.Any(report => report.Reporter.Id == request.ReporterId))
                 throw new ArgumentException($"Already reported this combo");
 
             var report = new Report
@@ -53,7 +56,9 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
+
             return _mapper.Map<PostComboReportResponse>(report);
+
         }
     }
 }

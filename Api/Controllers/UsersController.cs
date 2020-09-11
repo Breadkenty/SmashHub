@@ -48,7 +48,7 @@ namespace Smash_Combos.Controllers
             var response = await _mediator.Send(request);
 
             if (response != null)
-                return CreatedAtAction("GetUser", new { id = response.Id }, response);
+                return Ok();
             else
                 return StatusCode(500);
         }

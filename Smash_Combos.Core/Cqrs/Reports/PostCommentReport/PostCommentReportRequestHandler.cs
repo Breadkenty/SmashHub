@@ -33,12 +33,15 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
             if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.ReporterId} does not exist");
 
-            var reportComment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+            var reportComment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId)
+             .Include(comment => comment.Reports)
+                .ThenInclude(report => report.Reporter)
+            .FirstOrDefaultAsync();
 
             if (reportComment == null)
                 throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 
-            if (reportComment.Reports.Any(report => report.User.Id == request.ReporterId))
+            if (reportComment.Reports.Any(report => report.Reporter.Id == request.ReporterId))
                 throw new ArgumentException($"Already reported this comment");
 
             var report = new Report
