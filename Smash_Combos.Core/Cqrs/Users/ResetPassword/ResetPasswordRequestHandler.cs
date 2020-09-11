@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Smash_Combos.Core.Cqrs.Users.NewPassword
+namespace Smash_Combos.Core.Cqrs.Users.ResetPassword
 {
-    public class NewPasswordRequestHandler : IRequestHandler<NewPasswordRequest, NewPasswordResponse>
+    public class NewPasswordRequestHandler : IRequestHandler<ResetPasswordRequest, ResetPasswordResponse>
     {
-        public async Task<NewPasswordResponse> Handle(NewPasswordRequest request, CancellationToken cancellationToken)
+        public async Task<ResetPasswordResponse> Handle(ResetPasswordRequest request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
             //Generate a token again (the same way you did it in the forgotpassword handler) and compare it to the one in the request

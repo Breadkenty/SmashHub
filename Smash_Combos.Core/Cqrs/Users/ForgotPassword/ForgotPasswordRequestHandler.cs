@@ -34,7 +34,7 @@ namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
 
             //this url should send the user to a /newpassword page where they can enter their new password
             //from that page, then call the api/users/newpassword method to save the new password
-            var link = $"{request.NewPasswordUrl}?userId={user.Id}&token={WebUtility.UrlEncode(token)}";
+            var link = $"{request.NewPasswordUrl}/{user.Id}/{WebUtility.UrlEncode(token)}";
             var mailBody = $"Click the following link to reset your password:\n\n{link}";
 
             await _mailSender.SendMailAsync(user.Email, "Password Reset", mailBody);

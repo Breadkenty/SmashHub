@@ -54,7 +54,7 @@ export function App() {
           <Route exact path="/forgot">
             <ForgotPassword />
           </Route>
-          <Route exact path="/reset/:id/:token">
+          <Route exact path="/resetpassword/:id/:token">
             <ResetPassword />
           </Route>
           <Route exact path="/">
