@@ -1,17 +1,26 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Smash_Combos.Core.Services;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Smash_Combos.Core.Services
+namespace Smash_Combos.Services
 {
     public class MailSenderService : IMailSenderService
     {
-        public MailSenderService()
+        private readonly string _address;
+        private readonly string _password;
+
+        public MailSenderService(IConfiguration config)
         {
-            //Inject the Options(Password & Mail) here, but how do we store them?
+            if (config == null)
+                throw new ArgumentNullException(nameof(config));
+
+            _address = config["PASSWORDRESET_EMAIL_ADDRESS"];
+            _password = config["PASSWORDRESET_EMAIL_PASSWORD"];
         }
 
         public async Task SendMailAsync(string to, string subject, string body)
@@ -21,10 +30,10 @@ namespace Smash_Combos.Core.Services
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("EMAIL-HERE", "PASSWORD-HERE")
+                Credentials = new NetworkCredential(_address, _password)
             };
 
-            var fromAddress = new MailAddress("EMAIL-HERE");
+            var fromAddress = new MailAddress(_address);
             var toAddress = new MailAddress(to);
 
             using var message = new MailMessage() { From = fromAddress, Subject = subject, Body = body };
@@ -33,10 +42,5 @@ namespace Smash_Combos.Core.Services
 
             await smtp.SendMailAsync(message);
         }
-    }
-
-    public interface IMailSenderService
-    {
-        public Task SendMailAsync(string to, string subject, string body);
     }
 }

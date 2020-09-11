@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Smash_Combos.Core.Services;
 using Smash_Combos.Persistence;
+using Smash_Combos.Services;
 using System.Reflection;
 using System.Text;
 

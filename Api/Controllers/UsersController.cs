@@ -104,7 +104,7 @@ namespace Smash_Combos.Controllers
         [HttpPost("resetpassword/{id}/{token}")]
         public async Task<IActionResult> ResetPassword([FromRoute] int id, [FromRoute] string token, [FromBody] string resetPassword)
         {
-            var response = await _mediator.Send(new ResetPasswordRequest { Userid = id, Token = token, ResetPassword = resetPassword });
+            var response = await _mediator.Send(new ResetPasswordRequest { UserId = id, Token = token, ResetPassword = resetPassword });
 
             if (response != null)
                 return Ok();

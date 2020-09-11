@@ -23,18 +23,22 @@ namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
 
         public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == request.Email.ToLower());
+            var user = await _dbContext.Users.SingleOrDefaultAsync(user => user.Email.ToLower() == request.Email.ToLower());
 
             if (user == null)
                 throw new KeyNotFoundException("User with this email doesn't exist");
 
-            var secret = user.HashedPassword + DateTime.Now.Millisecond;
+            var secret = user.HashedPassword + user.DateCreated;
 
-            var token = new TokenGenerator(secret).TokenFor(user);
+            var payload = new
+            {
+                user.Id,
+                user.Email
+            };
 
-            //this url should send the user to a /newpassword page where they can enter their new password
-            //from that page, then call the api/users/newpassword method to save the new password
-            var link = $"{request.NewPasswordUrl}/{user.Id}/{WebUtility.UrlEncode(token)}";
+            var token = new TokenGenerator(secret).TokenFor(payload);
+
+            var link = $"{request.NewPasswordUrl}/{payload.Id}/{WebUtility.UrlEncode(token)}";
             var mailBody = $"Click the following link to reset your password:\n\n{link}";
 
             await _mailSender.SendMailAsync(user.Email, "Password Reset", mailBody);
