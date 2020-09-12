@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Smash_Combos.Core.Cqrs.Users.ForgotPassword;
 using Smash_Combos.Core.Cqrs.Users.GetUser;
 using Smash_Combos.Core.Cqrs.Users.GetUsers;
+using Smash_Combos.Core.Cqrs.Users.ResetPassword;
 using Smash_Combos.Core.Cqrs.Users.PostUser;
 using Smash_Combos.Core.Cqrs.Users.UnbanUser;
 using System.Collections.Generic;
@@ -49,6 +51,30 @@ namespace Smash_Combos.Controllers
 
             if (response != null)
                 return CreatedAtAction("GetUser", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
+        }
+
+        [HttpPost("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            request.NewPasswordUrl = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Url.Content("/resetpassword"));
+
+            var response = await _mediator.Send(request);
+
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
+        }
+
+        [HttpPost("resetpassword/{id}/{token}")]
+        public async Task<IActionResult> ResetPassword([FromRoute] int id, [FromRoute] string token, [FromBody] string resetPassword)
+        {
+            var response = await _mediator.Send(new ResetPasswordRequest { UserId = id, Token = token, ResetPassword = resetPassword });
+
+            if (response != null)
+                return Ok();
             else
                 return StatusCode(500);
         }

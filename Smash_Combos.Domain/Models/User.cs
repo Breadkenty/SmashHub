@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -24,6 +25,8 @@ namespace Smash_Combos.Domain.Models
         public bool PasswordMeetsCriteria { get; set; }
 
         public UserType UserType { get; private set; } = UserType.User;
+
+        public DateTime DateCreated { get; private set; } = DateTime.Now;
 
         public List<Combo> Combos { get; set; }
 

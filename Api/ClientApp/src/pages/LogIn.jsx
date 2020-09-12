@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import { recordAuthentication } from '../auth'
 
 export function LogIn() {
@@ -29,6 +31,7 @@ export function LogIn() {
         if (apiResponse.status === 400) {
           setErrorMessage(Object.values(apiResponse.errors).join(' '))
         } else {
+          console.log(apiResponse)
           recordAuthentication(apiResponse)
           window.location = '/'
         }
@@ -60,6 +63,7 @@ export function LogIn() {
           value={user.password}
           onChange={handleFieldChange}
         />
+        <Link to="/forgot">Forgot your password?</Link>
         <button className="bg-yellow button black-text" type="submit">
           Log in
         </button>

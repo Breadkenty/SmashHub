@@ -13,8 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Smash_Combos.Core.Services;
 using Smash_Combos.Persistence;
-using System;
-using System.Collections.Generic;
+using Smash_Combos.Services;
 using System.Reflection;
 using System.Security;
 using System.Security.Authentication;
@@ -76,6 +75,8 @@ namespace Smash_Combos
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWT_KEY"]))
                 };
             });
+
+            services.AddScoped<IMailSenderService, MailSenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
