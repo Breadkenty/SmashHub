@@ -264,7 +264,6 @@ export function EditCombo() {
     })
       .then(response => {
         if (response.ok) {
-          console.log('ok')
           history.push(`/character/${characterVariableName}/${comboId}`)
           return { then: function() {} }
         } else {
@@ -272,9 +271,7 @@ export function EditCombo() {
         }
       })
       .then(apiData => {
-        console.log(apiData)
-        const newMessage = Object.values(apiData.errors).join(' ')
-        setErrorMessage(newMessage)
+        setErrorMessage(Object.values(apiData.errors).join(' '))
       })
   }
 

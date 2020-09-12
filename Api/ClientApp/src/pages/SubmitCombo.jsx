@@ -264,19 +264,15 @@ export function SubmitCombo() {
         body: JSON.stringify(comboToSubmit),
       })
         .then(response => {
-          if (response.status === 401) {
-            return { status: 401, errors: { login: 'Not Authorized' } }
+          if (response.ok) {
+            history.push(`/character/${characterSelected.variableName}`)
+            return { then: function() {} }
           } else {
             return response.json()
           }
         })
         .then(apiData => {
-          if (apiData.status === 400 || apiData.status === 401) {
-            const newMessage = Object.values(apiData.errors).join(' ')
-            setErrorMessage(newMessage)
-          } else {
-            history.push(`/character/${characterSelected.variableName}`)
-          }
+          setErrorMessage(Object.values(apiData.errors).join(' '))
         })
     }
   }

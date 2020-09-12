@@ -30,24 +30,32 @@ namespace Smash_Combos.Core.Cqrs.Users.ResetPassword
 
             var secret = user.HashedPassword + user.DateCreated;
 
-            var isValidToken = new TokenGenerator(secret).ValidateToken(request.Token);
 
-            if (isValidToken)
+            try
             {
-                user.Password = request.ResetPassword;
-                if (!user.PasswordMeetsCriteria)
-                    throw new ArgumentException("Password must be at least 8 characters");
+                var isValidToken = new TokenGenerator(secret).ValidateToken(request.Token);
+                if (isValidToken)
+                {
+                    user.Password = request.ResetPassword;
+                    if (!user.PasswordMeetsCriteria)
+                        throw new ArgumentException("Password must be at least 8 characters");
 
-                _dbContext.Entry(user).State = EntityState.Modified;
+                    _dbContext.Entry(user).State = EntityState.Modified;
 
-                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                    await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new ResetPasswordResponse();
+                    return new ResetPasswordResponse();
+                }
+                else
+                {
+                    throw new ArgumentException("Security token doesn't match");
+                }
             }
-            else
+            catch (ArgumentException)
             {
-                throw new ArgumentException("Security token doesn't match");
+                throw new ArgumentException("Invalid Reset Link");
             }
+
         }
     }
 }

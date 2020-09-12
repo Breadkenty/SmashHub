@@ -19,27 +19,33 @@ export function UserReports(props) {
   const params = useParams()
   const displayName = params.displayName
 
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault()
+
     fetch(`/api/Infractions`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(infraction),
-    }).then(response => {
-      if (response.status === 201) {
-        return response.json()
-      } else {
-        setErrorMessage(response.statusText)
-      }
     })
-
-    setInfractionType('warn')
-    setInfraction({
-      ...infraction,
-      banDuration: 0,
-      points: 0,
-      category: 0,
-      body: '',
-    })
+      .then(response => {
+        if (response.ok) {
+          setErrorMessage(response.detail)
+          setInfractionType('warn')
+          setInfraction({
+            ...infraction,
+            banDuration: 0,
+            points: 0,
+            category: 0,
+            body: '',
+          })
+          return { then: function() {} }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        setErrorMessage(apiData.detail)
+      })
   }
 
   function getUserReports() {

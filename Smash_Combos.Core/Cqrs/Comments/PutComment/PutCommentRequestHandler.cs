@@ -32,12 +32,12 @@ namespace Smash_Combos.Core.Cqrs.Comments.PutComment
             if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+            var comment = await _dbContext.Comments.Include(comment => comment.User).Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
 
             if (comment == null)
                 throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 
-            if (comment.User.Id == currentUser.Id)
+            if (comment.User.Id == currentUser.Id || currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 comment.Body = request.Body;
 
