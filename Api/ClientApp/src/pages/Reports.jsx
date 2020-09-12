@@ -10,10 +10,10 @@ export function Reports() {
   const [users, setUsers] = useState([])
 
   function getReports() {
-      fetch('/api/Users', {
-          method: 'GET',
-          headers: { 'content-type': 'application/json', ...authHeader() },
-      })
+    fetch('/api/Users', {
+      method: 'GET',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    })
       .then(response => response.json())
       .then(apiData => {
         setUsers(apiData)
@@ -44,8 +44,6 @@ export function Reports() {
       getReports()
     }
   }, [])
-
-  console.log(users)
 
   return (
     <div className="reports">

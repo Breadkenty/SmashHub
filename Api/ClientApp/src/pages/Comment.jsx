@@ -32,33 +32,23 @@ export function Comment(props) {
   function submitComment(event) {
     event.preventDefault()
 
-    console.log(editedComment)
-
     fetch(`/api/Comments/${parseInt(props.comment.id)}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(editedComment),
     })
       .then(response => {
-        // return response.json()
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
-        } else if (response.status === 404) {
-          // This one is for user doesn't match logged in user
-          return { status: 404, errors: { login: 'Not Authorized' } }
+        if (response.ok) {
+          setEditingComment(false)
+          props.getCombo()
+          setErrorMessage(undefined)
+          return { then: function() {} }
         } else {
           return response.json()
         }
       })
       .then(apiData => {
-        if (apiData.errors) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          setEditingComment(false)
-          props.getCombo()
-          setErrorMessage(undefined)
-        }
+        setErrorMessage(apiData.detail)
       })
   }
 
@@ -70,26 +60,28 @@ export function Comment(props) {
       body: JSON.stringify(commentReport),
     })
       .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Log in to report' } }
+        if (response.ok) {
+          setReportingComment(false)
+          setCommentReport({ ...commentReport, body: '' })
+          setErrorMessage(undefined)
+          return { then: function() {} }
         } else {
           return response.json()
         }
       })
       .then(apiData => {
-        if (apiData.status === 400 || apiData.status === 401) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          setReportingComment(false)
-          setCommentReport({ ...commentReport, body: '' })
-          setErrorMessage(undefined)
-        }
+        setReportingComment(false)
+        setErrorMessage(apiData.detail)
       })
   }
 
   return (
     <div className="comment" id={props.comment.id}>
+      {errorMessage && (
+        <div className="error-message">
+          <i className="fas fa-exclamation-triangle"></i> {errorMessage}
+        </div>
+      )}
       <div>
         <div className="vote">
           <button
@@ -173,15 +165,11 @@ export function Comment(props) {
               <textarea
                 value={editedComment.body}
                 onChange={handleTextChange}
+                required
               />
               <button className="bg-yellow button black-text" type="submit">
                 Submit
               </button>
-              {errorMessage && (
-                <div className="error-message">
-                  <i className="fas fa-exclamation-triangle"></i> {errorMessage}
-                </div>
-              )}
             </form>
           )}
           {editingComment || <p>{props.comment.body}</p>}
@@ -208,6 +196,7 @@ export function Comment(props) {
               body: event.target.value,
             })
           }}
+          required
         />
         <button className="button">Submit</button>
       </form>

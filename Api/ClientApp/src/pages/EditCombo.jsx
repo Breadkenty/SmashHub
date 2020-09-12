@@ -260,22 +260,18 @@ export function EditCombo() {
       body: JSON.stringify(comboToSubmit),
     })
       .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
-        } else if (response.status === 404) {
-          // This one is for user doesn't match logged in user
-          return { status: 404, errors: { login: 'Not Authorized' } }
+        if (response.ok) {
+          console.log('ok')
+          history.push(`/character/${characterVariableName}/${comboId}`)
+          return { then: function() {} }
         } else {
           return response.json()
         }
       })
       .then(apiData => {
-        if (apiData.errors) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          history.push(`/character/${characterVariableName}/${comboId}`)
-        }
+        console.log(apiData)
+        const newMessage = Object.values(apiData.errors).join(' ')
+        setErrorMessage(newMessage)
       })
   }
 
@@ -288,19 +284,16 @@ export function EditCombo() {
         headers: { ...authHeader() },
       })
         .then(response => {
-          if (response.status === 404 || response.status === 401) {
-            return { status: 401, errors: { login: 'Not Authorized' } }
+          if (response.ok) {
+            history.push(`/character/${characterVariableName}`)
+            return { then: function() {} }
           } else {
             return response.json()
           }
         })
         .then(apiData => {
-          if (apiData.status === 401) {
-            const newMessage = Object.values(apiData.errors).join(' ')
-            setErrorMessage(newMessage)
-          } else {
-            history.push(`/character/${characterVariableName}`)
-          }
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
         })
     } else {
       setInvalidDeleteInput(true)

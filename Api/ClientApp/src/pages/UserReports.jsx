@@ -24,25 +24,22 @@ export function UserReports(props) {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify(infraction),
+    }).then(response => {
+      if (response.status === 201) {
+        return response.json()
+      } else {
+        setErrorMessage(response.statusText)
+      }
     })
-      .then(response => {
-        if (response.status === 201) {
-          return response.json()
-        } else {
-          console.log(response)
-        }
-      })
-      .then(apiData => {
-        setInfractionType('warn')
-        setInfraction({
-          ...infraction,
-          banDuration: 0,
-          points: 0,
-          category: 0,
-          body: '',
-        })
-        window.location.reload(false)
-      })
+
+    setInfractionType('warn')
+    setInfraction({
+      ...infraction,
+      banDuration: 0,
+      points: 0,
+      category: 0,
+      body: '',
+    })
   }
 
   function getUserReports() {
@@ -302,6 +299,11 @@ export function UserReports(props) {
               </div>
             </div>
           )}
+          {errorMessage && (
+            <div className="error-message">
+              <i className="fas fa-exclamation-triangle"></i> {errorMessage}
+            </div>
+          )}
           <textarea
             placeholder="reason"
             value={infraction.body}
@@ -312,6 +314,7 @@ export function UserReports(props) {
                 userId: props.user.id,
               })
             }}
+            required
           />
           <button className="button" type="submit">
             Submit

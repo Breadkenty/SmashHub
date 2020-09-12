@@ -145,21 +145,19 @@ export function Combo() {
       body: JSON.stringify(comboReport),
     })
       .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Log in to report' } }
+        console.log(response)
+        if (response.ok) {
+          setReportingCombo(false)
+          setComboReport({ ...comboReport, body: '' })
+          setErrorMessage(undefined)
+          return { then: function() {} }
         } else {
           return response.json()
         }
       })
       .then(apiData => {
-        if (apiData.status === 400 || apiData.status === 401) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          setReportingCombo(false)
-          setComboReport({ ...comboReport, body: '' })
-          setErrorMessage(undefined)
-        }
+        setReportingCombo(false)
+        setErrorMessage(apiData.detail)
       })
   }
 
@@ -326,6 +324,7 @@ export function Combo() {
                   body: event.target.value,
                 })
               }}
+              required
             />
             <button className="bg-yellow button black-text" type="submit">
               Submit

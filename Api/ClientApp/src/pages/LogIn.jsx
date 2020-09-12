@@ -26,8 +26,8 @@ export function LogIn() {
     })
       .then(response => response.json())
       .then(apiResponse => {
-        if (apiResponse.status === 400) {
-          setErrorMessage(Object.values(apiResponse.errors).join(' '))
+        if (apiResponse.status >= 400) {
+          setErrorMessage(apiResponse.detail)
         } else {
           recordAuthentication(apiResponse)
           window.location = '/'

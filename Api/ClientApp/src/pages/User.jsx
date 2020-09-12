@@ -49,10 +49,10 @@ export function User() {
   }
 
   function getUserData() {
-      fetch(`/api/Users/${displayName}`, {
-          method: 'GET',
-          headers: { 'content-type': 'application/json', ...authHeader() },
-      })
+    fetch(`/api/Users/${isLoggedIn() ? '' : 'unauth/'}${displayName}`, {
+      method: 'GET',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    })
       .then(response => {
         return response.json()
       })
@@ -60,21 +60,26 @@ export function User() {
         setUser(apiData)
       })
   }
-
   function unbanUser() {
     fetch(`/api/Users/unban/${user.id}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json', ...authHeader() },
       body: JSON.stringify({
-        userDisplayName: user.id,
+        userId: user.id,
       }),
-    }).then(response => {
-      if (response.status === 200) {
-        window.location.reload(false)
-      } else {
-        setErrorMessage(response.statusText)
-      }
     })
+      .then(response => {
+        console.log(response)
+        if (response.status === 200) {
+          window.location.reload(false)
+        } else {
+          setErrorMessage(response.statusText)
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        console.log(apiData)
+      })
   }
 
   function sumInfraction(user) {
