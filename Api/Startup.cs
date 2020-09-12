@@ -43,7 +43,7 @@ namespace Smash_Combos
                 configure.IncludeExceptionDetails = (context, ex) =>
                 {
                     var env = context.RequestServices.GetRequiredService<IHostEnvironment>();
-                    return env.IsDevelopment() || env.IsStaging();
+                    return env.IsDevelopment() || env.IsStaging() || env.IsProduction();
                 };
 
                 configure.Map<ArgumentException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest));
