@@ -7,6 +7,8 @@ import { TopNav } from './components/TopNav'
 
 import { SignUp } from './pages/SignUp'
 import { LogIn } from './pages/LogIn'
+import { ForgotPassword } from './pages/ForgotPassword'
+import { ResetPassword } from './pages/ResetPassword'
 import { User } from './pages/User'
 
 import { Character } from './pages/Character'
@@ -26,11 +28,7 @@ import { Notes } from './pages/Notes'
 import { About } from './pages/About'
 import { Tutorial } from './pages/Tutorial'
 
-import { isLoggedIn, getUser } from './auth'
-
 export function App() {
-  const loggedInUser = getUser()
-
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
 
   const handleSideBar = () => {
@@ -52,6 +50,12 @@ export function App() {
           </Route>
           <Route exact path="/login">
             <LogIn />
+          </Route>
+          <Route exact path="/forgot">
+            <ForgotPassword />
+          </Route>
+          <Route exact path="/resetpassword/:id/:token">
+            <ResetPassword />
           </Route>
           <Route exact path="/">
             <Characters />
