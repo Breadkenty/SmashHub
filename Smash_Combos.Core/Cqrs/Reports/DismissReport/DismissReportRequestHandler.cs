@@ -29,13 +29,16 @@ namespace Smash_Combos.Core.Cqrs.Reports.DismissReport
             if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            var report = await _dbContext.Reports.Where(report => report.Id == request.ReportId).FirstOrDefaultAsync();
+            var report = await _dbContext.Reports.Include(report => report.User).Where(report => report.Id == request.ReportId).FirstOrDefaultAsync();
 
             if (report == null)
                 throw new KeyNotFoundException($"Report with id {request.CurrentUserId} does not exist");
 
             if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
+                if (report.User.Id == currentUser.Id)
+                    throw new ArgumentException("Moderators cannot dismiss their own reports");
+
                 report.Dismiss = request.Dismiss;
 
                 _dbContext.Entry(report).State = EntityState.Modified;
