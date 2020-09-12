@@ -31,7 +31,10 @@ namespace Smash_Combos.Core.Cqrs.Combos.DeleteCombo
             if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            var combo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+            var combo = await _dbContext.Combos
+                .Include(combo => combo.User)
+                .Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+
             if (combo == null)
                 throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
 

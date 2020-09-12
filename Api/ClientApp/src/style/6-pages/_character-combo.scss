@@ -74,10 +74,7 @@
           .edit {
             float: right;
             margin-left: 8px;
-
-            h5:hover {
-              color: $yellow;
-            }
+            text-decoration: none;
           }
 
           button {
@@ -240,6 +237,15 @@
         .edit:hover {
           color: $yellow;
         }
+        i {
+          float: right;
+          margin-bottom: 24px;
+          @include transition;
+        }
+
+        i:hover {
+          color: $yellow;
+        }
 
         textarea {
           padding: 8px;
@@ -253,6 +259,27 @@
 
         textarea:focus {
           outline: none;
+        }
+
+        .delete {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+
+          p {
+            font-size: 0.7rem;
+          }
+
+          button {
+            background: none;
+            border: none;
+            color: $red;
+            font-size: 0.7rem;
+            @include transition;
+          }
+          button:hover {
+            color: white;
+          }
         }
       }
     }

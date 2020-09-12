@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router'
-import { authHeader, getUser } from '../auth'
+import { authHeader, getUser, isLoggedIn } from '../auth'
 import YouTube from 'react-youtube'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
@@ -141,9 +141,10 @@ export function EditCombo() {
     fetch(`/api/Combos/${comboId}`)
       .then(response => response.json())
       .then(apiData => {
-        if (loggedInUser.id !== apiData.user.id) {
-          history.push('/forbidden')
-        } else {
+        if (
+          (isLoggedIn() && loggedInUser.userType > 1) ||
+          (isLoggedIn() && loggedInUser.id === apiData.user.id)
+        ) {
           setComboToEdit(apiData)
           setSelectedDifficulty(apiData.difficulty)
           setTrueCombo(apiData.trueCombo)
@@ -156,6 +157,8 @@ export function EditCombo() {
             (apiData.videoEndTime - (apiData.videoEndTime % 60)) / 60
           )
           setEndSeconds(apiData.videoEndTime % 60)
+        } else {
+          history.push('/forbidden')
         }
       })
   }

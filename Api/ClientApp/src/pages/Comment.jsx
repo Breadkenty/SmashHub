@@ -22,6 +22,7 @@ export function Comment(props) {
     commentId: props.comment.id,
     body: '',
   })
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   function handleTextChange(event) {
     setEditedComment({
@@ -29,6 +30,7 @@ export function Comment(props) {
       body: event.target.value,
     })
   }
+
   function submitComment(event) {
     event.preventDefault()
 
@@ -48,6 +50,31 @@ export function Comment(props) {
         }
       })
       .then(apiData => {
+        setErrorMessage(apiData.detail)
+      })
+  }
+
+  function deleteComment(event) {
+    event.preventDefault()
+
+    fetch(`/api/Comments/${parseInt(props.comment.id)}`, {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(editedComment),
+    })
+      .then(response => {
+        console.log(response)
+        if (response.ok) {
+          setEditingComment(false)
+          props.getCombo()
+          setErrorMessage(undefined)
+          return { then: function() {} }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        console.log(apiData)
         setErrorMessage(apiData.detail)
       })
   }
@@ -147,29 +174,72 @@ export function Comment(props) {
                   report
                 </button>
               )}
-            {isLoggedIn() && props.loggedInUser.id === props.comment.user.id && (
-              <>
-                <button
-                  className="edit"
-                  onClick={() => {
-                    setEditingComment(true)
-                  }}
-                >
-                  edit
-                </button>
-              </>
-            )}
+            {(isLoggedIn() &&
+              props.loggedInUser.id === props.comment.user.id && (
+                <>
+                  <button
+                    className="edit"
+                    onClick={() => {
+                      setEditingComment(true)
+                    }}
+                  >
+                    edit
+                  </button>
+                </>
+              )) ||
+              (isLoggedIn() && props.loggedInUser.userType > 1 && (
+                <>
+                  <button
+                    className="edit"
+                    onClick={() => {
+                      setEditingComment(true)
+                    }}
+                  >
+                    edit
+                  </button>
+                </>
+              ))}
           </h5>
           {editingComment && (
             <form className="edit-comment" onSubmit={submitComment}>
+              <i
+                className="fas fa-times"
+                onClick={() => {
+                  setEditingComment(false)
+                }}
+              ></i>
               <textarea
                 value={editedComment.body}
                 onChange={handleTextChange}
                 required
               />
+
               <button className="bg-yellow button black-text" type="submit">
                 Submit
               </button>
+              {confirmDelete ? (
+                <div className="delete">
+                  <p>Are you sure you want to delete this comment?: </p>
+                  <button onClick={deleteComment}>yes</button>
+                  <button
+                    onClick={() => {
+                      setConfirmDelete(false)
+                    }}
+                  >
+                    no
+                  </button>
+                </div>
+              ) : (
+                <div className="delete">
+                  <button
+                    onClick={() => {
+                      setConfirmDelete(true)
+                    }}
+                  >
+                    delete
+                  </button>
+                </div>
+              )}
             </form>
           )}
           {editingComment || <p>{props.comment.body}</p>}

@@ -28,10 +28,13 @@ namespace Smash_Combos.Core.Cqrs.Comments.DeleteComment
         {
             var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if(currentUser == null)
+            if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+            var comment = await _dbContext.Comments
+                .Include(comment => comment.User)
+                .Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+
             if (comment == null)
                 throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 

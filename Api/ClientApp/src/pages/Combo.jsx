@@ -237,14 +237,22 @@ export function Combo() {
                 {combo.user.displayName}
               </Link>{' '}
               {moment(combo.datePosted).fromNow()}
-              {isLoggedIn() && loggedInUser.id === combo.user.id && (
+              {(isLoggedIn() && loggedInUser.id === combo.user.id && (
                 <Link
                   className="edit"
                   to={`/character/${characterVariableName}/${combo.id}/edit`}
                 >
-                  <h5>edit</h5>
+                  edit
                 </Link>
-              )}
+              )) ||
+                (isLoggedIn() && loggedInUser.userType > 1 && (
+                  <Link
+                    className="edit"
+                    to={`/character/${characterVariableName}/${combo.id}/edit`}
+                  >
+                    edit
+                  </Link>
+                ))}
               {isLoggedIn() &&
                 loggedInUser.displayName !== combo.user.displayName && (
                   <button
