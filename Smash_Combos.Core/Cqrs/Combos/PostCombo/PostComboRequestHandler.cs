@@ -25,28 +25,20 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
 
         public async Task<PostComboResponse> Handle(PostComboRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.Where(user => user.Id == request.UserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new PostComboResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple users with the same name found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (user == null)
-                return new PostComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
 
             if (character == null)
-                return new PostComboResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Character does not exist" };
+                throw new KeyNotFoundException($"Character with id {request.CharacterId} does not exist");
 
             var combo = new Combo
             {
                 Character = character,
-                User = user,
+                User = currentUser,
                 Title = request.Title,
                 VideoId = request.VideoId,
                 VideoStartTime = request.VideoStartTime,
@@ -61,7 +53,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PostCombo
             _dbContext.Combos.Add(combo);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return new PostComboResponse { Data = _mapper.Map<ComboDto>(combo), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Combo created" };
+            return _mapper.Map<PostComboResponse>(combo);
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Reports.GetReportsByUser
 {
-    public class GetReportsByUserRequest : IRequest<GetReportsByUserResponse>
+    public class GetReportsByUserRequest : IRequest<IEnumerable<GetReportsByUserResponse>>
     {
-        public string UserName { get; set; }
-        public int ModeratorId { get; set; }
+        public string DisplayName { get; set; }
+        public int CurrentUserId { get; set; }
     }
 }

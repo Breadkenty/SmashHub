@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
 using Smash_Combos.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,38 +25,29 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
 
         public async Task<GetReportResponse> Handle(GetReportRequest request, CancellationToken cancellationToken)
         {
-            User moderator = null;
-            try
-            {
-                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new GetReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (moderator == null)
-                return new GetReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            if (moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
-
                 var report = await _dbContext.Reports
-                .Where(report => report.Id == request.ReportId)
-                .Include(report => report.User)
-                .Include(report => report.Reporter)
-                .Include(report => report.Combo)
-                .Include(report => report.Comment)
-                .FirstOrDefaultAsync();
+                    .Where(report => report.Id == request.ReportId)
+                    .Include(report => report.User)
+                    .Include(report => report.Reporter)
+                    .Include(report => report.Combo)
+                    .Include(report => report.Comment)
+                    .FirstOrDefaultAsync();
 
                 if (report == null)
-                    return new GetReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Report does not exist" };
+                    throw new KeyNotFoundException($"Report with id {request.ReportId} does not exist");
 
-                return new GetReportResponse {Data = _mapper.Map<ReportDto>(report), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Report found" };
+                return _mapper.Map<GetReportResponse>(report);
             }
             else
             {
-                return new GetReportResponse { ResponseStatus = ResponseStatus.NotFound, ResponseMessage = "Not authorized to get reports" };
+                throw new SecurityException($"Not authorized to get reports");
             }
         }
     }

@@ -5,6 +5,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,44 +23,28 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DismissInfraction
         
         public async Task<DismissInfractionResponse> Handle(DismissInfractionRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.ModeratorId);
-            }
-            catch (InvalidOperationException)
-            {
-                return new DismissInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
-            }
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            if (user == null)
-                return new DismissInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId).FirstOrDefaultAsync();
 
             if (infraction == null)
-                return new DismissInfractionResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Infraction does not exist" };
+                throw new KeyNotFoundException($"Infraction with id {request.InfractionId} does not exist");
 
-            if (user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 infraction.DismissDate = DateTime.Now;
 
                 _dbContext.Entry(infraction).State = EntityState.Modified;
 
-                try
-                {
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
-                    return new DismissInfractionResponse { ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Infraction dismissed" };
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return new DismissInfractionResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
-
-                }
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new DismissInfractionResponse();
             }
             else
             {
-                return new DismissInfractionResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to dismiss reports" };
+                throw new SecurityException("Not authorized to dismiss infractions");
             }
         }
     }

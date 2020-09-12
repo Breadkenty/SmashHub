@@ -8,6 +8,6 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
     public class GetReportRequest : IRequest<GetReportResponse>
     {
         public int ReportId { get; set; }
-        public int ModeratorId { get; set; }
+        public int CurrentUserId { get; set; }
     }
 }

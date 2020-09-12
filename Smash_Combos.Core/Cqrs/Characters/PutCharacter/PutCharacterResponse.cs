@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Characters.PutCharacter
 {
-    public class PutCharacterResponse : ResponseBase
+    public class PutCharacterResponse
     {
     }
 }

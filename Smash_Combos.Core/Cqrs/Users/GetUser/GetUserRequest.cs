@@ -9,5 +9,6 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
     public class GetUserRequest : IRequest<GetUserResponse>
     {
         public string DisplayName { get; set; }
+        public int CurrentUserId { get; set; }
     }
 }

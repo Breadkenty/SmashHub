@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,18 +26,10 @@ namespace Smash_Combos.Core.Cqrs.Characters.PostCharacter
 
         public async Task<PostCharacterResponse> Handle(PostCharacterRequest request, CancellationToken cancellationToken)
         {
-            User currentUser = null;
-            try
-            {
-                currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return new PostCharacterResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
             if (currentUser == null)
-                return new PostCharacterResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             if (currentUser.UserType == UserType.Admin)
             {
@@ -51,11 +44,11 @@ namespace Smash_Combos.Core.Cqrs.Characters.PostCharacter
                 _dbContext.Characters.Add(character);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new PostCharacterResponse { Data = _mapper.Map<CharacterDto>(character), ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Character created" };
+                return _mapper.Map<PostCharacterResponse>(character);
             }
             else
             {
-                return new PostCharacterResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to delete characters" };
+                throw new SecurityException("Not authorized to create characters");
             }
         }
     }

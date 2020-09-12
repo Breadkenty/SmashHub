@@ -7,6 +7,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,26 +27,20 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
 
         public async Task<UnbanUserResponse> Handle(UnbanUserRequest request, CancellationToken cancellationToken)
         {
-            User moderator = null;
-            User user = null;
-            try
-            {
-                moderator = await _dbContext.Users.Where(user => user.Id == request.ModeratorId).SingleOrDefaultAsync();
-                user = await _dbContext.Users.Include(user => user.Combos)
-                    .Include(user => user.Comments)
-                    .Include(user => user.Combos)
-                    .Include(user => user.Infractions)
-                    .SingleOrDefaultAsync(user => user.Id == request.UserId);
-            }
-            catch (InvalidOperationException)
-            {
-                return new UnbanUserResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Id found" };
-            }
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            if (user == null || moderator == null)
-                return new UnbanUserResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User doesn't exist" };
+            var user = await _dbContext.Users.Include(user => user.Combos)
+                .Include(user => user.Comments)
+                .Include(user => user.Combos)
+                .Include(user => user.Infractions)
+                .SingleOrDefaultAsync(user => user.Id == request.UserId);
 
-            if(moderator.UserType == UserType.Moderator || moderator.UserType == UserType.Admin)
+            if (user == null)
+                throw new KeyNotFoundException($"User with id {request.UserId} does not exist");
+
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
                 var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.Id == request.UserId).ToListAsync();
 
@@ -59,11 +54,11 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-                return new UnbanUserResponse { Data = _mapper.Map<UserFullDto>(user), ResponseStatus = ResponseStatus.Ok, ResponseMessage = $"User '{user.DisplayName}' unbanned" };
+                return _mapper.Map<UnbanUserResponse>(user);
             }
             else
             {
-                return new UnbanUserResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to unban Users" };
+                throw new SecurityException("Not authorized to unban Users");
             }
         }
     }

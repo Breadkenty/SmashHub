@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,44 +24,31 @@ namespace Smash_Combos.Core.Cqrs.Reports.DismissReport
 
         public async Task<DismissReportResponse> Handle(DismissReportRequest request, CancellationToken cancellationToken)
         {
-            User user = null;
-            try
-            {
-                user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.ModeratorId);
-            }
-            catch (InvalidOperationException)
-            {
-                return new DismissReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Multiple Users with same Name found" };
-            }
+            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            if (user == null)
-                return new DismissReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "User does not exist" };
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            var report = await _dbContext.Reports.Where(report => report.Id == request.ReportId).FirstOrDefaultAsync();
+            var report = await _dbContext.Reports.Include(report => report.User).Where(report => report.Id == request.ReportId).FirstOrDefaultAsync();
 
             if (report == null)
-                return new DismissReportResponse { ResponseStatus = ResponseStatus.BadRequest, ResponseMessage = "Report does not exist" };
+                throw new KeyNotFoundException($"Report with id {request.CurrentUserId} does not exist");
 
-            if (user.UserType == UserType.Moderator || user.UserType == UserType.Admin)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
+                if (report.User.Id == currentUser.Id)
+                    throw new ArgumentException("Moderators cannot dismiss their own reports");
+
                 report.Dismiss = request.Dismiss;
 
                 _dbContext.Entry(report).State = EntityState.Modified;
 
-                try
-                {
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
-                    return new DismissReportResponse { ResponseStatus = ResponseStatus.Ok, ResponseMessage = "Report dismissed" };
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return new DismissReportResponse { ResponseStatus = ResponseStatus.Error, ResponseMessage = "Something went wrong, please try again" };
-
-                }
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new DismissReportResponse();
             }
             else
             {
-                return new DismissReportResponse { ResponseStatus = ResponseStatus.NotAuthorized, ResponseMessage = "Not authorized to dismiss reports" };
+                throw new SecurityException("Not authorized to dismiss reports");
             }
         }
     }

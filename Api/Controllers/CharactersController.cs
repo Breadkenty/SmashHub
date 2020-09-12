@@ -1,21 +1,18 @@
+using Hellang.Middleware.ProblemDetails;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Smash_Combos.Domain.Models;
+using Smash_Combos.Core.Cqrs;
+using Smash_Combos.Core.Cqrs.Characters.DeleteCharacter;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
+using Smash_Combos.Core.Cqrs.Characters.PostCharacter;
+using Smash_Combos.Core.Cqrs.Characters.PutCharacter;
 using Smash_Combos.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
-using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
-using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
-using Smash_Combos.Core.Cqrs.Characters;
-using Smash_Combos.Core.Cqrs.Characters.PutCharacter;
-using Smash_Combos.Core.Cqrs.Characters.PostCharacter;
-using Smash_Combos.Core.Cqrs.Characters.DeleteCharacter;
-using Smash_Combos.Core.Cqrs;
 
 namespace Smash_Combos.Controllers
 {
@@ -40,24 +37,7 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Characters
         //
         [HttpGet]
-        public async Task<IActionResult> GetCharacters([FromQuery] string filter)
-        {
-            var response = await _mediator.Send(new GetCharactersRequest { Filter = filter });
-
-            switch (response.ResponseStatus)
-            {
-                case ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
-        }
+        public async Task<ActionResult<IEnumerable<GetCharactersResponse>>> GetCharacters([FromQuery] string filter) => Ok(await _mediator.Send(new GetCharactersRequest { Filter = filter }));
 
         // GET: api/Characters/5
         //
@@ -66,24 +46,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{variableName}")]
-        public async Task<IActionResult> GetCharacter([FromRoute] string variableName)
-        {
-            var response = await _mediator.Send(new GetCharacterRequest { VariableName = variableName }); ;
-            
-            switch (response.ResponseStatus)
-            {
-                case ResponseStatus.Ok:
-                    return Ok(response.Data);
-                case ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
-        }
+        public async Task<ActionResult<GetCharacterResponse>> GetCharacter([FromRoute] string variableName) => Ok(await _mediator.Send(new GetCharacterRequest { VariableName = variableName }));
 
         // PUT: api/Characters/5
         //
@@ -101,25 +64,16 @@ namespace Smash_Combos.Controllers
         public async Task<IActionResult> PutCharacter([FromRoute] string variableName, PutCharacterRequest request)
         {
             if (request.VariableName != variableName)
-                return BadRequest();
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Name in URL and Character don't match" });
 
             request.CurrentUserId = GetCurrentUserId();
 
             var response = await _mediator.Send(request); ;
 
-            switch (response.ResponseStatus)
-            {
-                case ResponseStatus.Ok:
-                    return Ok();
-                case ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // POST: api/Characters
@@ -139,19 +93,10 @@ namespace Smash_Combos.Controllers
 
             var response = await _mediator.Send(request); ;
 
-            switch (response.ResponseStatus)
-            {
-                case ResponseStatus.Ok:
-                    return CreatedAtAction("GetCharacter", new { id = response.Data.VariableName }, response.Data);
-                case ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response != null)
+                return CreatedAtAction("GetCharacter", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // DELETE: api/Characters/5
@@ -167,19 +112,10 @@ namespace Smash_Combos.Controllers
         {
             var response = await _mediator.Send(new DeleteCharacterRequest { CharacterId = id, CurrentUserId = GetCurrentUserId() });
 
-            switch (response.ResponseStatus)
-            {
-                case ResponseStatus.Ok:
-                    return Ok();
-                case ResponseStatus.NotFound:
-                    return NotFound(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.BadRequest:
-                    return BadRequest(new { errors = new List<string>() { response.ResponseMessage } });
-                case ResponseStatus.NotAuthorized:
-                    return Forbid();
-                default:
-                    return StatusCode(500, new { errors = new List<string>() { response.ResponseMessage } });
-            }
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()

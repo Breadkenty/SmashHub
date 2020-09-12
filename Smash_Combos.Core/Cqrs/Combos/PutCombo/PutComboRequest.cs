@@ -9,7 +9,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.PutCombo
 {
     public class PutComboRequest : IRequest<PutComboResponse>
     {
-        public int UserId { get; set; }
+        public int CurrentUserId { get; set; }
 
         [Required]
         public int ComboId { get; set; }

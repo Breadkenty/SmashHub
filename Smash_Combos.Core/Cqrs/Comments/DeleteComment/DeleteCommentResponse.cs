@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smash_Combos.Core.Cqrs.Comments.DeleteComment
 {
-    public class DeleteCommentResponse : ResponseBase<CommentDto>
+    public class DeleteCommentResponse
     {
     }
 }
