@@ -36,7 +36,9 @@ export function SignUp() {
         }
       })
       .then(apiData => {
-        setErrorMessage(apiData.detail)
+        setErrorMessage(
+          apiData.detail || Object.values(apiData.errors).join(' ')
+        )
       })
   }
 
