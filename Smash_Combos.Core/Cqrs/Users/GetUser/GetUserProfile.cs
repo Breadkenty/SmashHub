@@ -10,6 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
     {
         public GetUserProfile()
         {
+            CreateMap<Character, CharacterDto>();
             CreateMap<User, UserDto>();
             CreateMap<Combo, ComboDto>();
             CreateMap<Report, ReportDto>();

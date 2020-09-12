@@ -20,6 +20,10 @@ namespace Smash_Combos.Domain.Models
 
         public User Reporter { get; set; }
 
+        public Comment Comment { get; set; }
+
+        public Combo Combo { get; set; }
+
         [Required]
         public string Body { get; set; }
 

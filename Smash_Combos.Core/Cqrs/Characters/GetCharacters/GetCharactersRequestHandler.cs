@@ -31,7 +31,9 @@ namespace Smash_Combos.Core.Cqrs.Characters.GetCharacters
             }
             else
             {
-                var characters = await _dbContext.Characters.Where(character => character.Name.ToLower().Contains(request.Filter) || character.VariableName.ToLower().Contains(request.Filter)).ToListAsync();
+                var characters = await _dbContext.Characters
+                    .Where(character => character.Name.ToLower().Contains(request.Filter) || character.VariableName.ToLower().Contains(request.Filter))
+                    .ToListAsync();
                 return _mapper.Map<IEnumerable<GetCharactersResponse>>(characters);
             }
         }

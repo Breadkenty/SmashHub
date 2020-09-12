@@ -26,22 +26,34 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostCommentReport
         public async Task<PostCommentReportResponse> Handle(PostCommentReportRequest request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
-            var reporter = await _dbContext.Users.Where(user => user.Id == request.ReporterId).FirstOrDefaultAsync();
-            var comment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId).FirstOrDefaultAsync();
+            if (user == null)
+                throw new KeyNotFoundException($"User with id {request.UserId} does not exist");
 
-            if(user == null || reporter == null)
-                return new PostCommentReportResponse { User = null, Reporter = null };
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.ReporterId).FirstOrDefaultAsync();
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.ReporterId} does not exist");
+
+            var reportComment = await _dbContext.Comments.Where(comment => comment.Id == request.CommentId)
+             .Include(comment => comment.Reports)
+                .ThenInclude(report => report.Reporter)
+            .FirstOrDefaultAsync();
+
+            if (reportComment == null)
+                throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
+
+            if (reportComment.Reports.Any(report => report.Reporter.Id == request.ReporterId))
+                throw new ArgumentException($"Already reported this comment");
 
             var report = new Report
             {
                 User = user,
-                Reporter = reporter,
+                Reporter = currentUser,
                 Body = request.Body
             };
             _dbContext.Reports.Add(report);
 
-            comment.Reports.Add(report);
-            _dbContext.Entry(comment).State = EntityState.Modified;
+            reportComment.Reports.Add(report);
+            _dbContext.Entry(reportComment).State = EntityState.Modified;
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,19 +25,24 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUsers
 
         public async Task<IEnumerable<GetUsersResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
         {
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
+
             var users = await _dbContext.Users
                         .Include(user => user.Combos)
                             .ThenInclude(combo => combo.Reports)
+                        .Include(user => user.Combos)
+                            .ThenInclude(combo => combo.Character)
                         .Include(user => user.Comments)
                             .ThenInclude(comment => comment.Reports)
                         .Include(user => user.Infractions)
+                            .ThenInclude(infraction => infraction.Moderator)
                         .ToListAsync();
 
             var responseList = new List<GetUsersResponse>();
 
             foreach(var user in users)
             {
-                var response = new GetUsersResponse
+                var userDto = new GetUsersResponse
                 {
                     Id = user.Id,
                     DisplayName = user.DisplayName,
@@ -45,7 +51,19 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUsers
                     Comments = _mapper.Map<List<CommentDto>>(user.Comments),
                     Infractions = _mapper.Map<List<InfractionDto>>(user.Infractions)
                 };
-                responseList.Add(response);
+                responseList.Add(userDto);
+            }
+
+            if (currentUser == null || (currentUser.UserType != UserType.Moderator && currentUser.UserType != UserType.Admin))
+            {
+                foreach(var user in responseList)
+                {
+                    foreach (var combo in user.Combos)
+                    {
+                        combo.Reports = new List<ReportDto>();
+                    }
+                    user.Infractions = new List<InfractionDto>();
+                }
             }
 
             return responseList;

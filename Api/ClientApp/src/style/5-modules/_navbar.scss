@@ -30,7 +30,7 @@ nav {
     background-color: $black;
   }
 
-  a {
+  .logo {
     position: absolute;
     left: 50%;
     margin-left: -40px;
@@ -40,17 +40,21 @@ nav {
     }
   }
 
-  h5 {
-    text-align: right;
-    margin: 0;
-    font-weight: 400;
-  }
+  .nav-user {
+    h5 {
+      text-align: right;
+      margin: 0;
+      font-weight: 400;
+    }
 
-  p {
-    color: $yellow;
-    text-align: right;
-    font-size: 0.8rem;
-    font-weight: 600;
+    a {
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+    }
   }
 }
 

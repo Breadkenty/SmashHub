@@ -2,8 +2,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,12 +26,27 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReports
 
         public async Task<IEnumerable<GetReportsResponse>> Handle(GetReportsRequest request, CancellationToken cancellationToken)
         {
-            var reports = await _dbContext.Reports
-                .Include(infraction => infraction.User)
-                .Include(infraction => infraction.Reporter)
-                .ToListAsync();
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            return _mapper.Map<IEnumerable<GetReportsResponse>>(reports);
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
+
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
+            {
+
+                var reports = await _dbContext.Reports
+                    .Include(report => report.User)
+                    .Include(report => report.Reporter)
+                    .Include(report => report.Combo)
+                    .Include(report => report.Comment)
+                    .ToListAsync();
+
+                return _mapper.Map<IEnumerable<GetReportsResponse>>(reports);
+            }
+            else
+            {
+                throw new SecurityException($"Not authorized to get reports");
+            }
         }
     }
 }

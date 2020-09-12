@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -10,9 +11,11 @@ namespace Smash_Combos.Domain.Models
         public int Id { get; set; }
 
         [Required]
+        [RegularExpression("^[a-zA-Z0-9_]*$", ErrorMessage = "Only alphanumeric (A-Z, 0-9) characters are allowed")]
         public string DisplayName { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [JsonIgnore]
@@ -22,6 +25,8 @@ namespace Smash_Combos.Domain.Models
         public bool PasswordMeetsCriteria { get; set; }
 
         public UserType UserType { get; private set; } = UserType.User;
+
+        public DateTime DateCreated { get; private set; } = DateTime.Now;
 
         public List<Combo> Combos { get; set; }
 

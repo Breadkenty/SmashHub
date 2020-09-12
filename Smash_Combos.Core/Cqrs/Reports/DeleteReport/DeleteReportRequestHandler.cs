@@ -2,8 +2,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,20 +25,29 @@ namespace Smash_Combos.Core.Cqrs.Reports.DeleteReport
 
         public async Task<DeleteReportResponse> Handle(DeleteReportRequest request, CancellationToken cancellationToken)
         {
-            var report = await _dbContext.Reports
-                                .Include(report => report.User)
-                                .Include(report => report.Reporter)
-                                .Where(report => report.Id == request.ReportId && report.User.Id == request.UserId)
-                                .FirstOrDefaultAsync();
-            if (report == null)
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
+
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
+
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
-                return new DeleteReportResponse { Success = false };
+                var report = await _dbContext.Reports
+                    .Where(report => report.Id == request.ReportId && report.User.Id == request.CurrentUserId)
+                    .FirstOrDefaultAsync();
+                
+                if (report == null)
+                    throw new KeyNotFoundException($"Report with id {request.ReportId} does not exist");
+
+                _dbContext.Reports.Remove(report);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return new DeleteReportResponse();
             }
-
-            _dbContext.Reports.Remove(report);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return new DeleteReportResponse { Success = true, Report = _mapper.Map<ReportDto>(report) };
+            else
+            {
+                throw new SecurityException("Not authorized to delete reports");
+            }
         }
     }
 }

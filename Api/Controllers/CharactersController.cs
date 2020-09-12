@@ -1,17 +1,18 @@
+using Hellang.Middleware.ProblemDetails;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Smash_Combos.Domain.Models;
+using Smash_Combos.Core.Cqrs;
+using Smash_Combos.Core.Cqrs.Characters.DeleteCharacter;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
+using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
+using Smash_Combos.Core.Cqrs.Characters.PostCharacter;
+using Smash_Combos.Core.Cqrs.Characters.PutCharacter;
 using Smash_Combos.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
-using Smash_Combos.Core.Cqrs.Characters.GetCharacters;
-using Smash_Combos.Core.Cqrs.Characters.GetCharacter;
-using Smash_Combos.Core.Cqrs.Characters;
 
 namespace Smash_Combos.Controllers
 {
@@ -22,15 +23,12 @@ namespace Smash_Combos.Controllers
     [ApiController]
     public class CharactersController : ControllerBase
     {
-        // This is the variable you use to have access to your database
-        private readonly IDbContext _context;
         private readonly IMediator _mediator;
 
         // Constructor that recives a reference to your database context
         // and stores it in _context for you to use in your API methods
         public CharactersController(IDbContext context, IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
@@ -39,19 +37,7 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Characters
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCharactersResponse>>> GetCharacters(string filter)
-        {
-            var response = await _mediator.Send(new GetCharactersRequest { Filter = filter });
-
-            if (response == null)
-            {
-                // Return a `404` response to the client indicating we could not find a character with this id
-                return NotFound();
-            }
-
-            //  Return the character as a JSON object.
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetCharactersResponse>>> GetCharacters([FromQuery] string filter) => Ok(await _mediator.Send(new GetCharactersRequest { Filter = filter }));
 
         // GET: api/Characters/5
         //
@@ -60,21 +46,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{variableName}")]
-        public async Task<ActionResult<GetCharacterResponse>> GetCharacter(string variableName)
-        {
-            // Find the character in the database using `FindAsync` to look it up by variableName
-            var character = await _mediator.Send(new GetCharacterRequest { VariableName = variableName }); ;
-
-            // If we didn't find anything, we receive a `null` in return
-            if (character == null)
-            {
-                // Return a `404` response to the client indicating we could not find a character with this variableName
-                return NotFound();
-            }
-
-            //  Return the character as a JSON object.
-            return character;
-        }
+        public async Task<ActionResult<GetCharacterResponse>> GetCharacter([FromRoute] string variableName) => Ok(await _mediator.Send(new GetCharacterRequest { VariableName = variableName }));
 
         // PUT: api/Characters/5
         //
@@ -89,49 +61,19 @@ namespace Smash_Combos.Controllers
         //
         [HttpPut("{variableName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutCharacter(string variableName, Character character)
+        public async Task<IActionResult> PutCharacter([FromRoute] string variableName, PutCharacterRequest request)
         {
-            var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.UserType == UserType.Admin;
+            if (request.VariableName != variableName)
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Name in URL and Character don't match" });
 
-            // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-            if (variableName != character.VariableName || !userIsAdmin)
-            {
-                return BadRequest();
-            }
+            request.CurrentUserId = GetCurrentUserId();
 
+            var response = await _mediator.Send(request); ;
 
-            _context.Entry(character).State = EntityState.Modified;
-
-            try
-            {
-                // Try to save these changes.
-                await _context.SaveChangesAsync(CancellationToken.None);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                // Ooops, looks like there was an error, so check to see if the record we were
-                // updating no longer exists.
-                if (!CharacterExists(variableName))
-                {
-                    // If the record we tried to update was already deleted by someone else,
-                    // return a `404` not found
-                    return NotFound();
-                }
-                else
-                {
-                    // Otherwise throw the error back, which will cause the request to fail
-                    // and generate an error to the client.
-                    throw;
-                }
-            }
-
-            // return NoContent to indicate the update was done. Alternatively you can use the
-            // following to send back a copy of the updated data.
-            //
-            return Ok(character);
-            //
-            // return NoContent();
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // POST: api/Characters
@@ -145,24 +87,16 @@ namespace Smash_Combos.Controllers
         //
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PostCharacter([FromBody] PostCharacterRequest request)
+        {            
+            request.CurrentUserId = GetCurrentUserId();
 
-        public async Task<ActionResult<Character>> PostCharacter(Character character)
-        {
-            var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.UserType == UserType.Admin;
+            var response = await _mediator.Send(request); ;
 
-            if (!userIsAdmin)
-            {
-                return BadRequest();
-            }
-
-            // Indicate to the database context we want to add this new record
-            _context.Characters.Add(character);
-            await _context.SaveChangesAsync(CancellationToken.None);
-
-            // Return a response that indicates the object was created (status code `201`) and some additional
-            // headers with details of the newly created object.
-            return CreatedAtAction("GetCharacter", new { variableName = character.VariableName }, character);
+            if (response != null)
+                return CreatedAtAction("GetCharacter", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // DELETE: api/Characters/5
@@ -171,50 +105,23 @@ namespace Smash_Combos.Controllers
         // In the sample URL above it is the `5`. The "{id} in the [HttpDelete("{id}")] is what tells dotnet
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
-        [HttpDelete("{variableName}")]
+        [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-        public async Task<IActionResult> DeleteCharacter(string variableName)
+        public async Task<IActionResult> DeleteCharacter([FromRoute] int id)
         {
-            var getUserById = await _context.Users.Where(user => user.Id == GetCurrentUserId()).FirstOrDefaultAsync();
-            var userIsAdmin = getUserById.UserType == UserType.Admin;
+            var response = await _mediator.Send(new DeleteCharacterRequest { CharacterId = id, CurrentUserId = GetCurrentUserId() });
 
-            if (!userIsAdmin)
-            {
-                return BadRequest();
-            }
-            // Find this character by looking for the specific id
-            var character = await _context.Characters.Where(character => character.VariableName == variableName).Include(character => character.Combos).FirstOrDefaultAsync();
-            if (character == null)
-            {
-                // There wasn't a character with that id so return a `404` not found
-                return NotFound();
-            }
-
-            // Tell the database we want to remove this record
-            _context.Characters.Remove(character);
-
-            // Tell the database to perform the deletion
-            await _context.SaveChangesAsync(CancellationToken.None);
-
-            // return NoContent to indicate the update was done. Alternatively you can use the
-            // following to send back a copy of the deleted data.
-            //
-            return Ok(character);
-            //
-            // return NoContent();
-        }
-
-        // Private helper method that looks up an existing character by the supplied id
-        private bool CharacterExists(string variableName)
-        {
-            return _context.Characters.Any(character => character.VariableName == variableName);
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()
         {
             // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

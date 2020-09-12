@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import video from '../graphics/demo/video.gif'
 import combo from '../graphics/demo/combo.gif'

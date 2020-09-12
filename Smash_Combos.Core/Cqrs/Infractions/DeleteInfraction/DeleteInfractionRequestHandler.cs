@@ -2,9 +2,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,20 +26,29 @@ namespace Smash_Combos.Core.Cqrs.Infractions.DeleteInfraction
 
         public async Task<DeleteInfractionResponse> Handle(DeleteInfractionRequest request, CancellationToken cancellationToken)
         {
-            var infraction = await _dbContext.Infractions
-                                .Include(infraction => infraction.User)
-                                .Include(infraction => infraction.Moderator)
-                                .Where(infraction => infraction.Id == request.InfractionId && infraction.User.Id == request.UserId)
-                                .FirstOrDefaultAsync();
-            if (infraction == null)
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
+
+            if(currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
+
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
-                return new DeleteInfractionResponse { Success = false };
+                var infraction = await _dbContext.Infractions
+                    .Where(infraction => infraction.Id == request.InfractionId)
+                    .FirstOrDefaultAsync();
+
+                if (infraction == null)
+                    throw new KeyNotFoundException($"Incraftion with id {request.InfractionId} does not exist");
+
+                _dbContext.Infractions.Remove(infraction);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return new DeleteInfractionResponse();
             }
-
-            _dbContext.Infractions.Remove(infraction);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return new DeleteInfractionResponse { Success = true, Infraction = _mapper.Map<InfractionDto>(infraction) };
+            else
+            {
+                throw new SecurityException("Not authorized to delete infractions");
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,35 +25,41 @@ namespace Smash_Combos.Core.Cqrs.Users.UnbanUser
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<UnbanUserResponse> Handle(UnbanUserRequest unbanRequest, CancellationToken cancellationToken)
+        public async Task<UnbanUserResponse> Handle(UnbanUserRequest request, CancellationToken cancellationToken)
         {
-            var moderator = await _dbContext.Users.Where(user => user.Id == unbanRequest.ModeratorId).FirstOrDefaultAsync();
-
-            if (moderator == null || (moderator.UserType != UserType.Moderator && moderator.UserType != UserType.Admin))
-                return null;
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var user = await _dbContext.Users.Include(user => user.Combos)
-                                .Include(user => user.Comments)
-                                .Include(user => user.Combos)
-                                .Include(user => user.Infractions)
-                                .FirstOrDefaultAsync(user => user.Id == unbanRequest.UserId);
+                .Include(user => user.Comments)
+                .Include(user => user.Combos)
+                .Include(user => user.Infractions)
+                .SingleOrDefaultAsync(user => user.Id == request.UserId);
 
             if (user == null)
-                return null;
+                throw new KeyNotFoundException($"User with id {request.UserId} does not exist");
 
-            var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.Id == unbanRequest.UserId).ToListAsync();
-
-            foreach(var infraction in infractions)
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
-                if (infraction.IsActiveBan())
+                var infractions = await _dbContext.Infractions.Where(infraction => infraction.User.Id == request.UserId).ToListAsync();
+
+                foreach (var infraction in infractions)
                 {
-                    infraction.BanLiftDate = DateTime.Now;
+                    if (infraction.IsActiveBan())
+                    {
+                        infraction.DismissDate = DateTime.Now;
+                    }
                 }
+
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+
+                return _mapper.Map<UnbanUserResponse>(user);
             }
-
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return _mapper.Map<UnbanUserResponse>(user);
+            else
+            {
+                throw new SecurityException("Not authorized to unban Users");
+            }
         }
     }
 }

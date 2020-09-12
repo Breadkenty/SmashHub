@@ -6,6 +6,11 @@
   width: 100vw;
   max-width: 1000px;
 
+  .unban {
+    float: right;
+    color: white;
+  }
+
   > header {
     padding: 24px;
     margin-bottom: 8px;
@@ -135,8 +140,7 @@
 
       border-bottom: 1px solid white;
 
-      .report-dismiss,
-      .report-date {
+      .report-dismiss {
         text-align: right;
         grid-column: span 4;
       }
@@ -164,6 +168,7 @@
     .combo {
       border-bottom: 1px solid $grey;
       display: flex;
+      @include transition;
 
       .vote {
         padding-left: 16px;
@@ -202,11 +207,25 @@
             display: flex;
             align-items: center;
 
+            a {
+              text-decoration: none;
+            }
+            a:hover {
+              h3 {
+                color: $yellow;
+                @include transition;
+              }
+            }
+
             img {
               width: 40px;
               border-radius: 50%;
-
               margin-right: 8px;
+              @include transition;
+            }
+            img:hover {
+              transform: scale(1.2);
+              background-color: $yellow;
             }
           }
         }
@@ -224,6 +243,14 @@
             margin: 0;
           }
         }
+      }
+    }
+    .combo:hover {
+      background-color: $grey;
+      transform: scale(1.005);
+
+      .information {
+        background-color: $grey;
       }
     }
   }

@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router'
 import { recordAuthentication } from '../auth'
 
 export function SignUp() {
-  const history = useHistory()
-
   const [newUser, setNewUser] = useState({
     displayName: '',
     email: '',
@@ -21,11 +18,8 @@ export function SignUp() {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(newUser),
     })
-      .then(response => response.json())
-      .then(apiResponse => {
-        if (apiResponse.status === 400) {
-          setErrorMessage(Object.values(apiResponse.errors).join(' '))
-        } else {
+      .then(response => {
+        if (response.status === 200) {
           fetch('api/Sessions', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
@@ -33,14 +27,16 @@ export function SignUp() {
           })
             .then(response => response.json())
             .then(apiResponse => {
-              if (apiResponse.status === 400) {
-                setErrorMessage(Object.values(apiResponse.errors).join(' '))
-              } else {
-                recordAuthentication(apiResponse)
-                window.location = '/'
-              }
+              recordAuthentication(apiResponse)
+              window.location = '/'
             })
+          return { then: function() {} }
+        } else {
+          return response.json()
         }
+      })
+      .then(apiData => {
+        setErrorMessage(apiData.detail)
       })
   }
 
@@ -57,7 +53,7 @@ export function SignUp() {
       <form onSubmit={handleSubmit}>
         {errorMessage && (
           <div className="error-message">
-            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+            <i className="fas fa-exclamation-triangle"></i> {errorMessage}
           </div>
         )}
         <input

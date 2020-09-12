@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,17 +25,22 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
 
         public async Task<GetUserResponse> Handle(GetUserRequest request, CancellationToken cancellationToken)
         {
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
+
             var user = await _dbContext.Users
-                        .Include(user => user.Combos)
-                            .ThenInclude(combo => combo.Reports)
-                        .Include(user => user.Comments)
-                            .ThenInclude(comment => comment.Reports)
-                        .Include(user => user.Infractions)
-                        .Where(user => user.Id == request.UserId)
-                        .FirstOrDefaultAsync();
+                .Include(user => user.Combos)
+                    .ThenInclude(combo => combo.Reports)
+                .Include(user => user.Combos)
+                    .ThenInclude(combo => combo.Character)
+                .Include(user => user.Comments)
+                    .ThenInclude(comment => comment.Reports)
+                .Include(user => user.Infractions)
+                    .ThenInclude(infraction => infraction.Moderator)
+                .Where(user => user.DisplayName == request.DisplayName)
+                .SingleOrDefaultAsync();
 
             if (user == null)
-                return null;
+                throw new KeyNotFoundException("User does not exist");
 
             var response = new GetUserResponse
             {
@@ -45,6 +51,19 @@ namespace Smash_Combos.Core.Cqrs.Users.GetUser
                 Comments = _mapper.Map<List<CommentDto>>(user.Comments),
                 Infractions = _mapper.Map<List<InfractionDto>>(user.Infractions)
             };
+
+            if(currentUser == null || (currentUser.UserType != UserType.Moderator && currentUser.UserType != UserType.Admin))
+            {
+                foreach(var combo in response.Combos)
+                {
+                    combo.Reports = new List<ReportDto>();
+                }
+
+                if(currentUser == null || currentUser.Id != user.Id)
+                {
+                    response.Infractions = new List<InfractionDto>();
+                }
+            }
 
             return response;
         }

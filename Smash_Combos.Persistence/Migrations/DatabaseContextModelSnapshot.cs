@@ -188,9 +188,6 @@ namespace Smash_Combos.Persistence.Migrations
                     b.Property<int?>("BanDuration")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("BanLiftDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("text");
@@ -199,6 +196,9 @@ namespace Smash_Combos.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateInfracted")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DismissDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("ModeratorId")
@@ -268,6 +268,9 @@ namespace Smash_Combos.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -292,7 +295,7 @@ namespace Smash_Combos.Persistence.Migrations
 
             modelBuilder.Entity("Smash_Combos.Domain.Models.Combo", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Character", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Character", "Character")
                         .WithMany("Combos")
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -307,7 +310,7 @@ namespace Smash_Combos.Persistence.Migrations
 
             modelBuilder.Entity("Smash_Combos.Domain.Models.Comment", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Combo", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Combo", "Combo")
                         .WithMany("Comments")
                         .HasForeignKey("ComboId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -335,11 +338,11 @@ namespace Smash_Combos.Persistence.Migrations
 
             modelBuilder.Entity("Smash_Combos.Domain.Models.Report", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Combo", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Combo", "Combo")
                         .WithMany("Reports")
                         .HasForeignKey("ComboId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.Comment", null)
+                    b.HasOne("Smash_Combos.Domain.Models.Comment", "Comment")
                         .WithMany("Reports")
                         .HasForeignKey("CommentId");
 

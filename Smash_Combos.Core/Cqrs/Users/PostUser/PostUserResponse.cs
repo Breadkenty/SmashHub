@@ -7,10 +7,8 @@ namespace Smash_Combos.Core.Cqrs.Users.PostUser
 {
     public class PostUserResponse
     {
-        public User User { get; set; }
-
-        public bool EmailAlreadyExists { get; set; }
-        public bool DisplayNameAlreadyExists { get; set; }
-        public bool PasswordDoesntMeetCriteria { get; set; }
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public UserType UserType { get; private set; }
     }
 }

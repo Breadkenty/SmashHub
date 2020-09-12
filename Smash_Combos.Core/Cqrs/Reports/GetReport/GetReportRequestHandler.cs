@@ -2,8 +2,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,16 +25,30 @@ namespace Smash_Combos.Core.Cqrs.Reports.GetReport
 
         public async Task<GetReportResponse> Handle(GetReportRequest request, CancellationToken cancellationToken)
         {
-            var report = await _dbContext.Reports
-                .Where(report => report.Id == request.ReportId)
-                .Include(report => report.User)
-                .Include(report => report.Reporter)
-                .FirstOrDefaultAsync();
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.CurrentUserId).SingleOrDefaultAsync();
 
-            if (report == null)
-                return null;
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
-            return _mapper.Map<GetReportResponse>(report);
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
+            {
+                var report = await _dbContext.Reports
+                    .Where(report => report.Id == request.ReportId)
+                    .Include(report => report.User)
+                    .Include(report => report.Reporter)
+                    .Include(report => report.Combo)
+                    .Include(report => report.Comment)
+                    .FirstOrDefaultAsync();
+
+                if (report == null)
+                    throw new KeyNotFoundException($"Report with id {request.ReportId} does not exist");
+
+                return _mapper.Map<GetReportResponse>(report);
+            }
+            else
+            {
+                throw new SecurityException($"Not authorized to get reports");
+            }
         }
     }
 }

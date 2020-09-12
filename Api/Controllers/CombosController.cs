@@ -1,7 +1,10 @@
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Cqrs.Combos.DeleteCombo;
 using Smash_Combos.Core.Cqrs.Combos.GetCombo;
@@ -12,6 +15,7 @@ using Smash_Combos.Core.Services;
 using Smash_Combos.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,11 +40,7 @@ namespace Smash_Combos.Controllers
         // Returns a list of all your Combos
         //
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCombosResponse>>> GetCombos()
-        {
-            var response = await _mediator.Send(new GetCombosRequest());
-            return Ok(response);
-        }
+        public async Task<ActionResult<IEnumerable<GetCombosResponse>>> GetCombos() => Ok(await _mediator.Send(new GetCombosRequest()));
 
         // GET: api/Combos/5
         //
@@ -49,15 +49,7 @@ namespace Smash_Combos.Controllers
         // to grab the id from the URL. It is then made available to us as the `id` argument to the method.
         //
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetComboResponse>> GetCombo(int id)
-        {
-            var response = await _mediator.Send(new GetComboRequest { ComboID = id });
-
-            if (response == null)
-                return NotFound(); // Return a `404` response to the client indicating we could not find a combo with this id
-
-            return Ok(response); // Return the combo as a JSON object.
-        }
+        public async Task<ActionResult<GetComboResponse>> GetCombo([FromRoute] int id) => Ok(await _mediator.Send(new GetComboRequest { ComboId = id }));
 
         // PUT: api/Combos/5
         //
@@ -72,26 +64,19 @@ namespace Smash_Combos.Controllers
         //
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutCombo(int id, Combo combo)
+        public async Task<IActionResult> PutCombo([FromRoute] int id, [FromBody] PutComboRequest request)
         {
-            if (id != combo.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+            if (id != request.ComboId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Combo don't match" });
 
-            try
-            {
-                var response = await _mediator.Send(new PutComboRequest { Combo = combo, ComboId = id, UserId = combo.UserId });
+            request.CurrentUserId = GetCurrentUserId();
 
-                if (response.Success)
-                    return Ok(response.Combo); // Return the updated combo.
-                else if (response.Combo == null)
-                    return NotFound();
-                else
-                    return StatusCode(500); // The combo was found, but couldn't be updated -> something went wrong. How should we handle this?
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw; // Should we throw the exception here or deal with it otherwise?
-            }
+            var response = await _mediator.Send(request);
+
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // POST: api/Combos
@@ -105,12 +90,16 @@ namespace Smash_Combos.Controllers
         //
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostComboResponse>> PostCombo(Combo combo)
+        public async Task<ActionResult<PostComboResponse>> PostCombo([FromBody] PostComboRequest request)
         {
-            var response = await _mediator.Send(new PostComboRequest { Combo = combo, UserId = GetCurrentUserId() });
+            request.CurrentUserId = GetCurrentUserId();
 
-            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
-            return CreatedAtAction("GetCombo", new { id = response.Id }, response);
+            var response = await _mediator.Send(request);
+
+            if (response != null)
+                return CreatedAtAction("GetCombo", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // DELETE: api/Combos/5
@@ -121,20 +110,19 @@ namespace Smash_Combos.Controllers
         //
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> DeleteCombo(int id)
+        public async Task<IActionResult> DeleteCombo([FromRoute] int id)
         {
-            var response = await _mediator.Send(new DeleteComboRequest { ComboId = id, UserId = GetCurrentUserId() });
+            var response = await _mediator.Send(new DeleteComboRequest { ComboId = id, CurrentUserId = GetCurrentUserId() });
 
-            if (response.Combo == null) // There wasn't a combo with that id so return a `404` not found
-                return NotFound();
-
-            return Ok(response.Combo); // Send back a copy of the deleted data.
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()
         {
-            // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

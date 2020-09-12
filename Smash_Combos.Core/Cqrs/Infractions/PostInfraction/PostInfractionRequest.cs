@@ -10,7 +10,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
     {
         public int UserId { get; set; }
 
-        public int ModeratorId { get; set; }
+        public int CurrentUserId { get; set; }
 
         public int? BanDuration { get; set; }
 

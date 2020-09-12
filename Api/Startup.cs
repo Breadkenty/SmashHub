@@ -1,8 +1,10 @@
 using AutoMapper;
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Smash_Combos.Core.Services;
 using Smash_Combos.Persistence;
+using Smash_Combos.Services;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Security;
+using System.Security.Authentication;
 using System.Text;
 
 namespace Smash_Combos
@@ -29,7 +36,22 @@ namespace Smash_Combos
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllersWithViews();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+
+            services.AddProblemDetails(configure =>
+            {
+                configure.IncludeExceptionDetails = (context, ex) =>
+                {
+                    var env = context.RequestServices.GetRequiredService<IHostEnvironment>();
+                    return env.IsDevelopment() || env.IsStaging();
+                };
+
+                configure.Map<ArgumentException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest));
+                configure.Map<AuthenticationException>(ex => new StatusCodeProblemDetails(StatusCodes.Status401Unauthorized));
+                configure.Map<SecurityException>(ex => new StatusCodeProblemDetails(StatusCodes.Status403Forbidden));
+                configure.Map<KeyNotFoundException>(ex => new StatusCodeProblemDetails(StatusCodes.Status404NotFound));
+                configure.Map<Exception>(ex => new StatusCodeProblemDetails(StatusCodes.Status500InternalServerError));
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -55,11 +77,17 @@ namespace Smash_Combos
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWT_KEY"]))
                 };
             });
+
+            services.AddScoped<IMailSenderService, MailSenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseProblemDetails();
+
+            app.UseMvc();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -67,7 +95,6 @@ namespace Smash_Combos
             else
             {
                 app.UseHttpsRedirection();
-                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -84,7 +111,6 @@ namespace Smash_Combos
             app.UseRouting();
 
             app.UseAuthorization();
-
 
             app.UseEndpoints(endpoints =>
             {

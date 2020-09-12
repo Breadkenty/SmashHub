@@ -6,7 +6,6 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,16 +25,28 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
         public async Task<PostComboReportResponse> Handle(PostComboReportRequest request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users.Where(user => user.Id == request.UserId).FirstOrDefaultAsync();
-            var reporter = await _dbContext.Users.Where(user => user.Id == request.ReporterId).FirstOrDefaultAsync();
-            var reportCombo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId).FirstOrDefaultAsync();
+            if (user == null)
+                throw new KeyNotFoundException($"User with id {request.UserId} does not exist");
 
-            if(user == null || reporter == null || reportCombo == null)
-                return new PostComboReportResponse { User = null, Reporter = null };
+            var currentUser = await _dbContext.Users.Where(user => user.Id == request.ReporterId).FirstOrDefaultAsync();
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.ReporterId} does not exist");
+
+            var reportCombo = await _dbContext.Combos.Where(combo => combo.Id == request.ComboId)
+                .Include(combo => combo.Reports)
+                    .ThenInclude(report => report.Reporter)
+                .FirstOrDefaultAsync();
+
+            if (reportCombo == null)
+                throw new KeyNotFoundException($"Combo with id {request.ComboId} does not exist");
+
+            if (reportCombo.Reports.Any(report => report.Reporter.Id == request.ReporterId))
+                throw new ArgumentException($"Already reported this combo");
 
             var report = new Report
             {
                 User = user,
-                Reporter = reporter,
+                Reporter = currentUser,
                 Body = request.Body
             };
             _dbContext.Reports.Add(report);
@@ -45,7 +56,9 @@ namespace Smash_Combos.Core.Cqrs.Reports.PostComboReport
 
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
+
             return _mapper.Map<PostComboReportResponse>(report);
+
         }
     }
 }

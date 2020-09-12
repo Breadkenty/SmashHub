@@ -1,21 +1,28 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { authHeader } from '../auth'
-
-import { getUserId } from '../auth'
+import { authHeader, isLoggedIn, getUser } from '../auth'
 
 export function Comment(props) {
-  const [editedComment, setEditedComment] = useState(props.comment)
+  const loggedInUser = getUser()
+
+  const [editedComment, setEditedComment] = useState({
+    commentId: props.comment.id,
+    userId: props.comment.user.id,
+    body: props.comment.body,
+  })
 
   const [editingComment, setEditingComment] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
 
   const [reportingComment, setReportingComment] = useState(false)
   const [commentReport, setCommentReport] = useState({
-    userId: 0,
-    reporterId: 0,
+    userId: props.comment.user.id,
+    reporterId: isLoggedIn() && loggedInUser.id,
+    commentId: props.comment.id,
     body: '',
   })
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   function handleTextChange(event) {
     setEditedComment({
@@ -23,6 +30,7 @@ export function Comment(props) {
       body: event.target.value,
     })
   }
+
   function submitComment(event) {
     event.preventDefault()
 
@@ -32,36 +40,75 @@ export function Comment(props) {
       body: JSON.stringify(editedComment),
     })
       .then(response => {
-        // return response.json()
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
-        } else if (response.status === 404) {
-          // This one is for user doesn't match logged in user
-          return { status: 404, errors: { login: 'Not Authorized' } }
+        if (response.ok) {
+          setEditingComment(false)
+          props.getCombo()
+          setErrorMessage(undefined)
+          return { then: function() {} }
         } else {
           return response.json()
         }
       })
       .then(apiData => {
-        if (apiData.errors) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
+        setErrorMessage(apiData.detail)
+      })
+  }
+
+  function deleteComment(event) {
+    event.preventDefault()
+
+    fetch(`/api/Comments/${parseInt(props.comment.id)}`, {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(editedComment),
+    })
+      .then(response => {
+        console.log(response)
+        if (response.ok) {
           setEditingComment(false)
           props.getCombo()
           setErrorMessage(undefined)
+          return { then: function() {} }
+        } else {
+          return response.json()
         }
+      })
+      .then(apiData => {
+        console.log(apiData)
+        setErrorMessage(apiData.detail)
       })
   }
 
   function handleSubmitCommentReport(event) {
     event.preventDefault()
-    console.log('Comment Report:')
-    console.log(commentReport)
+    fetch(`/api/Reports/comment/${props.comment.id}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+      body: JSON.stringify(commentReport),
+    })
+      .then(response => {
+        if (response.ok) {
+          setReportingComment(false)
+          setCommentReport({ ...commentReport, body: '' })
+          setErrorMessage(undefined)
+          return { then: function() {} }
+        } else {
+          return response.json()
+        }
+      })
+      .then(apiData => {
+        setReportingComment(false)
+        setErrorMessage(apiData.detail)
+      })
   }
 
   return (
-    <div className="comment">
+    <div className="comment" id={props.comment.id}>
+      {errorMessage && (
+        <div className="error-message">
+          <i className="fas fa-exclamation-triangle"></i> {errorMessage}
+        </div>
+      )}
       <div>
         <div className="vote">
           <button
@@ -111,41 +158,86 @@ export function Comment(props) {
 
         <div className="body">
           <h5>
-            Posted by {props.comment.user.displayName}{' '}
+            Posted by{' '}
+            <Link to={`/user/${props.comment.user.displayName}`}>
+              {props.comment.user.displayName}
+            </Link>{' '}
             {moment(props.comment.datePosted).fromNow()}
-            <button
-              className="edit"
-              onClick={() => {
-                setReportingComment(true)
-              }}
-            >
-              report
-            </button>
-            {props.loggedInUser === props.comment.userId && (
-              <>
+            {isLoggedIn() &&
+              loggedInUser.displayName !== props.comment.user.displayName && (
                 <button
                   className="edit"
                   onClick={() => {
-                    setEditingComment(true)
+                    setReportingComment(true)
                   }}
                 >
-                  edit
+                  report
                 </button>
-              </>
-            )}
+              )}
+            {(isLoggedIn() &&
+              props.loggedInUser.id === props.comment.user.id && (
+                <>
+                  <button
+                    className="edit"
+                    onClick={() => {
+                      setEditingComment(true)
+                    }}
+                  >
+                    edit
+                  </button>
+                </>
+              )) ||
+              (isLoggedIn() && props.loggedInUser.userType > 1 && (
+                <>
+                  <button
+                    className="edit"
+                    onClick={() => {
+                      setEditingComment(true)
+                    }}
+                  >
+                    edit
+                  </button>
+                </>
+              ))}
           </h5>
           {editingComment && (
             <form className="edit-comment" onSubmit={submitComment}>
+              <i
+                className="fas fa-times"
+                onClick={() => {
+                  setEditingComment(false)
+                }}
+              ></i>
               <textarea
                 value={editedComment.body}
                 onChange={handleTextChange}
+                required
               />
+
               <button className="bg-yellow button black-text" type="submit">
                 Submit
               </button>
-              {errorMessage && (
-                <div className="error-message">
-                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+              {confirmDelete ? (
+                <div className="delete">
+                  <p>Are you sure you want to delete this comment?: </p>
+                  <button onClick={deleteComment}>yes</button>
+                  <button
+                    onClick={() => {
+                      setConfirmDelete(false)
+                    }}
+                  >
+                    no
+                  </button>
+                </div>
+              ) : (
+                <div className="delete">
+                  <button
+                    onClick={() => {
+                      setConfirmDelete(true)
+                    }}
+                  >
+                    delete
+                  </button>
                 </div>
               )}
             </form>
@@ -169,8 +261,12 @@ export function Comment(props) {
           placeholder="reason..."
           value={commentReport.body}
           onChange={event => {
-            setCommentReport({ ...commentReport, body: event.target.value })
+            setCommentReport({
+              ...commentReport,
+              body: event.target.value,
+            })
           }}
+          required
         />
         <button className="button">Submit</button>
       </form>

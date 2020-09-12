@@ -7,12 +7,14 @@ import { TopNav } from './components/TopNav'
 
 import { SignUp } from './pages/SignUp'
 import { LogIn } from './pages/LogIn'
+import { ForgotPassword } from './pages/ForgotPassword'
+import { ResetPassword } from './pages/ResetPassword'
 import { User } from './pages/User'
 
 import { Character } from './pages/Character'
 import { Characters } from './pages/Characters'
 
-import { CharacterCombo } from './pages/CharacterCombo'
+import { Combo } from './pages/Combo'
 
 import { SubmitCombo } from './pages/SubmitCombo'
 
@@ -20,6 +22,7 @@ import { SideNav } from './components/SideNav'
 import { AddCharacter } from './pages/AddCharacter'
 import { EditCharacter } from './pages/EditCharacter'
 import { Reports } from './pages/Reports'
+import { Forbidden } from './pages/Forbidden'
 import { EditCombo } from './pages/EditCombo'
 import { Notes } from './pages/Notes'
 import { About } from './pages/About'
@@ -48,6 +51,12 @@ export function App() {
           <Route exact path="/login">
             <LogIn />
           </Route>
+          <Route exact path="/forgot">
+            <ForgotPassword />
+          </Route>
+          <Route exact path="/resetpassword/:id/:token">
+            <ResetPassword />
+          </Route>
           <Route exact path="/">
             <Characters />
           </Route>
@@ -55,7 +64,7 @@ export function App() {
             <Character />
           </Route>
           <Route exact path="/character/:characterVariableName/:comboId">
-            <CharacterCombo />
+            <Combo />
           </Route>
           <Route exact path="/submit/:characterVariableName">
             <SubmitCombo />
@@ -81,15 +90,18 @@ export function App() {
           <Route exact path="/tutorial">
             <Tutorial />
           </Route>
-          <Route exact path="/Breadkenty">
+          <Route exact path="/user/:displayName">
             <User />
+          </Route>
+          <Route exact path="/forbidden">
+            <Forbidden />
           </Route>
         </Switch>
       </div>
       <footer className="bottom-footer">
         <p>
-          Made with <i class="fas fa-heart"></i> by{' '}
-          <a href="#">Kento Kawakami</a>
+          Made with <i className="fas fa-heart"></i> by{' '}
+          <a href="https://github.com/Breadkenty">Kento Kawakami</a>
         </p>
         <div>
           <a href="https://github.com/Breadkenty">

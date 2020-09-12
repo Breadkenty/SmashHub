@@ -8,7 +8,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
     public class PostInfractionResponse
     {
         public int Id { get; set; }
-        
+
         public UserDto User { get; set; }
 
         public UserDto Moderator { get; set; }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, isLoggedIn } from '../auth'
 
 import YouTube from 'react-youtube'
 
@@ -170,7 +170,7 @@ export function SubmitCombo() {
 
   function renderInputCategoryComponents() {
     switch (inputCategorySelected) {
-      case 'Basic':
+      default:
         return (
           <>
             <Basic key={inputCategories['Basic']} addInput={addInput} />
@@ -264,19 +264,15 @@ export function SubmitCombo() {
         body: JSON.stringify(comboToSubmit),
       })
         .then(response => {
-          if (response.status === 401) {
-            return { status: 401, errors: { login: 'Not Authorized' } }
+          if (response.ok) {
+            history.push(`/character/${characterSelected.variableName}`)
+            return { then: function() {} }
           } else {
             return response.json()
           }
         })
         .then(apiData => {
-          if (apiData.status === 400 || apiData.status === 401) {
-            const newMessage = Object.values(apiData.errors).join(' ')
-            setErrorMessage(newMessage)
-          } else {
-            history.push(`/character/${characterSelected.variableName}`)
-          }
+          setErrorMessage(Object.values(apiData.errors).join(' '))
         })
     }
   }
@@ -355,7 +351,13 @@ export function SubmitCombo() {
   }, [endMinutes, endSeconds])
 
   // Get all characters from API
-  useEffect(getCharacters, [])
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      history.push('/login')
+    } else {
+      getCharacters()
+    }
+  }, [])
 
   return (
     <div className="submit-combo">
@@ -701,7 +703,7 @@ export function SubmitCombo() {
               />
               {errorMessage && (
                 <div className="error-message">
-                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+                  <i className="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
               <button type="submit" className="button bg-yellow black-text">

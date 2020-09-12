@@ -6,6 +6,7 @@ using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,43 +26,34 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
 
         public async Task<PutInfractionResponse> Handle(PutInfractionRequest request, CancellationToken cancellationToken)
         {
-            var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.Id).FirstOrDefaultAsync();
+            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.CurrentUserId);
+
+            if(currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
+
+            var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId).FirstOrDefaultAsync();
 
             if (infraction == null)
-                return new PutInfractionResponse { Success = false };
+                throw new KeyNotFoundException($"Infraction with id {request.InfractionId} does not exist");
 
-            infraction.BanDuration = request.BanDuration;
-            infraction.Points = DeterminePoints(request);
-            infraction.Category = request.Category;
-            infraction.Body = request.Body;
-
-            if (request.LiftBan)
-                infraction.BanLiftDate = DateTime.Now;
-
-            _dbContext.Entry(infraction).State = EntityState.Modified;
-
-            try
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
             {
+                infraction.BanDuration = request.BanDuration;
+                infraction.Points = DeterminePoints(request);
+                infraction.Category = request.Category;
+                infraction.Body = request.Body;
+
+                _dbContext.Entry(infraction).State = EntityState.Modified;
+
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
-                var infractionToReturn = await _dbContext.Infractions
-                                                .Include(infraction => infraction.User)
-                                                .Include(infraction => infraction.Moderator)
-                                                .Where(infraction => infraction.Id == request.Id)
-                                                .FirstOrDefaultAsync();
-                return new PutInfractionResponse { Success = true, Infraction = _mapper.Map<InfractionDto>(infractionToReturn) };
+                return new PutInfractionResponse();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!_dbContext.Infractions.Any(infraction => infraction.Id == request.Id))
-                {
-                    return new PutInfractionResponse { Success = false };
-                }
-                else
-                {
-                    throw;
-                }
+                throw new SecurityException("Not authorized to edit infractions");
             }
         }
+
         private int? DeterminePoints(PutInfractionRequest request)
         {
             if (request.Points != null)

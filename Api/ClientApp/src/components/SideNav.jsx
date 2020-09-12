@@ -18,7 +18,7 @@ export function SideNav(props) {
     window.location = '/'
   }
 
-  const user = getUser()
+  const loggedInUser = getUser()
 
   return (
     <div
@@ -52,7 +52,7 @@ export function SideNav(props) {
           </li>
         )}
 
-        {isLoggedIn() && user.admin === true && (
+        {isLoggedIn() && loggedInUser.userType > 2 && (
           <>
             <li>
               <Link to="/add">
@@ -76,16 +76,18 @@ export function SideNav(props) {
             </li>
           </>
         )}
-        <li>
-          <Link to="/reports">
-            <button
-              className="bg-yellow button black-text"
-              onClick={props.handleSideBar}
-            >
-              Reports
-            </button>
-          </Link>
-        </li>
+        {isLoggedIn() && loggedInUser.userType > 1 && (
+          <li>
+            <Link to="/reports">
+              <button
+                className="bg-yellow button black-text"
+                onClick={props.handleSideBar}
+              >
+                Reports
+              </button>
+            </Link>
+          </li>
+        )}
 
         <li>
           <Link to="/about">

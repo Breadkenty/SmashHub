@@ -10,11 +10,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Cqrs.Reports.DeleteReport;
 using Smash_Combos.Core.Cqrs.Reports.GetReport;
+using Smash_Combos.Core.Cqrs.Reports.GetReportsByUser;
 using Smash_Combos.Core.Cqrs.Reports.GetReports;
 using Smash_Combos.Core.Cqrs.Reports.PostComboReport;
 using Smash_Combos.Core.Cqrs.Reports.PostCommentReport;
-using Smash_Combos.Core.Cqrs.Reports.PutReport;
+using Smash_Combos.Core.Cqrs.Reports.DismissReport;
 using Smash_Combos.Domain.Models;
+using Hellang.Middleware.ProblemDetails;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,80 +35,67 @@ namespace Smash_Combos.Controllers
 
         // GET: api/<ReportsController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports()
-        {
-            var response = await _mediator.Send(new GetReportsRequest());
-            return Ok(response);
-        }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<IEnumerable<GetReportsResponse>>> GetReports() => Ok(await _mediator.Send(new GetReportsRequest { CurrentUserId = GetCurrentUserId() }));
 
         // GET api/<ReportsController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id)
-        {
-            var response = await _mediator.Send(new GetReportRequest { ReportId = id });
-            if (response == null)
-                return NotFound();
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<GetReportResponse>> GetReport([FromRoute] int id) => Ok(await _mediator.Send(new GetReportRequest { ReportId = id, CurrentUserId = GetCurrentUserId() }));
 
-            return Ok(response);
-        }
+        // Get api/<ReportsController/displayName
+        [HttpGet("user/{userName}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<GetReportsByUserResponse>> GetReportsByUser([FromRoute] string userName) => Ok(await _mediator.Send(new GetReportsByUserRequest { DisplayName = userName, CurrentUserId = GetCurrentUserId() }));
 
         // POST api/<ReportsControler>/combo/5
         [HttpPost("combo/{comboId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostComboReportResponse>> PostComboReport([FromRoute] int comboId, [FromBody] PostComboReportRequest postComboReportRequest)
+        public async Task<ActionResult<PostComboReportResponse>> PostComboReport([FromRoute] int comboId, [FromBody] PostComboReportRequest request)
         {
-            if (comboId != postComboReportRequest.ComboId)
-                return BadRequest();
+            if (comboId != request.ComboId)
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Combo don't match" });
 
-            var response = await _mediator.Send(postComboReportRequest);
+            var response = await _mediator.Send(request);
 
-            if (response.User == null || response.Reporter == null)
-                return NotFound();
-
-            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
-            return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            if (response != null)
+                return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // POST api/<ReportsControler>/comment/5
         [HttpPost("comment/{commentId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PostCommentReportResponse>> PostCommentReport([FromRoute] int commentId, [FromBody] PostCommentReportRequest postCommentReportRequest)
+        public async Task<ActionResult<PostCommentReportResponse>> PostCommentReport([FromRoute] int commentId, [FromBody] PostCommentReportRequest request)
         {
-            if (commentId != postCommentReportRequest.CommentId)
-                return BadRequest();
+            if (commentId != request.CommentId)
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Comment don't match" });
 
-            var response = await _mediator.Send(postCommentReportRequest);
+            var response = await _mediator.Send(request);
 
-            if (response.User == null || response.Reporter == null)
-                return NotFound();
-
-            // Return a response that indicates the object was created (status code `201`) and some additional headers with details of the newly created object.
-            return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            if (response != null)
+                return CreatedAtAction("GetReport", new { id = response.Id }, response);
+            else
+                return StatusCode(500);
         }
 
         // PUT api/<ReportsController>/5
-        [HttpPut("{id}")]
+        [HttpPut("dismiss/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<PutReportResponse>> PutReport([FromRoute] int id, [FromBody] PutReportRequest putReportRequest)
+        public async Task<ActionResult<DismissReportResponse>> DismissReport([FromRoute] int id, [FromBody] DismissReportRequest request)
         {
-            if (id != putReportRequest.Id) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
-                return BadRequest();
+            if (id != request.ReportId) // If the ID in the URL does not match the ID in the supplied request body, return a bad request
+                return BadRequest(new StatusCodeProblemDetails(400) { Detail = "Id in URL and Report don't match" });
 
-            try
-            {
-                var response = await _mediator.Send(putReportRequest);
+            request.CurrentUserId = GetCurrentUserId();
 
-                if (response.Success)
-                    return Ok(response.Report); // Return the updated report.
-                else if (response.Report == null)
-                    return NotFound();
-                else
-                    return StatusCode(500); // The report was found, but couldn't be updated -> something went wrong. How should we handle this?
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw; // Should we throw the exception here or deal with it otherwise?
-            }
+            var response = await _mediator.Send(request);
+
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         // DELETE api/<ReportsController>/5
@@ -114,18 +103,18 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> DeleteReport([FromRoute] int id)
         {
-            var response = await _mediator.Send(new DeleteReportRequest { ReportId = id, UserId = GetCurrentUserId() });
+            var response = await _mediator.Send(new DeleteReportRequest { ReportId = id, CurrentUserId = GetCurrentUserId() });
 
-            if (response.Report == null) // There wasn't a report with that id so return a `404` not found
-                return NotFound();
-
-            return Ok(response.Report); // Send back a copy of the deleted data.
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()
         {
             // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

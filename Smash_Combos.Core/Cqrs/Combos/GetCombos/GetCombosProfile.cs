@@ -13,6 +13,7 @@ namespace Smash_Combos.Core.Cqrs.Combos.GetCombos
             CreateMap<Combo, GetCombosResponse>();
             CreateMap<Comment, CommentDto>();
             CreateMap<User, UserDto>();
+            CreateMap<Character, CharacterDto>();
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractions
 {
     public class GetInfractionsRequest : IRequest<IEnumerable<GetInfractionsResponse>>
     {
+        public int CurrentUserId { get; set; }
     }
 }

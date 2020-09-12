@@ -2,8 +2,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
+using Smash_Combos.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,12 +26,24 @@ namespace Smash_Combos.Core.Cqrs.Infractions.GetInfractions
 
         public async Task<IEnumerable<GetInfractionsResponse>> Handle(GetInfractionsRequest request, CancellationToken cancellationToken)
         {
-            var infractions = await _dbContext.Infractions
-                .Include(infraction => infraction.User)
-                .Include(infraction => infraction.Moderator)
-                .ToListAsync();
+            var currentUser = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            return _mapper.Map<IEnumerable<GetInfractionsResponse>>(infractions);
+            if (currentUser == null)
+                throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
+
+            if (currentUser.UserType == UserType.Moderator || currentUser.UserType == UserType.Admin)
+            {
+                var infractions = await _dbContext.Infractions
+                    .Include(infraction => infraction.User)
+                    .Include(infraction => infraction.Moderator)
+                    .ToListAsync();
+
+                return _mapper.Map<IEnumerable<GetInfractionsResponse>>(infractions);
+            }
+            else
+            {
+                throw new SecurityException("Not authorized to get infractions");
+            }
         }
     }
 }

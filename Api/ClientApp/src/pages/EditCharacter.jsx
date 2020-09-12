@@ -115,6 +115,7 @@ export function EditCharacter() {
               })
               setSelectedCharacterVariableName(character.variableName)
             }}
+            alt={`${character.name}'s portrait`}
           />
         ))}
       </div>
@@ -159,7 +160,7 @@ export function EditCharacter() {
         </fieldset>
         {errorMessage && (
           <div className="error-message">
-            <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+            <i className="fas fa-exclamation-triangle"></i> {errorMessage}
           </div>
         )}
         <button className="button bg-yellow black-text" type="submit">

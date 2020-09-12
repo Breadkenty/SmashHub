@@ -1,18 +1,18 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Smash_Combos.Domain.Models;
-using Smash_Combos.Core.Services;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Smash_Combos.Core.Cqrs.Users.ForgotPassword;
 using Smash_Combos.Core.Cqrs.Users.GetUser;
 using Smash_Combos.Core.Cqrs.Users.GetUsers;
+using Smash_Combos.Core.Cqrs.Users.ResetPassword;
 using Smash_Combos.Core.Cqrs.Users.PostUser;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Smash_Combos.Core.Cqrs.Users.UnbanUser;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Smash_Combos.Controllers
 {
@@ -23,106 +23,77 @@ namespace Smash_Combos.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // This is the variable you use to have access to your database
-        private readonly IDbContext _context;
         private readonly IMediator _mediator;
 
-        // Constructor that recives a reference to your database context
-        // and stores it in _context for you to use in your API methods
-        public UsersController(IDbContext context, IMediator mediator)
+        public UsersController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            var response = await _mediator.Send(new GetUsersRequest());
-            return Ok(response);
-        }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsers() => Ok(await _mediator.Send(new GetUsersRequest { CurrentUserId = GetCurrentUserId() }));
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] int id)
-        {
-            var response = await _mediator.Send(new GetUserRequest { UserId = id });
+        [HttpGet("unauth")]
+        public async Task<ActionResult<IEnumerable<GetUsersResponse>>> GetUsersUnauthorized() => Ok(await _mediator.Send(new GetUsersRequest()));
 
-            if (response == null)
-            {
-                // Return a `404` response to the client indicating we could not find a combo with this id
-                return NotFound();
-            }
+        [HttpGet("{displayName}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<GetUserResponse>> GetUser([FromRoute] string displayName) => Ok(await _mediator.Send(new GetUserRequest { DisplayName = displayName, CurrentUserId = GetCurrentUserId() }));
 
-            //  Return the combo as a JSON object.
-            return Ok(response);
-        }
+        [HttpGet("unauth/{displayName}")]
+        public async Task<ActionResult<GetUserResponse>> GetUserUnauthorized([FromRoute] string displayName) => Ok(await _mediator.Send(new GetUserRequest { DisplayName = displayName }));
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody] User user)
+        public async Task<ActionResult<PostUserResponse>> PostUser([FromBody] PostUserRequest request)
         {
-            var response = await _mediator.Send(new PostUserRequest { User = user });
+            var response = await _mediator.Send(request);
 
-            if (response.DisplayNameAlreadyExists)
-            {
-                var httpResponse = new
-                {
-                    status = 400,
-                    errors = new List<string>() { "There's already an account with this display name" }
-                };
-                return BadRequest(httpResponse);
-            }
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
+        }
 
-            if (response.EmailAlreadyExists)
-            {
-                var httpResponse = new
-                {
-                    status = 400,
-                    errors = new List<string>() { "There's already an account with this email" }
-                };
-                return BadRequest(httpResponse);
-            }
+        [HttpPost("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            request.NewPasswordUrl = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Url.Content("/resetpassword"));
 
-            if (response.PasswordDoesntMeetCriteria)
-            {
-                var httpResponse = new
-                {
-                    status = 400,
-                    errors = new List<string>() { "Password must be at least 8 characters" }
-                };
-                return BadRequest(httpResponse);
-            }
+            var response = await _mediator.Send(request);
 
-            if(response.User == null)
-            {
-                var httpResponse = new
-                {
-                    status = 500,
-                    errors = new List<string>() { "Internal server error" }
-                };
-                return StatusCode(500, httpResponse);
-            }
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
+        }
 
-            // Return a response that indicates the object was created (status code `201`) and some additional
-            // headers with details of the newly created object.
-            return CreatedAtAction("GetUser", new { id = user.Id }, response.User);
+        [HttpPost("resetpassword/{id}/{token}")]
+        public async Task<IActionResult> ResetPassword([FromRoute] int id, [FromRoute] string token, [FromBody] string resetPassword)
+        {
+            var response = await _mediator.Send(new ResetPasswordRequest { UserId = id, Token = token, ResetPassword = resetPassword });
+
+            if (response != null)
+                return Ok();
+            else
+                return StatusCode(500);
         }
 
         [HttpPut("unban/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UnbanUserResponse>> UnbanUser([FromRoute] int id)
         {
-            var response = await _mediator.Send(new UnbanUserRequest { UserId = id, ModeratorId = GetCurrentUserId() });
+            var response = await _mediator.Send(new UnbanUserRequest { UserId = id, CurrentUserId = GetCurrentUserId() });
 
-            if(response == null)
-                return BadRequest();
-
-            return Ok(response);
+            if (response != null)
+                return Ok(response);
+            else
+                return StatusCode(500);
         }
 
         private int GetCurrentUserId()
         {
-            // Get the User Id from the claim and then parse it as an integer.
-            return int.Parse(User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value);
+            return int.Parse(User.Claims.SingleOrDefault(claim => claim.Type == "Id").Value);
         }
     }
 }

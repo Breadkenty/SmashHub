@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router'
-import { authHeader } from '../auth'
+import { authHeader, getUser, isLoggedIn } from '../auth'
 import YouTube from 'react-youtube'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
@@ -20,20 +20,22 @@ import { Throw } from '../components/combo-inputs/Throw'
 
 export function EditCombo() {
   const history = useHistory()
-
+  const loggedInUser = getUser()
   const params = useParams()
   const characterVariableName = params.characterVariableName
   const comboId = params.comboId
 
-  const [characterSelected, setCharacterSelected] = useState({
-    name: '',
-    variableName: '',
-    yPosition: 0,
-  })
-
   const [comboToEdit, setComboToEdit] = useState({
-    characterId: 1,
     title: '',
+    user: {
+      id: 0,
+      displayName: '',
+      email: '',
+    },
+    character: {
+      variableName: characterVariableName,
+      yPosition: 0,
+    },
     videoId: '',
     videoStartTime: 0,
     videoEndTime: 0,
@@ -135,39 +137,35 @@ export function EditCombo() {
     setInputs(inputs.substring(0, lastIndex))
   }
 
-  function getCharacter() {
-    fetch(`/api/Characters/${characterVariableName}`)
-      .then(response => response.json())
-      .then(apiData => {
-        setCharacterSelected({
-          ...characterSelected,
-          name: apiData.name,
-          variableName: characterVariableName,
-          yPosition: apiData.yPosition,
-        })
-      })
-  }
-
   function getCombo() {
     fetch(`/api/Combos/${comboId}`)
       .then(response => response.json())
       .then(apiData => {
-        setComboToEdit(apiData)
-        setSelectedDifficulty(apiData.difficulty)
-        setTrueCombo(apiData.trueCombo)
-        setInputs(apiData.comboInput)
-        setStartMinutes(
-          (apiData.videoStartTime - (apiData.videoStartTime % 60)) / 60
-        )
-        setStartSeconds(apiData.videoStartTime % 60)
-        setEndMinutes((apiData.videoEndTime - (apiData.videoEndTime % 60)) / 60)
-        setEndSeconds(apiData.videoEndTime % 60)
+        if (
+          (isLoggedIn() && loggedInUser.userType > 1) ||
+          (isLoggedIn() && loggedInUser.id === apiData.user.id)
+        ) {
+          setComboToEdit(apiData)
+          setSelectedDifficulty(apiData.difficulty)
+          setTrueCombo(apiData.trueCombo)
+          setInputs(apiData.comboInput)
+          setStartMinutes(
+            (apiData.videoStartTime - (apiData.videoStartTime % 60)) / 60
+          )
+          setStartSeconds(apiData.videoStartTime % 60)
+          setEndMinutes(
+            (apiData.videoEndTime - (apiData.videoEndTime % 60)) / 60
+          )
+          setEndSeconds(apiData.videoEndTime % 60)
+        } else {
+          history.push('/forbidden')
+        }
       })
   }
 
   function renderInputCategoryComponents() {
     switch (inputCategory) {
-      case 'Basic':
+      default:
         return (
           <>
             <Basic key={inputCategories['Basic']} addInput={addInput} />
@@ -244,10 +242,19 @@ export function EditCombo() {
     event.preventDefault()
 
     const comboToSubmit = {
-      ...comboToEdit,
+      userId: comboToEdit.user.id,
+      comboId: comboToEdit.id,
+      characterVariableName: comboToEdit.character.variableName,
+      title: comboToEdit.title,
+      videoId: comboToEdit.videoId,
       videoStartTime:
         parseInt(startMinutes || 0) * 60 + parseInt(startSeconds || 0),
       videoEndTime: parseInt(endMinutes || 0) * 60 + parseInt(endSeconds || 0),
+      comboInput: comboToEdit.comboInput,
+      trueCombo: comboToEdit.trueCombo,
+      difficulty: comboToEdit.difficulty,
+      damage: comboToEdit.damage,
+      notes: comboToEdit.notes,
     }
 
     fetch(`/api/Combos/${comboId}`, {
@@ -256,22 +263,15 @@ export function EditCombo() {
       body: JSON.stringify(comboToSubmit),
     })
       .then(response => {
-        if (response.status === 401) {
-          return { status: 401, errors: { login: 'Not Authorized' } }
-        } else if (response.status === 404) {
-          // This one is for user doesn't match logged in user
-          return { status: 404, errors: { login: 'Not Authorized' } }
+        if (response.ok) {
+          history.push(`/character/${characterVariableName}/${comboId}`)
+          return { then: function() {} }
         } else {
           return response.json()
         }
       })
       .then(apiData => {
-        if (apiData.errors) {
-          const newMessage = Object.values(apiData.errors).join(' ')
-          setErrorMessage(newMessage)
-        } else {
-          history.push(`/character/${characterVariableName}/${comboId}`)
-        }
+        setErrorMessage(Object.values(apiData.errors).join(' '))
       })
   }
 
@@ -284,19 +284,16 @@ export function EditCombo() {
         headers: { ...authHeader() },
       })
         .then(response => {
-          if (response.status === 404 || response.status === 401) {
-            return { status: 401, errors: { login: 'Not Authorized' } }
+          if (response.ok) {
+            history.push(`/character/${characterVariableName}`)
+            return { then: function() {} }
           } else {
             return response.json()
           }
         })
         .then(apiData => {
-          if (apiData.status === 401) {
-            const newMessage = Object.values(apiData.errors).join(' ')
-            setErrorMessage(newMessage)
-          } else {
-            history.push(`/character/${characterVariableName}`)
-          }
+          const newMessage = Object.values(apiData.errors).join(' ')
+          setErrorMessage(newMessage)
         })
     } else {
       setInvalidDeleteInput(true)
@@ -326,10 +323,10 @@ export function EditCombo() {
         } else if (
           apiData.items[0].snippet.title
             .toLowerCase()
-            .includes(characterSelected.name.toLowerCase()) ||
+            .includes(comboToEdit.character.name.toLowerCase()) ||
           apiData.items[0].snippet.description
             .toLowerCase()
-            .includes(characterSelected.name.toLowerCase()) ||
+            .includes(comboToEdit.character.name.toLowerCase()) ||
           keyWords.some(keyWord =>
             apiData.items[0].snippet.title.toLowerCase().includes(keyWord)
           ) ||
@@ -378,7 +375,7 @@ export function EditCombo() {
 
   // Get all characters from API
   useEffect(getCombo, [])
-  useEffect(getCharacter, [])
+
   return (
     <div className="submit-combo">
       <header>
@@ -391,11 +388,11 @@ export function EditCombo() {
             <div
               style={{
                 backgroundImage: `url(${allCharacterPortrait[characterVariableName]})`,
-                backgroundPositionY: `${characterSelected.yPosition}%`,
+                backgroundPositionY: `${comboToEdit.character.yPosition}%`,
               }}
               className="character bg-black"
             >
-              <h2>{characterSelected.name}</h2>
+              <h2>{comboToEdit.character.name}</h2>
             </div>
           </div>
 
@@ -640,6 +637,7 @@ export function EditCombo() {
                 type="number"
                 placeholder="0"
                 id="damage"
+                value={comboToEdit.damage}
                 onChange={handleFieldChange}
                 required
               />
@@ -698,7 +696,7 @@ export function EditCombo() {
               />
               {errorMessage && (
                 <div className="error-message">
-                  <i class="fas fa-exclamation-triangle"></i> {errorMessage}
+                  <i className="fas fa-exclamation-triangle"></i> {errorMessage}
                 </div>
               )}
               <div className="submit-buttons">
@@ -724,7 +722,7 @@ export function EditCombo() {
                     }}
                   ></i>
                   <div className="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>{' '}
+                    <i className="fas fa-exclamation-triangle"></i>{' '}
                     <h3>Danger zone</h3>
                   </div>
                   <label>

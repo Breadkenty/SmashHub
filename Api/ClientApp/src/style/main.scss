@@ -37,11 +37,20 @@
 @import '6-pages/tutorial';
 @import '6-pages/reports';
 @import '6-pages/user';
+@import '6-pages/forbidden';
 
 body {
   background-color: $black;
   min-height: 100vh;
   position: relative;
+}
+
+a {
+  color: white;
+  text-decoration: underline;
+}
+a:hover {
+  color: $yellow;
 }
 
 .none {
