@@ -121,6 +121,28 @@ export function SideNav(props) {
           </Link>
         </li>
 
+        <li>
+          <Link to="/rules">
+            <button
+              className="white-text button-blank"
+              onClick={props.handleSideBar}
+            >
+              Rules
+            </button>
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/privacy">
+            <button
+              className="white-text button-blank"
+              onClick={props.handleSideBar}
+            >
+              Privacy Policy
+            </button>
+          </Link>
+        </li>
+
         {isLoggedIn() || (
           <li>
             <Link to="/signup">

@@ -45,9 +45,10 @@
   }
 
   a {
-    font-size: 0.8rem;
     align-self: flex-start;
     margin-bottom: 24px;
-    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }
 }

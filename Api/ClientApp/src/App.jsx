@@ -27,6 +27,8 @@ import { EditCombo } from './pages/EditCombo'
 import { Notes } from './pages/Notes'
 import { About } from './pages/About'
 import { Tutorial } from './pages/Tutorial'
+import { Rules } from './pages/Rules'
+import { PrivacyPolicy } from './pages/PrivacyPolicy'
 
 export function App() {
   const [sideNavDisplay, setSideNavDisplay] = useState(false)
@@ -89,6 +91,12 @@ export function App() {
           </Route>
           <Route exact path="/tutorial">
             <Tutorial />
+          </Route>
+          <Route exact path="/rules">
+            <Rules />
+          </Route>
+          <Route exact path="/privacy">
+            <PrivacyPolicy />
           </Route>
           <Route exact path="/user/:displayName">
             <User />

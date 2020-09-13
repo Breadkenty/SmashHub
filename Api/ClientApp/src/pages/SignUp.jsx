@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import { recordAuthentication } from '../auth'
 
 export function SignUp() {
@@ -57,6 +59,9 @@ export function SignUp() {
   return (
     <div className="login-signup">
       <h3 className="text-white">Sign up</h3>
+      <p>
+        Be sure to read the <Link to="/rules">rules</Link> before signing up
+      </p>
       <form onSubmit={handleSubmit}>
         {errorMessage && (
           <div className="error-message">

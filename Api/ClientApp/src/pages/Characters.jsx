@@ -41,14 +41,14 @@ export function Characters() {
             <h4>We're back!</h4>
             <p>
               We're happy to announce we've implemented a moderator feature to
-              keep the contents of Smash Combos appropriate. Please check the
-              rules before posting!
+              keep the contents of Smash Combos appropriate. Please check the{' '}
+              <Link to="/rules">rules</Link> before posting!
             </p>
           </li>
           <li>
-            <a href="https://discord.gg/VbnAwUg">
+            <Link className="header-link" to="https://discord.gg/VbnAwUg">
               Official Smash Combos Discord
-            </a>
+            </Link>
           </li>
         </ul>
       </section>
