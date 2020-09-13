@@ -309,7 +309,8 @@ export function SubmitCombo() {
           ) ||
           keyWords.some(keyWord =>
             apiData.items[0].snippet.description.toLowerCase().includes(keyWord)
-          )
+          ) ||
+          apiData.items[0].snippet.channelTitle === 'Super Smash Bros. Ultimate'
         ) {
           setVideoInformationById(apiData.items[0].snippet)
           setVideoExists(true)
