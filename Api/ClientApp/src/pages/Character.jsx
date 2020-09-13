@@ -25,7 +25,7 @@ export function Character() {
   function handleVote(event, id, upOrDown) {
     event.preventDefault()
 
-    fetch(`/api/ComboVotes/${id}/${upOrDown}`, {
+    fetch(`/api/Votes/combo/${id}/${upOrDown}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
     }).then(() => {

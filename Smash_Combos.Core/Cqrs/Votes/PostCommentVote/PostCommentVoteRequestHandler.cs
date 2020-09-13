@@ -25,7 +25,7 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
             var comment = await _dbContext.Comments.FindAsync(request.CommentId);
 
             if (comment == null)
-                throw new KeyNotFoundException("Combo does not exist");
+                throw new KeyNotFoundException("Comment does not exist");
 
             var existingCommentVote = await _dbContext.CommentVotes
                 .Include(vote => vote.Comment)
@@ -38,7 +38,6 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                 if (existingCommentVote.upOrDown == request.UpOrDown)
                 {
                     _dbContext.CommentVotes.Remove(existingCommentVote);
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
 
                     switch (existingCommentVote.upOrDown)
                     {
@@ -52,6 +51,7 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                             throw new ArgumentException("Vote cannot be parsed");
                     }
 
+                    await _dbContext.SaveChangesAsync(CancellationToken.None);
                     return new PostCommentVoteResponse();
                 }
 
@@ -71,7 +71,9 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
 
                 existingCommentVote.upOrDown = request.UpOrDown;
                 _dbContext.Entry(existingCommentVote).State = EntityState.Modified;
+
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PostCommentVoteResponse();
             }
             else
             {
@@ -86,24 +88,23 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                     User = user,
                     upOrDown = request.UpOrDown
                 };
+
+                switch (request.UpOrDown)
+                {
+                    case "upvote":
+                        comment.VoteUp();
+                        break;
+                    case "downvote":
+                        comment.VoteDown();
+                        break;
+                    default:
+                        throw new ArgumentException("Vote cannot be parsed");
+                }
+
                 await _dbContext.CommentVotes.AddAsync(commentVote);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PostCommentVoteResponse();
             }
-
-            switch (request.UpOrDown)
-            {
-                case "upvote":
-                    comment.VoteUp();
-                    break;
-                case "downvote":
-                    comment.VoteDown();
-                    break;
-                default:
-                    throw new ArgumentException("Vote cannot be parsed");
-            }
-
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return new PostCommentVoteResponse();
         }
     }
 }

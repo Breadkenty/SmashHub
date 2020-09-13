@@ -116,7 +116,7 @@ export function Comment(props) {
             onClick={event => {
               props.handleVote(
                 event,
-                'CommentVotes',
+                'comment',
                 props.comment.id,
                 'upvote'
               )
@@ -138,7 +138,7 @@ export function Comment(props) {
             onClick={event => {
               props.handleVote(
                 event,
-                'CommentVotes',
+                'comment',
                 props.comment.id,
                 'downvote'
               )

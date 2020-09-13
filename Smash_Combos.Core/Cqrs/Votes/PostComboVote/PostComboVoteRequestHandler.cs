@@ -38,7 +38,6 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
                 if (existingComboVote.upOrDown == request.UpOrDown)
                 {
                     _dbContext.ComboVotes.Remove(existingComboVote);
-                    await _dbContext.SaveChangesAsync(CancellationToken.None);
 
                     switch (existingComboVote.upOrDown)
                     {
@@ -52,6 +51,7 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
                             throw new ArgumentException("Vote cannot be parsed");
                     }
 
+                    await _dbContext.SaveChangesAsync(CancellationToken.None);
                     return new PostComboVoteResponse();
                 }
 
@@ -71,7 +71,9 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
 
                 existingComboVote.upOrDown = request.UpOrDown;
                 _dbContext.Entry(existingComboVote).State = EntityState.Modified;
+
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PostComboVoteResponse();
             }
             else
             {
@@ -86,24 +88,23 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
                     User = user,
                     upOrDown = request.UpOrDown
                 };
+
+                switch (request.UpOrDown)
+                {
+                    case "upvote":
+                        combo.VoteUp();
+                        break;
+                    case "downvote":
+                        combo.VoteDown();
+                        break;
+                    default:
+                        throw new ArgumentException("Vote cannot be parsed");
+                }
+
                 await _dbContext.ComboVotes.AddAsync(comboVote);
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
+                return new PostComboVoteResponse();
             }
-
-            switch (request.UpOrDown)
-            {
-                case "upvote":
-                    combo.VoteUp();
-                    break;
-                case "downvote":
-                    combo.VoteDown();
-                    break;
-                default:
-                    throw new ArgumentException("Vote cannot be parsed");
-            }
-
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-
-            return new PostComboVoteResponse();
         }
     }
 }

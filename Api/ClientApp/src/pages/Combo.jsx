@@ -129,7 +129,7 @@ export function Combo() {
   function handleVote(event, voteType, id, upOrDown) {
     event.preventDefault()
 
-    fetch(`/api/${voteType}/${id}/${upOrDown}`, {
+    fetch(`/api/Votes/${voteType}/${id}/${upOrDown}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
     }).then(() => {
@@ -195,7 +195,7 @@ export function Combo() {
             <button
               className="button-blank"
               onClick={event => {
-                handleVote(event, 'ComboVotes', comboId, 'upvote')
+                handleVote(event, 'combo', comboId, 'upvote')
               }}
             >
               <svg
@@ -214,7 +214,7 @@ export function Combo() {
             <button
               className="button-blank"
               onClick={event => {
-                handleVote(event, 'ComboVotes', comboId, 'downvote')
+                handleVote(event, 'combo', comboId, 'downvote')
               }}
             >
               <svg
