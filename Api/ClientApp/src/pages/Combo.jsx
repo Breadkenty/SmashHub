@@ -169,7 +169,9 @@ export function Combo() {
   return (
     <div className="character-combo">
       {/* Character image header */}
-      <header
+
+      <Link
+        to={`/character/${characterVariableName}`}
         className="character-header"
         style={{
           backgroundImage: `url(${
@@ -179,7 +181,7 @@ export function Combo() {
         }}
       >
         <h1>{character.name}</h1>
-      </header>
+      </Link>
 
       {/* Video */}
       <YouTube
