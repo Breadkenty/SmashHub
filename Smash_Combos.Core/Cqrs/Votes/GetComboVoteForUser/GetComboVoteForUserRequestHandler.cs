@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Smash_Combos.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Core.Cqrs.Votes.GetComboVoteForUser
 {
-    public class GetComboVoteForUserRequestHandler
+    public class GetComboVoteForUserRequestHandler : IRequestHandler<GetComboVoteForUserRequest, GetComboVoteForUserResponse>
     {
         private readonly IDbContext _dbContext;
 
