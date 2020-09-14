@@ -28,7 +28,9 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostComboVote(int id, string upOrDown)
         {
-            var result = await _mediator.Send(new PostComboVoteRequest { ComboId = id, CurrentUserId = GetCurrentUserId(), UpOrDown = upOrDown });
+            var isUpVote = upOrDown == "upvote";
+
+            var result = await _mediator.Send(new PostComboVoteRequest { ComboId = id, CurrentUserId = GetCurrentUserId(), IsUpVote = isUpVote });
 
             if (result != null)
                 return NoContent();
@@ -40,7 +42,9 @@ namespace Smash_Combos.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostCommentVote(int id, string upOrDown)
         {
-            var result = await _mediator.Send(new PostCommentVoteRequest { CommentId = id, CurrentUserId = GetCurrentUserId(), UpOrDown = upOrDown });
+            var isUpVote = upOrDown == "upvote";
+
+            var result = await _mediator.Send(new PostCommentVoteRequest { CommentId = id, CurrentUserId = GetCurrentUserId(), IsUpVote = isUpVote });
 
             if (result != null)
                 return NoContent();
