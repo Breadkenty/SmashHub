@@ -46,6 +46,8 @@ export function Combo() {
     videoStartTime: 0,
     videoId: '',
   })
+  const [votedUp, setVotedUp] = useState(false)
+  const [votedDown, setVotedDown] = useState(false)
 
   const [reportingCombo, setReportingCombo] = useState(false)
   const [comboReport, setComboReport] = useState({
@@ -126,14 +128,15 @@ export function Combo() {
       })
   }
 
-  function handleVote(event, voteType, id, upOrDown) {
+  function handleVote(event, upOrDown) {
     event.preventDefault()
 
-    fetch(`/api/Votes/${voteType}/${id}/${upOrDown}`, {
+    fetch(`/api/Votes/combo/${comboId}/${upOrDown}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...authHeader() },
     }).then(() => {
       getCombo()
+      checkVote(comboId)
     })
   }
 
@@ -161,10 +164,43 @@ export function Combo() {
       })
   }
 
+  function checkVote(id) {
+    fetch(`/api/Votes/combo/${id}`, {
+      method: 'GET',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          setVotedUp(false)
+          setVotedDown(false)
+          return { then: function() {} }
+        }
+      })
+      .then(apiData => {
+        if (apiData.isUpvote) {
+          setVotedUp(true)
+          setVotedDown(false)
+        } else {
+          setVotedUp(false)
+          setVotedDown(true)
+        }
+      })
+    getCombo()
+  }
+
   combo.comments.sort(sortingFunctions[sortType])
 
-  useEffect(getCharacter, [])
-  useEffect(getCombo, [])
+  useEffect(() => {
+    getCharacter()
+    getCombo()
+    checkVote()
+  }, [])
+
+  useEffect(() => {
+    checkVote(combo.id)
+  }, [votedUp, votedDown])
 
   return (
     <div className="character-combo">
@@ -190,21 +226,14 @@ export function Combo() {
 
       <article>
         <header>
-          {/* Combo Votes */}
           <div className="vote">
             <button
               className="button-blank"
               onClick={event => {
-                handleVote(event, 'combo', comboId, 'upvote')
+                handleVote(event, 'upvote')
               }}
             >
-              <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowUpLg"
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-              >
+              <svg viewBox="0 0 36 36" className={votedUp ? 'voted' : ''}>
                 <path d="M2 26h32L18 10 2 26z"></path>
               </svg>
             </button>
@@ -214,15 +243,12 @@ export function Combo() {
             <button
               className="button-blank"
               onClick={event => {
-                handleVote(event, 'combo', comboId, 'downvote')
+                handleVote(event, 'downvote')
               }}
             >
               <svg
-                aria-hidden="true"
-                className="m0 svg-icon iconArrowDownLg"
-                width="36"
-                height="36"
                 viewBox="0 0 36 36"
+                className={votedDown ? 'down-vote voted' : 'down-vote'}
               >
                 <path d="M2 10h32L18 26 2 10z"></path>
               </svg>

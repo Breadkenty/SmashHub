@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { authHeader, isLoggedIn, getUser } from '../auth'
@@ -23,6 +23,9 @@ export function Comment(props) {
     body: '',
   })
   const [confirmDelete, setConfirmDelete] = useState(false)
+
+  const [votedUp, setVotedUp] = useState(false)
+  const [votedDown, setVotedDown] = useState(false)
 
   function handleTextChange(event) {
     setEditedComment({
@@ -102,6 +105,47 @@ export function Comment(props) {
       })
   }
 
+  function handleVote(event, upOrDown) {
+    event.preventDefault()
+
+    fetch(`/api/Votes/comment/${props.comment.id}/${upOrDown}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    }).then(() => {
+      checkVote(props.comment.id)
+    })
+  }
+
+  function checkVote(id) {
+    fetch(`/api/Votes/comment/${id}`, {
+      method: 'GET',
+      headers: { 'content-type': 'application/json', ...authHeader() },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          setVotedUp(false)
+          setVotedDown(false)
+          return { then: function() {} }
+        }
+      })
+      .then(apiData => {
+        if (apiData.isUpvote) {
+          setVotedUp(true)
+          setVotedDown(false)
+        } else {
+          setVotedUp(false)
+          setVotedDown(true)
+        }
+      })
+    props.getCombo()
+  }
+
+  useEffect(() => {
+    checkVote(props.comment.id)
+  }, [votedUp, votedDown])
+
   return (
     <div className="comment" id={props.comment.id}>
       {errorMessage && (
@@ -114,21 +158,10 @@ export function Comment(props) {
           <button
             className="button-blank"
             onClick={event => {
-              props.handleVote(
-                event,
-                'comment',
-                props.comment.id,
-                'upvote'
-              )
+              handleVote(event, 'upvote')
             }}
           >
-            <svg
-              aria-hidden="true"
-              className="m0 svg-icon iconArrowUpLg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-            >
+            <svg className={votedUp ? 'voted' : ''} viewBox="0 0 36 36">
               <path d="M2 26h32L18 10 2 26z"></path>
             </svg>
           </button>
@@ -136,19 +169,11 @@ export function Comment(props) {
           <button
             className="button-blank"
             onClick={event => {
-              props.handleVote(
-                event,
-                'comment',
-                props.comment.id,
-                'downvote'
-              )
+              handleVote(event, 'downvote')
             }}
           >
             <svg
-              aria-hidden="true"
-              className="m0 svg-icon iconArrowDownLg"
-              width="36"
-              height="36"
+              className={votedDown ? 'down-vote voted' : 'down-vote'}
               viewBox="0 0 36 36"
             >
               <path d="M2 10h32L18 26 2 10z"></path>

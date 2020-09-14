@@ -212,7 +212,7 @@ input {
 }
 
 .voted {
-  fill: $yellow;
+  fill: $yellow !important;
 }
 
 @keyframes glowing {
