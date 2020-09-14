@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30406.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smash_Combos", "Api\Smash_Combos.csproj", "{ED5F112B-D94E-4D80-9649-23A40FE6BC9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smash_Combos.Domain", "Smash_Combos.Domain\Smash_Combos.Domain.csproj", "{71C965D1-6134-4B77-B632-F3FB29BC9550}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smash_Combos.Persistence", "Smash_Combos.Persistence\Smash_Combos.Persistence.csproj", "{3A464018-BB21-4E49-8DBF-4651E76E7A0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smash_Combos.Core", "Smash_Combos.Core\Smash_Combos.Core.csproj", "{98EF87DF-2810-4E5B-899E-E9726AE96D6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED5F112B-D94E-4D80-9649-23A40FE6BC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5F112B-D94E-4D80-9649-23A40FE6BC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5F112B-D94E-4D80-9649-23A40FE6BC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5F112B-D94E-4D80-9649-23A40FE6BC9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71C965D1-6134-4B77-B632-F3FB29BC9550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71C965D1-6134-4B77-B632-F3FB29BC9550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71C965D1-6134-4B77-B632-F3FB29BC9550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71C965D1-6134-4B77-B632-F3FB29BC9550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A464018-BB21-4E49-8DBF-4651E76E7A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EF87DF-2810-4E5B-899E-E9726AE96D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5857464-BA88-43BB-8AB6-04FC599AB95B}
+	EndGlobalSection
+EndGlobal

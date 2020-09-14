@@ -1,0 +1,58 @@
+.side-nav {
+  width: 300px;
+  position: fixed;
+  z-index: 2;
+
+  @include transition();
+  height: 100vh;
+  padding: 16px;
+
+  background-color: $black;
+
+  display: flex;
+  flex-direction: column;
+
+  i {
+    align-self: flex-end;
+    @include transition;
+  }
+  i:hover {
+    color: $yellow;
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    img {
+      height: 50px;
+    }
+  }
+
+  ul {
+    border-top: 1px solid $grey;
+    margin-top: 16px;
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-top: 16px;
+      text-align: center;
+
+      button {
+        width: 100%;
+        @include transition;
+      }
+
+      .button-blank:hover {
+        color: $yellow;
+      }
+    }
+  }
+}
+
+.blur {
+  background-color: $black;
+  opacity: 0.2;
+  pointer-events: none;
+}

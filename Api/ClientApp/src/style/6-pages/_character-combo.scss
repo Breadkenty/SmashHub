@@ -1,0 +1,333 @@
+.character-combo {
+  display: flex;
+  margin-bottom: 124px;
+
+  .character-header {
+    position: fixed;
+    z-index: 2;
+
+    margin: 50px 0px 0px 0px;
+    padding: 16px;
+
+    height: 80px;
+    width: 100%;
+
+    background-color: $black;
+    background-repeat: no-repeat;
+    background-position-x: 110%;
+    background-size: 60%;
+
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  > div {
+    z-index: 1;
+    position: fixed;
+    margin-top: 125px;
+
+    iframe {
+      height: calc(100vw * 0.56);
+      width: 100vw;
+    }
+  }
+
+  article {
+    width: 100vw;
+
+    max-width: 1000px;
+    padding-top: calc((100vw * 0.56) + 150px);
+
+    header {
+      padding: 0 16px;
+      display: flex;
+
+      .vote {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          fill: white;
+          width: 25px;
+          @include transition;
+        }
+        svg:hover {
+          fill: $yellow;
+        }
+
+        h3 {
+          color: white;
+          font-size: 1.1rem;
+        }
+      }
+
+      .detail {
+        padding: 16px 8px;
+        width: 100%;
+
+        h5 {
+          width: 100%;
+          .edit {
+            float: right;
+            margin-left: 8px;
+            text-decoration: none;
+          }
+
+          button {
+            float: right;
+            background: none;
+            border: none;
+          }
+          button:hover {
+            h5 {
+              color: $yellow;
+            }
+          }
+        }
+
+        h4 {
+          margin-right: 8px;
+        }
+      }
+      .detail > div {
+        display: flex;
+        align-items: center;
+
+        div {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .report {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid $grey;
+
+      i {
+        align-self: flex-end;
+      }
+
+      i:hover {
+        color: $yellow;
+      }
+
+      h4 {
+        margin-bottom: 16px;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        display: block;
+
+        background-color: $grey;
+        border: none;
+
+        color: white;
+      }
+
+      button {
+        align-self: flex-end;
+      }
+    }
+
+    .combo-inputs {
+      padding: 24px 16px;
+    }
+
+    .notes {
+      padding: 24px 16px;
+
+      h4 {
+        margin-bottom: 8px;
+      }
+    }
+    .prevent-commenting {
+      text-align: center;
+      text-decoration: underline;
+      @include transition;
+    }
+    .prevent-commenting:hover {
+      color: $yellow;
+    }
+
+    .sort {
+      width: 220px;
+      padding: 16px;
+
+      .sort-controller {
+        z-index: 0;
+      }
+    }
+
+    .add-comment {
+      width: 100%;
+
+      padding: 16px;
+
+      display: flex;
+      flex-direction: column;
+
+      textarea {
+        margin-bottom: 16px;
+        padding: 8px;
+
+        color: white;
+
+        background-color: $black;
+        border: none;
+        border-radius: 2px;
+        @include transition;
+      }
+      textarea:focus {
+        outline: none;
+      }
+
+      button {
+        align-self: flex-end;
+      }
+    }
+
+    .comment {
+      border-bottom: 1px solid $grey;
+
+      > div {
+        display: flex;
+
+        .vote {
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            fill: white;
+            width: 25px;
+          }
+
+          svg:hover {
+            fill: $yellow;
+          }
+
+          h3 {
+            color: white;
+          }
+        }
+      }
+
+      .body {
+        width: 100%;
+        padding: 16px 16px 24px 0;
+
+        .edit:nth-of-type(1) {
+          margin-left: 24px;
+        }
+
+        .edit {
+          font-size: 0.8rem;
+          color: white;
+          background: none;
+          border: none;
+        }
+        .edit:hover {
+          color: $yellow;
+        }
+        i {
+          float: right;
+          margin-bottom: 24px;
+          @include transition;
+        }
+
+        i:hover {
+          color: $yellow;
+        }
+
+        textarea {
+          padding: 8px;
+          width: 100%;
+
+          color: white;
+          background-color: $grey;
+          border: none;
+          border-radius: 2px;
+        }
+
+        textarea:focus {
+          outline: none;
+        }
+
+        .delete {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+
+          p {
+            font-size: 0.7rem;
+          }
+
+          button {
+            background: none;
+            border: none;
+            color: $red;
+            font-size: 0.7rem;
+            @include transition;
+          }
+          button:hover {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .character-combo {
+    flex-direction: column;
+    align-items: center;
+
+    .character-header {
+      position: fixed;
+      padding-left: 36vw;
+      height: 80px;
+      background-position-x: 70%;
+      background-size: initial;
+
+      @include transition;
+    }
+
+    .character-header:hover {
+      h1 {
+        color: $yellow;
+      }
+    }
+
+    > div {
+      position: static;
+      margin-top: 130px;
+      width: 100vw;
+      height: calc(50vw * 0.56);
+      display: flex;
+      justify-content: center;
+
+      iframe {
+        height: calc(50vw * 0.56);
+        width: 100%;
+        max-width: 1000px;
+      }
+    }
+
+    article {
+      padding-top: 0;
+      z-index: 0;
+    }
+  }
+}

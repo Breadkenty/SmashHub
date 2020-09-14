@@ -114,7 +114,7 @@ There are a few tools you need to get started...
 
 After you've installed everything above, you need to do a couple of things to ensure your local development works properly.
 
-1. **In the root folder of `Smash_Combos` run:**
+1. **In the Api folder of `Smash_Combos` run:**
 
 `dotnet restore`
 
@@ -122,21 +122,17 @@ After you've installed everything above, you need to do a couple of things to en
 
 `dotnet ef database update`
 
-3. **Import the characters into your local database**
-
-`psql Smash_ComboDatabase --file=Models/characters.sql`
-
-4. **Remove the `node_modules` file in the `ClientApp` folder**
+3. **Remove the `node_modules` file in the `ClientApp` folder**
 
 If you have <a href="https://www.npmjs.com/package/trash">Trash</a> installed, you can do `trash node_modules`
 
-5. **Install npm in `ClientApp`**
+4. **Install npm in `ClientApp`**
 
 `cd ClientApp`
 
 `npm install`
 
-6. **Set a JWT token locally for login sessions to work. Set the token on the root folder of `Smash_Combos`**
+6. **Set a JWT token locally for login sessions to work. Set the token on the Api folder of `Smash_Combos`**
 
 You can just choose any set of strings but you can also grab a random key here: https://www.grc.com/passwords.htm
 
@@ -146,7 +142,7 @@ You can just choose any set of strings but you can also grab a random key here: 
 
 7. **Run the app locally and get started!**
 
-Everytime you want to launch your changes live, run the command `dotnet watch run`.
+Everytime you want to launch your changes live, run the command `dotnet watch run` from the `Smash_Combos/Api` folder.
 
 On your browser and go to `https://0.0.0.0:5001`, and you should have the app running locally!
 
