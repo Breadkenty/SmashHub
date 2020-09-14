@@ -9,6 +9,6 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
     {
         public int CommentId { get; set; }
         public int CurrentUserId { get; set; }
-        public string UpOrDown { get; set; }
+        public bool IsUpVote { get; set; }
     }
 }

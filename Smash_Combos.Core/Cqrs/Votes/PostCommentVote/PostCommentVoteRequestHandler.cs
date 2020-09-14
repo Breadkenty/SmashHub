@@ -30,12 +30,23 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
             var existingCommentVote = await _dbContext.CommentVotes
                 .Include(vote => vote.Comment)
                 .Include(vote => vote.User)
-                .Where(commentVote => commentVote.Comment.Id == request.CommentId&& commentVote.User.Id == request.CurrentUserId)
+                .Where(commentVote => commentVote.Comment.Id == request.CommentId && commentVote.User.Id == request.CurrentUserId)
                 .FirstOrDefaultAsync();
+
+            string voteType;
+
+            if (request.IsUpVote)
+            {
+                voteType = "upvote";
+            }
+            else
+            {
+                voteType = "downvote";
+            }
 
             if (existingCommentVote != null)
             {
-                if (existingCommentVote.upOrDown == request.UpOrDown)
+                if (existingCommentVote.upOrDown == voteType)
                 {
                     _dbContext.CommentVotes.Remove(existingCommentVote);
 
@@ -69,7 +80,7 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                         throw new ArgumentException("Vote cannot be parsed");
                 }
 
-                existingCommentVote.upOrDown = request.UpOrDown;
+                existingCommentVote.upOrDown = voteType;
                 _dbContext.Entry(existingCommentVote).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
@@ -86,10 +97,10 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                 {
                     Comment = comment,
                     User = user,
-                    upOrDown = request.UpOrDown
+                    upOrDown = voteType
                 };
 
-                switch (request.UpOrDown)
+                switch (voteType)
                 {
                     case "upvote":
                         comment.VoteUp();

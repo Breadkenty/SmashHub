@@ -33,9 +33,20 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
                 .Where(comboVote => comboVote.Combo.Id == request.ComboId && comboVote.User.Id == request.CurrentUserId)
                 .FirstOrDefaultAsync();
 
+            string voteType;
+
+            if (request.IsUpVote)
+            {
+                voteType = "upvote";
+            }
+            else
+            {
+                voteType = "downvote";
+            }
+
             if (existingComboVote != null)
             {
-                if (existingComboVote.upOrDown == request.UpOrDown)
+                if (existingComboVote.upOrDown == voteType)
                 {
                     _dbContext.ComboVotes.Remove(existingComboVote);
 
@@ -69,7 +80,7 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
                         throw new ArgumentException("Vote cannot be parsed");
                 }
 
-                existingComboVote.upOrDown = request.UpOrDown;
+                existingComboVote.upOrDown = voteType;
                 _dbContext.Entry(existingComboVote).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
@@ -86,10 +97,10 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostComboVote
                 {
                     Combo = combo,
                     User = user,
-                    upOrDown = request.UpOrDown
+                    upOrDown = voteType
                 };
 
-                switch (request.UpOrDown)
+                switch (voteType)
                 {
                     case "upvote":
                         combo.VoteUp();
