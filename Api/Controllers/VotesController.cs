@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Smash_Combos.Core.Cqrs.Votes.PostComboVote;
 using Smash_Combos.Core.Cqrs.Votes.PostCommentVote;
+using Smash_Combos.Core.Cqrs.Votes.GetCommentVoteForUser;
+using Smash_Combos.Core.Cqrs.Votes.GetComboVoteForUser;
 
 namespace Smash_Combos.Controllers
 {
@@ -38,16 +40,40 @@ namespace Smash_Combos.Controllers
                 return StatusCode(500);
         }
 
-        [HttpPost("comment/{id}/{upOrDown}")]
+        [HttpGet("combo/{comboId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PostCommentVote(int id, string upOrDown)
+        public async Task<ActionResult<GetComboVoteForUserResponse>> GetComboVoteForCurrentUser([FromRoute] int comboId)
+        {
+            var response = await _mediator.Send(new GetComboVoteForUserRequest { ComboId = comboId, UserId = GetCurrentUserId() });
+
+            if (response != null)
+                return response;
+            else
+                return StatusCode(500);
+        }
+
+        [HttpPost("comment/{commentId}/{upOrDown}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PostCommentVote([FromRoute] int commentId, [FromRoute] string upOrDown)
         {
             var isUpVote = upOrDown == "upvote";
 
-            var result = await _mediator.Send(new PostCommentVoteRequest { CommentId = id, CurrentUserId = GetCurrentUserId(), IsUpVote = isUpVote });
+            var result = await _mediator.Send(new PostCommentVoteRequest { CommentId = commentId, CurrentUserId = GetCurrentUserId(), IsUpVote = isUpVote });
 
             if (result != null)
                 return NoContent();
+            else
+                return StatusCode(500);
+        }
+
+        [HttpGet("comment/{commentId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<GetCommentVoteForUserResponse>> GetCommentVoteForCurrentUser([FromRoute] int commentId)
+        {
+            var response = await _mediator.Send(new GetCommentVoteForUserRequest { CommentId = commentId, UserId = GetCurrentUserId() });
+
+            if (response != null)
+                return response;
             else
                 return StatusCode(500);
         }
