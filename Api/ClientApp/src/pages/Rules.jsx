@@ -36,7 +36,7 @@ export function Rules() {
           </li>
           <li>
             If you have a problem with a moderator, reach out to an admin on the{' '}
-            <a href="https://discord.gg/VbnAwUg">discord server</a>.
+            <a href="https://discord.gg/VbnAwUg">Discord server</a>.
           </li>
         </ul>
 

@@ -122,6 +122,17 @@ export function SideNav(props) {
         </li>
 
         <li>
+          <Link to="/FAQ">
+            <button
+              className="white-text button-blank"
+              onClick={props.handleSideBar}
+            >
+              FAQ
+            </button>
+          </Link>
+        </li>
+
+        <li>
           <Link to="/rules">
             <button
               className="white-text button-blank"

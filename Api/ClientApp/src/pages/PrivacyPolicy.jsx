@@ -102,7 +102,7 @@ export function PrivacyPolicy() {
           We may use cookies on our site to remember your preferences. For more
           general information on cookies, please read 
           <a href="https://www.cookieconsent.com/what-are-cookies/">
-            What Are Cookies"
+            "What Are Cookies"
           </a>
           .
         </p>
