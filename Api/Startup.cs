@@ -78,7 +78,7 @@ namespace Smash_Combos
                 };
             });
 
-            services.AddScoped<IMailSenderService, MailSenderService>();
+            services.AddScoped<IMailSenderService, GridSendMailSenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

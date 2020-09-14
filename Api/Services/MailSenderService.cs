@@ -23,7 +23,7 @@ namespace Smash_Combos.Services
             _password = config["PASSWORDRESET_EMAIL_PASSWORD"];
         }
 
-        public async Task SendMailAsync(string to, string subject, string body)
+        public async Task SendMailAsync(string to, string subject, string plainTextContent, string htmlContent)
         {
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587)
             {
@@ -36,7 +36,7 @@ namespace Smash_Combos.Services
             var fromAddress = new MailAddress(_address);
             var toAddress = new MailAddress(to);
 
-            using var message = new MailMessage() { From = fromAddress, Subject = subject, Body = body };
+            using var message = new MailMessage() { From = fromAddress, Subject = subject, Body = plainTextContent };
 
             message.To.Add(toAddress);
 
