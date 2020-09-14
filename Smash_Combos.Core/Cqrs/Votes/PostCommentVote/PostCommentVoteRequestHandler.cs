@@ -25,7 +25,7 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
             var comment = await _dbContext.Comments.FindAsync(request.CommentId);
 
             if (comment == null)
-                throw new KeyNotFoundException("Comment does not exist");
+                throw new KeyNotFoundException($"Comment with id {request.CommentId} does not exist");
 
             var existingCommentVote = await _dbContext.CommentVotes
                 .Include(vote => vote.Comment)
@@ -33,54 +33,33 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                 .Where(commentVote => commentVote.Comment.Id == request.CommentId && commentVote.User.Id == request.CurrentUserId)
                 .FirstOrDefaultAsync();
 
-            string voteType;
-
-            if (request.IsUpVote)
-            {
-                voteType = "upvote";
-            }
-            else
-            {
-                voteType = "downvote";
-            }
-
             if (existingCommentVote != null)
             {
-                if (existingCommentVote.upOrDown == voteType)
+                if (existingCommentVote.IsUpvote == request.IsUpVote)
                 {
                     _dbContext.CommentVotes.Remove(existingCommentVote);
 
-                    switch (existingCommentVote.upOrDown)
-                    {
-                        case "downvote":
-                            comment.VoteUp();
-                            break;
-                        case "upvote":
-                            comment.VoteDown();
-                            break;
-                        default:
-                            throw new ArgumentException("Vote cannot be parsed");
-                    }
+                    if (existingCommentVote.IsUpvote)
+                        comment.VoteDown();
+                    else
+                        comment.VoteUp();
 
                     await _dbContext.SaveChangesAsync(CancellationToken.None);
                     return new PostCommentVoteResponse();
                 }
 
-                switch (existingCommentVote.upOrDown)
+                if (existingCommentVote.IsUpvote)
                 {
-                    case "downvote":
-                        comment.VoteUp();
-                        comment.VoteUp();
-                        break;
-                    case "upvote":
-                        comment.VoteDown();
-                        comment.VoteDown();
-                        break;
-                    default:
-                        throw new ArgumentException("Vote cannot be parsed");
+                    comment.VoteDown();
+                    comment.VoteDown();
+                }
+                else
+                {
+                    comment.VoteUp();
+                    comment.VoteUp();
                 }
 
-                existingCommentVote.upOrDown = voteType;
+                existingCommentVote.IsUpvote = request.IsUpVote;
                 _dbContext.Entry(existingCommentVote).State = EntityState.Modified;
 
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
@@ -97,20 +76,13 @@ namespace Smash_Combos.Core.Cqrs.Votes.PostCommentVote
                 {
                     Comment = comment,
                     User = user,
-                    upOrDown = voteType
+                    IsUpvote = request.IsUpVote
                 };
 
-                switch (voteType)
-                {
-                    case "upvote":
-                        comment.VoteUp();
-                        break;
-                    case "downvote":
-                        comment.VoteDown();
-                        break;
-                    default:
-                        throw new ArgumentException("Vote cannot be parsed");
-                }
+                if (request.IsUpVote)
+                    comment.VoteUp();
+                else
+                    comment.VoteDown();
 
                 await _dbContext.CommentVotes.AddAsync(commentVote);
                 await _dbContext.SaveChangesAsync(CancellationToken.None);

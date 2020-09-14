@@ -5,6 +5,6 @@ namespace Smash_Combos.Domain.Models
         public int Id { get; set; }
         public User User { get; set; }
         public Combo Combo { get; set; }
-        public string upOrDown { get; set; }
+        public bool IsUpvote { get; set; }
     }
 }
