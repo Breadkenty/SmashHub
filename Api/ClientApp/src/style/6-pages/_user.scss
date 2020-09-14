@@ -178,7 +178,10 @@
         align-items: center;
         svg {
           fill: white;
-          width: 10px;
+          width: 25px;
+        }
+        svg:hover {
+          fill: $yellow;
         }
 
         .down-vote {

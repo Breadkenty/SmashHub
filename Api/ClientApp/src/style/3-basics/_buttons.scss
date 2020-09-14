@@ -211,6 +211,10 @@ input {
   }
 }
 
+.voted {
+  fill: $yellow !important;
+}
+
 @keyframes glowing {
   0% {
     box-shadow: 0 0 3px $yellow;
