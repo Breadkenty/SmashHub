@@ -42,7 +42,7 @@ export function Characters() {
             <p>
               We're happy to announce we've implemented a moderator feature to
               keep the contents of Smash Combos appropriate. Please check the{' '}
-              <Link to="/rules">rules</Link> before posting!
+              <Link to="/rules">rules</Link> before posting :)
             </p>
           </li>
           <li>
