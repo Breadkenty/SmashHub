@@ -46,9 +46,9 @@ export function Characters() {
             </p>
           </li>
           <li>
-            <Link className="header-link" to="https://discord.gg/VbnAwUg">
+            <a class="header-link" target="_blank" href="https://discord.gg/VbnAwUg">
               Official Smash Combos Discord
-            </Link>
+            </a>
           </li>
         </ul>
       </section>
