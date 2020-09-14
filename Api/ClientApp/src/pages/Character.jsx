@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router'
-import { authHeader, isLoggedIn } from '../auth'
+import { isLoggedIn } from '../auth'
 
 import { allCharacterPortrait } from '../components/allCharacterPortrait'
 import { allComboInputs } from '../components/combo-inputs/allComboInputs'
@@ -9,6 +9,7 @@ import { returnDifficulty } from '../components/returnDifficulty'
 
 import { SortController } from '../components/SortController'
 import { sortingFunctions } from '../components/sortingFunctions'
+import { CharacterCombo } from './CharacterCombo'
 
 import moment from 'moment'
 
@@ -21,17 +22,6 @@ export function Character() {
 
   let [filterText, setFilterText] = useState('')
   let [sortType, setSortType] = useState('best')
-
-  function handleVote(event, id, upOrDown) {
-    event.preventDefault()
-
-    fetch(`/api/ComboVotes/${id}/${upOrDown}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', ...authHeader() },
-    }).then(() => {
-      getCharacters()
-    })
-  }
 
   function getCharacters() {
     fetch(`/api/Characters/${characterVariableName}`)
@@ -54,7 +44,6 @@ export function Character() {
           backgroundImage: `url(${
             allCharacterPortrait[character.variableName]
           })`,
-          // Change position Y to match the character portrait
           backgroundPositionY: `${character.yPosition}%`,
         }}
       >
@@ -87,62 +76,11 @@ export function Character() {
             combo.title.toLowerCase().includes(filterText.toLowerCase())
           )
           .map(combo => (
-            <div key={combo.id} className="combo">
-              <div className="vote">
-                <button
-                  className="button-blank"
-                  onClick={event => {
-                    handleVote(event, combo.id, 'upvote')
-                  }}
-                >
-                  <svg viewBox="0 0 81 45">
-                    <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-                  </svg>
-                </button>
-                <h3 className="black-text">{combo.netVote}</h3>
-                <button
-                  className="button-blank"
-                  onClick={event => {
-                    handleVote(event, combo.id, 'downvote')
-                  }}
-                >
-                  <svg className="down-vote" viewBox="0 0 81 45">
-                    <path d="M40.55 3.003L3.015 41.985l19.406.044h.007l18.119-18.818 18.127 18.818h19.357L40.55 3.003z"></path>
-                  </svg>
-                </button>
-              </div>
-
-              <div className="information">
-                <header>
-                  <Link to={`/character/${characterVariableName}/${combo.id}`}>
-                    <h3>{combo.title}</h3>
-                  </Link>
-                  {returnDifficulty(combo.difficulty)}
-                </header>
-
-                <div className="combo-inputs">
-                  {combo.comboInput.split(' ').map((input, index) => (
-                    <div
-                      key={index}
-                      className="combo-input"
-                      style={{
-                        backgroundImage: `url(${allComboInputs[input]})`,
-                      }}
-                    ></div>
-                  ))}
-                </div>
-
-                <footer>
-                  <h5 className="white-text">
-                    Posted by{' '}
-                    <Link to={`/user/${combo.user.displayName}`}>
-                      {combo.user.displayName}
-                    </Link>{' '}
-                    {moment(combo.datePosted).fromNow()}
-                  </h5>
-                </footer>
-              </div>
-            </div>
+            <CharacterCombo
+              combo={combo}
+              characterVariableName={characterVariableName}
+              getCharacters={getCharacters}
+            />
           ))}
       </section>
     </div>
