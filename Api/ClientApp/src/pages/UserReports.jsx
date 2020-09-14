@@ -38,6 +38,7 @@ export function UserReports(props) {
             category: 0,
             body: '',
           })
+          window.location.reload(false)
           return { then: function() {} }
         } else {
           return response.json()
@@ -135,7 +136,7 @@ export function UserReports(props) {
                   ...infraction,
                   points: 0,
                   category: 0,
-                  banDuration: 30,
+                  banDuration: 86400,
                 })
               }}
             >
@@ -167,6 +168,26 @@ export function UserReports(props) {
 
             <div
               className={`button-wrapper ${
+                infraction.category === 1 ? 'active-button' : ''
+              }`}
+            >
+              <button
+                className="button bg-yellow"
+                onClick={event => {
+                  event.preventDefault()
+                  setInfraction({
+                    ...infraction,
+                    category: 1,
+                    points: infractionType === 'ban' ? 0 : 2,
+                  })
+                }}
+              >
+                Harassment
+              </button>
+            </div>
+
+            <div
+              className={`button-wrapper ${
                 infraction.category === 2 ? 'active-button' : ''
               }`}
             >
@@ -181,27 +202,7 @@ export function UserReports(props) {
                   })
                 }}
               >
-                Harassment
-              </button>
-            </div>
-
-            <div
-              className={`button-wrapper ${
-                infraction.category === 1 ? 'active-button' : ''
-              }`}
-            >
-              <button
-                className="button bg-yellow"
-                onClick={event => {
-                  event.preventDefault()
-                  setInfraction({
-                    ...infraction,
-                    category: 1,
-                    points: infractionType === 'ban' ? 0 : 1,
-                  })
-                }}
-              >
-                Inappropriate
+                Inappropriate Behavior
               </button>
             </div>
 
@@ -217,11 +218,11 @@ export function UserReports(props) {
                   setInfraction({
                     ...infraction,
                     category: 3,
-                    points: infractionType === 'ban' ? 0 : 4,
+                    points: infractionType === 'ban' ? 0 : 1,
                   })
                 }}
               >
-                Other
+                Unauthorized Promotion
               </button>
             </div>
           </div>
@@ -230,7 +231,7 @@ export function UserReports(props) {
             <div className="ban-duration">
               <div
                 className={`button-wrapper ${
-                  infraction.banDuration === 30 ? 'active-button' : ''
+                  infraction.banDuration === 86400 ? 'active-button' : ''
                 }`}
               >
                 <button
@@ -239,7 +240,26 @@ export function UserReports(props) {
                     event.preventDefault()
                     setInfraction({
                       ...infraction,
-                      banDuration: 30,
+                      banDuration: 86400,
+                    })
+                  }}
+                >
+                  1 Day
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
+                  infraction.banDuration === 172800 ? 'active-button' : ''
+                }`}
+              >
+                <button
+                  className="button bg-yellow"
+                  onClick={event => {
+                    event.preventDefault()
+                    setInfraction({
+                      ...infraction,
+                      banDuration: 172800,
                     })
                   }}
                 >
@@ -301,6 +321,25 @@ export function UserReports(props) {
                   }}
                 >
                   1 Month
+                </button>
+              </div>
+
+              <div
+                className={`button-wrapper ${
+                  infraction.banDuration === 2147483646 ? 'active-button' : ''
+                }`}
+              >
+                <button
+                  className="button bg-yellow"
+                  onClick={event => {
+                    event.preventDefault()
+                    setInfraction({
+                      ...infraction,
+                      banDuration: 2147483646,
+                    })
+                  }}
+                >
+                  Permanent
                 </button>
               </div>
             </div>

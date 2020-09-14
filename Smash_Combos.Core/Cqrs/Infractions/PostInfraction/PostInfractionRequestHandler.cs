@@ -56,7 +56,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
 
                 var reportsForUser = await _dbContext.Reports.Where(report => report.User.Id == user.Id).ToListAsync();
 
-                foreach(var report in reportsForUser)
+                foreach (var report in reportsForUser)
                 {
                     report.Dismiss = true;
                     _dbContext.Entry(report).State = EntityState.Modified;
@@ -79,9 +79,9 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PostInfraction
             return request.Category switch
             {
                 InfractionCategory.Spam => 1,
-                InfractionCategory.Inappropriate => 1,
                 InfractionCategory.Harassment => 2,
-                InfractionCategory.Other => request.Points,
+                InfractionCategory.Inappropriate => 2,
+                InfractionCategory.UnauthorizedPromotion => 1,
                 _ => null,
             };
         }

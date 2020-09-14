@@ -28,7 +28,7 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
         {
             var currentUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.CurrentUserId);
 
-            if(currentUser == null)
+            if (currentUser == null)
                 throw new KeyNotFoundException($"User with id {request.CurrentUserId} does not exist");
 
             var infraction = await _dbContext.Infractions.Where(infraction => infraction.Id == request.InfractionId).FirstOrDefaultAsync();
@@ -62,9 +62,9 @@ namespace Smash_Combos.Core.Cqrs.Infractions.PutInfraction
             return request.Category switch
             {
                 InfractionCategory.Spam => 1,
-                InfractionCategory.Inappropriate => 1,
                 InfractionCategory.Harassment => 2,
-                InfractionCategory.Other => request.Points,
+                InfractionCategory.Inappropriate => 2,
+                InfractionCategory.UnauthorizedPromotion => 1,
                 _ => null,
             };
         }
