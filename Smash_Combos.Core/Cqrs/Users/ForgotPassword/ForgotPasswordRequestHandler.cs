@@ -39,9 +39,8 @@ namespace Smash_Combos.Core.Cqrs.Users.ForgotPassword
             var token = new TokenGenerator(secret).TokenFor(payload);
 
             var link = $"{request.NewPasswordUrl}/{payload.Id}/{WebUtility.UrlEncode(token)}";
-            var mailBody = $"Click the following link to reset your password:\n\n{link}";
 
-            await _mailSender.SendMailAsync(user.Email, "Password Reset", mailBody);
+            await _mailSender.SendPasswordResetMailAsync(user.Email, link);
 
             return new ForgotPasswordResponse();
         }
