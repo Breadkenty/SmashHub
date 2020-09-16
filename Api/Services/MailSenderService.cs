@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Smash_Combos.Services
 {
-    public class MailSenderService : IMailSenderService
+    public class MailSenderService
     {
         private readonly string _address;
         private readonly string _password;

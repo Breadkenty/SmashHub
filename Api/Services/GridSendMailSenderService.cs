@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Smash_Combos.Core.Services;
@@ -26,11 +27,38 @@ namespace Smash_Combos.Services
             var client = new SendGridClient(API_KEY);
             var fromAddress = new EmailAddress("noreply@smashcombos.com", "Smash Combos");
             var toAddress = new EmailAddress(to);
+
+
             var msg = MailHelper.CreateSingleEmail(fromAddress, toAddress, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception("Could not deliver Email");
+        }
+
+        public async Task SendPasswordResetMailAsync(string to, string link)
+        {
+            var client = new SendGridClient(API_KEY);
+            var fromAddress = new EmailAddress("noreply@smashcombos.com", "Smash Combos");
+            var toAddress = new EmailAddress(to);
+
+            var msg = new SendGridMessage();
+            msg.SetFrom(fromAddress);
+            msg.AddTo(toAddress);
+            msg.TemplateId = "d-7c4ecbff63104be3a768e56604648bcb"; //The Template Id for the PasswordReset Template on SendGrid
+            msg.SetTemplateData(new PasswordResetTemplateData { Link = link });
+
+            var response = await client.SendEmailAsync(msg);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new Exception("Could not deliver Email");
+
+        }
+
+        private class PasswordResetTemplateData
+        {
+            [JsonProperty("link")]
+            public string Link { get; set; }
         }
     }
 }
