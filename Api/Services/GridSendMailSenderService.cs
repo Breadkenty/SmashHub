@@ -13,6 +13,7 @@ namespace Smash_Combos.Services
     public class GridSendMailSenderService : IMailSenderService
     {
         private readonly string API_KEY;
+        private static readonly string PW_RESET_TEMPLATE_ID = "d-7c4ecbff63104be3a768e56604648bcb"; //The Template Id for the PasswordReset Template on SendGrid
 
         public GridSendMailSenderService(IConfiguration config)
         {
@@ -45,7 +46,7 @@ namespace Smash_Combos.Services
             var msg = new SendGridMessage();
             msg.SetFrom(fromAddress);
             msg.AddTo(toAddress);
-            msg.TemplateId = "d-7c4ecbff63104be3a768e56604648bcb"; //The Template Id for the PasswordReset Template on SendGrid
+            msg.SetTemplateId(PW_RESET_TEMPLATE_ID);
             msg.SetTemplateData(new PasswordResetTemplateData { Link = link });
 
             var response = await client.SendEmailAsync(msg);
