@@ -82,6 +82,7 @@ import Terry from '../graphics/characters/Terry/Terry-1.png'
 import Byleth from '../graphics/characters/Byleth/Byleth-1.png'
 import MinMin from '../graphics/characters/MinMin/MinMin-1.png'
 import Steve from '../graphics/characters/Steve/Steve-1.png'
+import Sephiroth from '../graphics/characters/Sephiroth/Sephiroth-1.png'
 
 export const allCharacterCloseUp = {
   Mario,
@@ -168,4 +169,5 @@ export const allCharacterCloseUp = {
   Byleth,
   MinMin,
   Steve,
+  Sephiroth,
 }
