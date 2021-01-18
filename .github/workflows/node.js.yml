@@ -27,6 +27,6 @@ jobs:
     - name: CI
       run: |
         cd SmashCombos.Client
-        npm ci
+        npm install
         npm run build --if-present
         npm test
