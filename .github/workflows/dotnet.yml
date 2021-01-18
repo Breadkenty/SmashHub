@@ -18,8 +18,9 @@ jobs:
         dotnet-version: 3.1.x
 
     - name: Restore dependencies
-      run: dotnet restore SmashCombos.Api/SmashCombos.Api.csproj
+      run: ls
+      run: dotnet restore SmashCombos.sln
     - name: Build
-      run: dotnet build --no-restore SmashCombos.Api/SmashCombos.Api.csproj
+      run: dotnet build --no-restore SmashCombos.sln
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal SmashCombos.sln
