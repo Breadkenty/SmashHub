@@ -16,11 +16,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    - name: Check workspace
-      run: ls -la
+
     - name: Restore dependencies
-      run: dotnet restore SmashCombos.Api/SmashCombos.Api.csproj
+      run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore SmashCombos.Api/SmashCombos.Api.csproj
+      run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal SmashCombos.Api/SmashCombos.Api.csproj
+      run: dotnet test --no-build --verbosity normal
