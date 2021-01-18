@@ -1,1 +1,2 @@
-web: dotnet run && npm start
+web: dotnet run 
+web: npm start
