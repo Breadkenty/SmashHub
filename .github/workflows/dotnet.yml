@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 3.1.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore --project SmashCombos.Api/SmashCombos.Api.csproj
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --project SmashCombos.Api/SmashCombos.Api.csproj
     - name: Test
       run: dotnet test --no-build --verbosity normal
