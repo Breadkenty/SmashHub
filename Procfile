@@ -1,3 +1,3 @@
-dotnet run
+web: dotnet run
 
-npm start
+web: npm start
