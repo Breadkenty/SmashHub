@@ -6,8 +6,8 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <UserSecretsId>c3020b75-43fd-4da8-9b86-884a4993e032</UserSecretsId>
-    <RootNamespace>Smash_Combos</RootNamespace>
-    <AssemblyName>Smash_Combos</AssemblyName>
+    <RootNamespace>SmashCombos</RootNamespace>
+    <AssemblyName>SmashCombos</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
