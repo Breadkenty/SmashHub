@@ -18,7 +18,6 @@ jobs:
         dotnet-version: 3.1.x
 
     - name: Restore dependencies
-      run: ls
       run: dotnet restore SmashCombos.sln
     - name: Build
       run: dotnet build --no-restore SmashCombos.sln
