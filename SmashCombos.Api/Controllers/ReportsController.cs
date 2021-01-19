@@ -22,7 +22,7 @@ using Hellang.Middleware.ProblemDetails;
 
 namespace SmashCombos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ReportsController : ControllerBase
     {

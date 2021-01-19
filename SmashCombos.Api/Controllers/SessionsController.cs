@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SmashCombos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SessionsController : ControllerBase
     {
