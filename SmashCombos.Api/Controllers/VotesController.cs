@@ -15,7 +15,7 @@ using SmashCombos.Core.Cqrs.Votes.GetComboVoteForUser;
 
 namespace SmashCombos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class VotesController : ControllerBase
     {

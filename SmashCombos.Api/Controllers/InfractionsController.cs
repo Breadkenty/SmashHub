@@ -19,7 +19,7 @@ using SmashCombos.Domain.Models;
 
 namespace SmashCombos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class InfractionsController : ControllerBase
     {

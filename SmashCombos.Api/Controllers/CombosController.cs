@@ -24,7 +24,7 @@ namespace SmashCombos.Controllers
     // All of these routes will be at the base URL:     /api/Combos
     // That is what "api/[controller]" means below. It uses the name of the controller
     // in this case CombosController to determine the URL
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CombosController : ControllerBase
     {

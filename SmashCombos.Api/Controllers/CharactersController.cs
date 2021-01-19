@@ -19,7 +19,7 @@ namespace SmashCombos.Controllers
     // All of these routes will be at the base URL:     /api/Characters
     // That is what "api/[controller]" means below. It uses the name of the controller
     // in this case CharactersController to determine the URL
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CharactersController : ControllerBase
     {
