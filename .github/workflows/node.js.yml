@@ -28,8 +28,12 @@ jobs:
       run: |
         cd SmashCombos.Client
         yarn install
-    - name: CI
+    - name: Unit/Integration Test
       run: |
         cd SmashCombos.Client
         yarn test
-        yarn run cy:open
+    - name: E2E Test 
+      uses: cypress-io/github-action@v2
+      with:
+        start: npm start
+        working-directory: SmashCombos.Client
