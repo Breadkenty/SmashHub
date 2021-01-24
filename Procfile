@@ -1,1 +1,1 @@
-web: ./SmashCombos
+web: ls && dotnet run SmashCombos.dll
