@@ -1,15 +1,24 @@
 {
-  "name": "SmashCombos.Client",
+  "name": "smashcombos.client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "enzyme": "^3.11.0",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.7",
+    "formik": "^2.2.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
     "react-scripts": "4.0.1",
+    "redux": "^4.0.5",
+    "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -18,7 +27,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "lint": "tsc --project tsconfig.lint.json",
+    "lint:cypress": "tsc --project cypress/tsconfig.json",
+    "cy:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -39,12 +51,15 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.1.14",
-    "@storybook/addon-essentials": "^6.1.14",
-    "@storybook/addon-links": "^6.1.14",
-    "@storybook/node-logger": "^6.1.14",
+    "@storybook/addon-actions": "6.1.14",
+    "@storybook/addon-essentials": "^6.1.15",
+    "@storybook/addon-links": "^6.1.15",
+    "@storybook/node-logger": "^6.1.15",
     "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.14",
-    "cypress": "^6.2.1"
+    "@storybook/react": "^6.1.15",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.4.1",
+    "cypress": "^6.3.0",
+    "enzyme": "^3.11.0",
+    "redux-devtools": "^3.7.0"
   }
 }
