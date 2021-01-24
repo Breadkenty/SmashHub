@@ -3,7 +3,7 @@ import { sum } from "../../src/foo";
 
 describe("TypeScript spec", () => {
   it("works", () => {
-    cy.wrap("foo").should("equal", "food");
+    cy.wrap("foo").should("equal", "foo");
   });
 
   it("calls TS source file", () => {
