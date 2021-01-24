@@ -1,1 +1,1 @@
-web: ls && dotnet run SmashCombos.dll
+web: cd $HOME/heroku_output && ./SmashCombos
