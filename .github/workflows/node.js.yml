@@ -24,9 +24,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: CI
+    - name: Install Dependencies
       run: |
         cd SmashCombos.Client
-        npm install
-        npm run build --if-present
-        npm test
+        yarn install
+    - name: Unit/Integration Test
+      run: |
+        cd SmashCombos.Client
+        yarn test
+    - name: E2E Test 
+      uses: cypress-io/github-action@v2
+      with:
+        start: npm start
+        working-directory: SmashCombos.Client
