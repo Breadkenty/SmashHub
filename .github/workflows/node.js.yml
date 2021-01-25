@@ -28,6 +28,7 @@ jobs:
       run: |
         cd SmashCombos.Client
         yarn install
+        yarn build-storybook
     - name: Unit/Integration Test
       run: |
         cd SmashCombos.Client
