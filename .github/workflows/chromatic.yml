@@ -1,28 +1,26 @@
 # .github/workflows/chromatic.yml
-# name of our action
-name: 'Chromatic Deployment'
-# the event that will trigger the action
-on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
 
-# what the action will do
+# Workflow name
+name: 'Chromatic'
+
+# Event for the workflow
+on: push
+
+# List of jobs
 jobs:
-  test:
-    # the operating system it will run on
+  chromatic-deployment:
+    # Operating System
     runs-on: ubuntu-latest
-    # the list of steps that the action will go through
+    # Job steps
     steps:
       - uses: actions/checkout@v1
-      - run: |
-          cd SmashCombos.Client
-          yarn
-      - uses: chromaui/action@v1
-        # options required to the GitHub chromatic action
+      - name: Install dependencies
+        run: yarn
+        # 👇 Adds Chromatic as a step in the workflow
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        # Chromatic GitHub Action options
         with:
-          # our project token, to see how to obtain it
-          # refer to https://www.learnstorybook.com/intro-to-storybook/react/en/deploy/
-          projectToken: project-token
-          token: w4znzko6mj
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
