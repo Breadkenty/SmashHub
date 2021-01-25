@@ -11,7 +11,7 @@ jobs:
   chromatic-deployment:
     # Operating System
     runs-on: ubuntu-latest
-     defaults:
+    defaults:
       run:
         working-directory: ./SmashCombos.Client
     # Job steps
