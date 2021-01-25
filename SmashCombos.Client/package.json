@@ -19,7 +19,13 @@
     "react-scripts": "4.0.1",
     "redux": "^4.0.5",
     "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "@storybook/addon-actions": "^6.1.15",
+    "@storybook/addon-essentials": "^6.1.15",
+    "@storybook/addon-links": "^6.1.15",
+    "@storybook/node-logger": "^6.1.15",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.15",
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,12 +57,6 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.1.15",
-    "@storybook/addon-essentials": "^6.1.15",
-    "@storybook/addon-links": "^6.1.15",
-    "@storybook/node-logger": "^6.1.15",
-    "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.15",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.4.1",
     "cypress": "^6.3.0",
     "enzyme": "^3.11.0",
