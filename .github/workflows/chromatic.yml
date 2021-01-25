@@ -16,7 +16,9 @@ jobs:
     # the list of steps that the action will go through
     steps:
       - uses: actions/checkout@v1
-      - run: yarn
+      - run: |
+          cd SmashCombos.Client
+          yarn
       - uses: chromaui/action@v1
         # options required to the GitHub chromatic action
         with:
