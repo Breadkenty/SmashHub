@@ -11,6 +11,9 @@ jobs:
   chromatic-deployment:
     # Operating System
     runs-on: ubuntu-latest
+     defaults:
+      run:
+        working-directory: ./SmashCombos.Client
     # Job steps
     steps:
       - uses: actions/checkout@v1
@@ -21,7 +24,6 @@ jobs:
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
         with:
-          working-directory: SmashCombos.Client
           token: ${{ secrets.GITHUB_TOKEN }}
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
