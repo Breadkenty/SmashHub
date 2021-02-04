@@ -74,6 +74,11 @@ namespace SmashCombos
             });
 
             services.AddScoped<IMailSenderService, GridSendMailSenderService>();
+            services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder => builder.AllowAnyOrigin());
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,7 +86,6 @@ namespace SmashCombos
         {
             app.UseProblemDetails();
 
-            app.UseMvc();
 
             if (env.IsDevelopment())
             {
@@ -104,7 +108,11 @@ namespace SmashCombos
             });
             app.UseRouting();
 
+            app.UseCors();
+
             app.UseAuthorization();
+
+            app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {
