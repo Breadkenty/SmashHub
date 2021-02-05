@@ -27,10 +27,16 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
-    - name: Notify Discord if test fail
+    - name: Notify Discord if a test fail
       uses: rjstone/discord-webhook-notify@v1
       if: failure()
       with:
         severity: error
-        details: Test Failed!
+        username: Github CI Police
+        color: '#e53b37'
+        avatarUrl: https://img.icons8.com/doodle/240/000000/github--v1.png
+        description: A test has failed in the server.
+        details: 'Something broke in the backend'
+        footer: pls fix asap
+        text: Oh oh!
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK_TEST_FAILED }}
