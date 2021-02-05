@@ -7,7 +7,7 @@ describe("TypeScript spec", () => {
   });
 
   it("calls TS source file", () => {
-    expect(sum(1, 2, 3, 4)).to.equal(11);
+    expect(sum(1, 2, 3, 4)).to.equal(10);
   });
 });
 
