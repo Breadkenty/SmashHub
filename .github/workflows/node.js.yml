@@ -38,6 +38,13 @@ jobs:
       with:
         start: npm start
         working-directory: SmashCombos.Client
+    - name: Test Success
+      uses: rjstone/discord-webhook-notify@v1
+      if: success()
+      with:
+        severity: info
+        details: Test Succeeded!
+        webhookUrl: ${{ secrets.DISCORD_WEBHOOK_TEST_FAILED }}
     - name: Test Failure
       uses: rjstone/discord-webhook-notify@v1
       if: failure()
