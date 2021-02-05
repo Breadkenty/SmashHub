@@ -51,7 +51,6 @@ jobs:
         username: Github CI Police
         color: '#e53b37'
         avatarUrl: https://img.icons8.com/doodle/240/000000/github--v1.png
-        description: A test has failed in the client.
         details: 'Something broke in the frontend'
         footer: pls fix asap
         text: Oh oh!
