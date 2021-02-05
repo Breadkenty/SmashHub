@@ -20,32 +20,30 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
     - uses: actions/checkout@v2
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    
     - name: Install Dependencies
       run: |
         cd SmashCombos.Client
         yarn install
         yarn build-storybook
+    
     - name: Unit/Integration Test
       run: |
         cd SmashCombos.Client
         yarn test
+    
     - name: E2E Test 
       uses: cypress-io/github-action@v2
       with:
         start: npm start
         working-directory: SmashCombos.Client
-    - name: Test Success
-      uses: rjstone/discord-webhook-notify@v1
-      if: success()
-      with:
-        severity: info
-        details: Test Succeeded!
-        webhookUrl: ${{ secrets.DISCORD_WEBHOOK_TEST_FAILED }}
-    - name: Test Failure
+    
+    - name: Notify Discord if test fail
       uses: rjstone/discord-webhook-notify@v1
       if: failure()
       with:
