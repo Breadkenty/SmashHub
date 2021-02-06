@@ -15,9 +15,7 @@ namespace SmashCombos
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).
-                          //   UseUrls("http://0.0.0.0:5000/;https://0.0.0.0:5001").
-                          Build();
+            var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -30,17 +28,17 @@ namespace SmashCombos
                     try
                     {
                         await context.Database.MigrateAsync();
-                        Console.WriteLine("Database is up to date, #party time");
+                        Console.WriteLine("Database is up to date.");
                     }
                     catch (DbException)
                     {
-                        Console.WriteLine("Database Migration FAILED");
+                        Console.WriteLine("Database Migration failed.");
                         throw;
                     }
                 }
             }
 
-            var task = host.RunAsync();
+            _ = host.RunAsync();
             Console.WriteLine("🚀");
             WebHostExtensions.WaitForShutdown(host);
         }
