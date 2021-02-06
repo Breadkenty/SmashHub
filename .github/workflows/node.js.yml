@@ -14,17 +14,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
     - uses: actions/checkout@v2
     
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Set up Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 15.x
     
     - name: Install Dependencies
       run: |
@@ -42,7 +38,7 @@ jobs:
         start: npm start
         working-directory: SmashCombos.Client
     
-    - name: Notify Discord if a test fail
+    - name: Notify on failure
       uses: rjstone/discord-webhook-notify@v1
       if: failure()
       with:
