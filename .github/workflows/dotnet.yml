@@ -1,15 +1,14 @@
-name: .NET
+name: .NET Backend
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, master ]
   pull_request:
-    branches: [ develop ]
+    branches: [ develop, master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
       
@@ -21,13 +20,13 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
-    - name: Build
+    - name: Build project
       run: dotnet build --no-restore
       
-    - name: Test
+    - name: Test project
       run: dotnet test --no-build --verbosity normal
       
-    - name: Notify Discord if a test fail
+    - name: Notify on failure
       uses: rjstone/discord-webhook-notify@v1
       if: failure()
       with:
@@ -35,7 +34,7 @@ jobs:
         username: Github CI Police
         color: '#e53b37'
         avatarUrl: https://img.icons8.com/doodle/240/000000/github--v1.png
-        details: 'Something broke in the backend'
-        footer: pls fix asap
-        text: Oh oh!
+        details: 'Continuous Integration for the backend API failed.'
+        footer: Please Fix
+        text: Backend CI failed!
         webhookUrl: ${{ secrets.DISCORD_WEBHOOK_TEST_FAILED }}
