@@ -40,12 +40,6 @@ namespace SmashCombos
 
             services.AddProblemDetails(configure =>
             {
-                configure.IncludeExceptionDetails = (context, ex) =>
-                {
-                    var env = context.RequestServices.GetRequiredService<IHostEnvironment>();
-                    return env.IsDevelopment() || env.IsStaging() || env.IsProduction();
-                };
-
                 configure.Map<ArgumentException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest));
                 configure.Map<AuthenticationException>(ex => new StatusCodeProblemDetails(StatusCodes.Status401Unauthorized));
                 configure.Map<SecurityException>(ex => new StatusCodeProblemDetails(StatusCodes.Status403Forbidden));
@@ -53,10 +47,6 @@ namespace SmashCombos
                 configure.Map<Exception>(ex => new StatusCodeProblemDetails(StatusCodes.Status500InternalServerError));
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Smash_Combos", Version = "v1" });
-            });
             services.AddDbContext<IDbContext, PostgreSqlDatabaseContext>();
             services.AddMediatR(Core.AssemblyUtility.GetAssembly());
             services.AddAutoMapper(Core.AssemblyUtility.GetAssembly());
@@ -86,7 +76,6 @@ namespace SmashCombos
         {
             app.UseProblemDetails();
 
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -98,20 +87,9 @@ namespace SmashCombos
                 app.UseHsts();
             }
 
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Smash_Combos");
-            });
             app.UseRouting();
-
             app.UseCors();
-
             app.UseAuthorization();
-
             app.UseMvc();
 
             app.UseEndpoints(endpoints =>
