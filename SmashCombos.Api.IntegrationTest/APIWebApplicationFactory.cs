@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 using SmashCombos.Core.Services;
 using SmashCombos.Persistence;
-using Microsoft.EntityFrameworkCore;
-using SmashCombos.Domain.Models;
+using System.IO;
+using System.Linq;
 
 namespace SmashCombos.Api.Tests.Integration
 {
@@ -27,13 +25,15 @@ namespace SmashCombos.Api.Tests.Integration
                 }
 
                 var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
+                    .AddEntityFrameworkSqlite()
                     .BuildServiceProvider();
 
-                // Add ApplicationDbContext using an in-memory database for testing.
+                // Add ApplicationDbContext using in-memory database for testing.
                 services.AddDbContext<IDbContext, PostgreSqlDatabaseContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryTestDb");
+                    var keepAliveConnection = new SqliteConnection("DataSource=InMemoryTestDb;mode=memory;cache=shared");
+                    keepAliveConnection.Open();
+                    options.UseSqlite(keepAliveConnection);
                     options.UseInternalServiceProvider(serviceProvider);
                 });
 
@@ -45,9 +45,7 @@ namespace SmashCombos.Api.Tests.Integration
                     var db = scopedServices.GetRequiredService<IDbContext>();
 
                     db.Database.EnsureCreated();
-
-                    //TODO: Seed the in-memory db here. (Probably use an sql file)
-                    db.Characters.Add(new Character { Name = "Mario", ReleaseOrder = 1, VariableName = "Mario", YPosition = 30, Combos = new List<Combo>() });
+                    db.Database.ExecuteSqlRaw(File.ReadAllText("seeds.sql"));
                     db.SaveChangesAsync(System.Threading.CancellationToken.None);
                 }
             });
