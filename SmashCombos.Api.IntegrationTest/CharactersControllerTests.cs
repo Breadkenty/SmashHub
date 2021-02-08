@@ -1,15 +1,6 @@
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using SmashCombos.Core.Services;
-using SmashCombos.Domain.Models;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,14 +13,14 @@ namespace SmashCombos.Api.Tests.Integration
         private HttpClient _client;
         private APIWebApplicationFactory<Startup> _factory;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void Setup()
         {
             _factory = new APIWebApplicationFactory<Startup>();
             _client = _factory.CreateClient();
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             _client.Dispose();
