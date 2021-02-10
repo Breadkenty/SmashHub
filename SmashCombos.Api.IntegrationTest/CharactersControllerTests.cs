@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SmashCombos.Api.Tests.Integration
@@ -12,7 +13,7 @@ namespace SmashCombos.Api.Tests.Integration
     public class CharactersControllerTests : ControllerTests
     {
         [Test]
-        public async Task CharactersGetAllAsync()
+        public async Task GetAllCharactersAsync()
         {
             var request = new HttpRequestMessage(new HttpMethod("GET"), "/characters");
             var response = await Client.SendAsync(request);
@@ -25,7 +26,7 @@ namespace SmashCombos.Api.Tests.Integration
 
         [TestCase("link", ExpectedResult = 3)]
         [TestCase("mario", ExpectedResult = 2)]
-        public async Task<int> CharactersGetAllFilterAsync(string filter)
+        public async Task<int> GetAllCharactersFilterAsync(string filter)
         {
             var request = new HttpRequestMessage(new HttpMethod("GET"), $"/characters?filter={filter}");
             var response = await Client.SendAsync(request);
@@ -37,16 +38,124 @@ namespace SmashCombos.Api.Tests.Integration
         }
 
         [TestCase("Peach")]
-        public async Task CharacterByVariableNameAsync(string variableName)
+        public async Task GetCharacterByVariableNameAsync(string variableName)
+        {
+            var character = await GetCharacterAsync(variableName);
+            Assert.NotNull(character);
+        }
+
+        [TestCase("Mario")]
+        public async Task PutCharacterAsAdminAsync(string character)
+        {
+            //Throw exception because GET method returns 404
+            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync($"{character}EDITED"));
+
+            var characterToEdit = await GetCharacterAsync($"{character}");
+            Assert.NotNull(characterToEdit);
+
+            var login = await LoginAsync("testuser0@test.com", "testpassword");
+            var putCharRequest = new Core.Cqrs.Characters.PutCharacter.PutCharacterRequest
+            {
+                CharacterId = characterToEdit.Id,
+                CurrentUserId = login.User.Id,
+                YPosition = characterToEdit.YPosition,
+                ReleaseOrder = characterToEdit.ReleaseOrder,
+                Name = $"{characterToEdit.Name}EDITED",
+                VariableName = $"{characterToEdit.VariableName}EDITED"
+            };
+            var jsonRequest = JsonConvert.SerializeObject(putCharRequest);
+
+            var request = new HttpRequestMessage(new HttpMethod("PUT"), $"/characters/{character}EDITED");
+            request.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.Token);
+            var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+            var existingEditedCharacter = await GetCharacterAsync($"{character}EDITED");
+            Assert.NotNull(existingEditedCharacter);
+        }
+
+        [TestCase("New Character", "NewCharacter", 100, 50)]
+        public async Task PostCharacterAsAdminAsync(string name, string variableName, int releaseOrder, int yPosition)
+        {
+            //Throw exception because GET method returns 404
+            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync($"{variableName}"));
+            
+            var login = await LoginAsync("testuser0@test.com", "testpassword");
+
+            var postCharRequest = new Core.Cqrs.Characters.PostCharacter.PostCharacterRequest
+            {
+                CurrentUserId = login.User.Id,
+                YPosition = yPosition,
+                ReleaseOrder = releaseOrder,
+                Name = name,
+                VariableName = variableName
+            };
+
+            var jsonRequest = JsonConvert.SerializeObject(postCharRequest);
+            var request = new HttpRequestMessage(new HttpMethod("POST"), $"/characters");
+            request.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.Token);
+            var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+
+            var newlyAddedCharacter = await GetCharacterAsync(variableName);
+            Assert.NotNull(newlyAddedCharacter);
+        }
+
+        [TestCase("Mario")]
+        public async Task DeleteCharacterAsAdminAsync(string variableName)
+        {
+            var characterToDelete = await GetCharacterAsync($"{variableName}");
+            Assert.NotNull(characterToDelete);
+
+            var login = await LoginAsync("testuser0@test.com", "testpassword");
+            var deleteCharRequest = new Core.Cqrs.Characters.DeleteCharacter.DeleteCharacterRequest
+            {
+                CharacterId = characterToDelete.Id,
+                CurrentUserId = login.User.Id
+            };
+            var jsonRequest = JsonConvert.SerializeObject(deleteCharRequest);
+
+            var request = new HttpRequestMessage(new HttpMethod("DELETE"), $"/characters/{characterToDelete.Id}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.Token);
+            var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+            //Throw exception because GET method returns 404
+            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync(variableName));
+        }
+
+        public async Task<Core.Cqrs.Sessions.Login.LoginResponse> LoginAsync(string email, string password)
+        {
+            var loginRequest = new Core.Cqrs.Sessions.Login.LoginRequest
+            {
+                Email = email,
+                Password = password
+            };
+            var jsonRequest = JsonConvert.SerializeObject(loginRequest);
+            var request = new HttpRequestMessage(new HttpMethod("POST"), "/sessions")
+            {
+                Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json")
+            };
+
+            var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<Core.Cqrs.Sessions.Login.LoginResponse>(jsonResponse);
+            return responseObject;
+        }
+
+        public async Task<Core.Cqrs.Characters.GetCharacter.GetCharacterResponse> GetCharacterAsync(string variableName)
         {
             var request = new HttpRequestMessage(new HttpMethod("GET"), $"/characters/{variableName}");
             var response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
             var json = await response.Content.ReadAsStringAsync();
             var character = JsonConvert.DeserializeObject<Core.Cqrs.Characters.GetCharacter.GetCharacterResponse>(json);
-            Assert.NotNull(character);
+            return character;
         }
     }
 }

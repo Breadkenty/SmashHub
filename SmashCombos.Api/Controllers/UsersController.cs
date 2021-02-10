@@ -16,9 +16,6 @@ using System.Threading.Tasks;
 
 namespace SmashCombos.Controllers
 {
-    // All of these routes will be at the base URL:     /api/Users
-    // That is what "api/[controller]" means below. It uses the name of the controller
-    // in this case UsersController to determine the URL
     [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase

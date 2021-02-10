@@ -426,13 +426,17 @@ VALUES
 INSERT INTO "Users"
   ("DisplayName", "Email", "HashedPassword", "UserType", "PasswordMeetsCriteria", "DateCreated")
 VALUES
-  ('Kento', 'kawakamikento@gmail.com', "AQAAAAEAACcQAAAAELnyllU/dSbBi8scfIUQXNJO/FI3DlnFtGoXYU34FakP8Bbnw0vjr0912+MzQuTvDg==", 1, true, '2020-05-01');
+  ('TestUser0', 'testuser0@test.com', "AQAAAAEAACcQAAAAEB6ZIzDqHqT53NBq+oP/xkEY/0r2lrpyn9FrAnadg2OS+rBjhixB441XQw5FVJQWyg==", 3, true, '2020-05-01');
 
 INSERT INTO "Users"
   ("DisplayName", "Email", "HashedPassword", "UserType", "PasswordMeetsCriteria", "DateCreated")
 VALUES
-  ('Kento726', 'kento@suncoast.io', "AQAAAAEAACcQAAAAEJCmn4+fAuaVlUG9spZf6U8jbGk0OWEz7mT1DRxj9Le0T3YxHJHBFmGpdElaPDQJYg==", 1, true, '2020-05-01');
+  ('TestUser1', 'testuser1@test.com', "AQAAAAEAACcQAAAAEB6ZIzDqHqT53NBq+oP/xkEY/0r2lrpyn9FrAnadg2OS+rBjhixB441XQw5FVJQWyg==", 2, true, '2020-05-01');
 
+INSERT INTO "Users"
+  ("DisplayName", "Email", "HashedPassword", "UserType", "PasswordMeetsCriteria", "DateCreated")
+VALUES
+  ('TestUser2', 'testuser2@test.com', "AQAAAAEAACcQAAAAEB6ZIzDqHqT53NBq+oP/xkEY/0r2lrpyn9FrAnadg2OS+rBjhixB441XQw5FVJQWyg==", 1, true, '2020-05-01');
 
 INSERT INTO "Combos"
   ("CharacterId", "DatePosted", "Title", "VideoId", "VideoStartTime", "VideoEndTime", "ComboInput", "TrueCombo", "Difficulty", "Damage", "Notes", "NetVote", "UserId")
