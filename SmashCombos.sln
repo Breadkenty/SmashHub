@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmashCombos.Domain", "Smash
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmashCombos.Persistence", "SmashCombos.Persistence\SmashCombos.Persistence.csproj", "{73877F85-6093-4F53-B8D9-0E7661CB1C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmashCombos.Api.Tests.Integration", "SmashCombos.Api.IntegrationTest\SmashCombos.Api.Tests.Integration.csproj", "{60F96E26-C6A3-4737-84DB-4753273A5CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmashCombos.Api.Tests.Integration", "SmashCombos.Api.Tests.Integration\SmashCombos.Api.Tests.Integration.csproj", "{16E2758F-92F2-438B-A12C-3F7C387C49AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{73877F85-6093-4F53-B8D9-0E7661CB1C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73877F85-6093-4F53-B8D9-0E7661CB1C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73877F85-6093-4F53-B8D9-0E7661CB1C1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60F96E26-C6A3-4737-84DB-4753273A5CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60F96E26-C6A3-4737-84DB-4753273A5CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60F96E26-C6A3-4737-84DB-4753273A5CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60F96E26-C6A3-4737-84DB-4753273A5CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E2758F-92F2-438B-A12C-3F7C387C49AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E2758F-92F2-438B-A12C-3F7C387C49AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E2758F-92F2-438B-A12C-3F7C387C49AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E2758F-92F2-438B-A12C-3F7C387C49AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

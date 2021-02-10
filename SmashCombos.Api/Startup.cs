@@ -5,18 +5,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using SmashCombos.Core.Services;
 using SmashCombos.Persistence;
 using SmashCombos.Services;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Data.Common;
+using System.Linq;
 using System.Security;
 using System.Security.Authentication;
 using System.Text;
@@ -46,7 +46,8 @@ namespace SmashCombos
                 configure.Map<Exception>(ex => new StatusCodeProblemDetails(StatusCodes.Status500InternalServerError));
             });
 
-            services.AddDbContext<IDbContext, PostgreSqlDatabaseContext>();
+            SetUpDataBase(services);
+
             services.AddMediatR(Core.AssemblyUtility.GetAssembly());
             services.AddAutoMapper(Core.AssemblyUtility.GetAssembly());
 
@@ -97,6 +98,35 @@ namespace SmashCombos
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+            using(var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<IDbContext>();
+                EnsureDatabaseCreated(dbContext);
+            }
+        }
+
+        public virtual void SetUpDataBase(IServiceCollection services)
+        {
+            services.AddDbContext<IDbContext, PostgreSqlDatabaseContext>();
+        }
+
+        public virtual void EnsureDatabaseCreated(IDbContext dbContext)
+        {
+            var migrations = dbContext.Database.GetPendingMigrations();
+
+            if (migrations.Count() > 0)
+            {
+                try
+                {
+                    dbContext.Database.Migrate();
+                }
+                catch (DbException)
+                {
+                    Console.WriteLine("Database Migration failed.");
+                    throw;
+                }
+            }
         }
     }
 }
