@@ -44,13 +44,13 @@ namespace SmashCombos.Api.Tests.Integration
             Assert.NotNull(character);
         }
 
-        [TestCase("Mario")]
-        public async Task PutCharacterAsAdminAsync(string character)
+        [TestCase("Mario", "MarioEdited")]
+        public async Task PutCharacterAsAdminAsync(string oldName, string editedName)
         {
             //Throw exception because GET method returns 404
-            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync($"{character}EDITED"));
+            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync(editedName));
 
-            var characterToEdit = await GetCharacterAsync($"{character}");
+            var characterToEdit = await GetCharacterAsync(oldName);
             Assert.NotNull(characterToEdit);
 
             var login = await LoginAsync("testuser0@test.com", "testpassword");
@@ -60,26 +60,28 @@ namespace SmashCombos.Api.Tests.Integration
                 CurrentUserId = login.User.Id,
                 YPosition = characterToEdit.YPosition,
                 ReleaseOrder = characterToEdit.ReleaseOrder,
-                Name = $"{characterToEdit.Name}EDITED",
-                VariableName = $"{characterToEdit.VariableName}EDITED"
+                Name = editedName,
+                VariableName = editedName
             };
             var jsonRequest = JsonConvert.SerializeObject(putCharRequest);
 
-            var request = new HttpRequestMessage(new HttpMethod("PUT"), $"/characters/{character}EDITED");
+            var request = new HttpRequestMessage(new HttpMethod("PUT"), $"/characters/{editedName}");
             request.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.Token);
             var response = await Client.SendAsync(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
-            var existingEditedCharacter = await GetCharacterAsync($"{character}EDITED");
+            var existingEditedCharacter = await GetCharacterAsync(editedName);
             Assert.NotNull(existingEditedCharacter);
+            Assert.AreEqual(existingEditedCharacter.Name, editedName);
+            Assert.AreEqual(existingEditedCharacter.VariableName, editedName);
         }
 
         [TestCase("New Character", "NewCharacter", 100, 50)]
         public async Task PostCharacterAsAdminAsync(string name, string variableName, int releaseOrder, int yPosition)
         {
             //Throw exception because GET method returns 404
-            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync($"{variableName}"));
+            Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync(variableName));
             
             var login = await LoginAsync("testuser0@test.com", "testpassword");
 
@@ -126,7 +128,7 @@ namespace SmashCombos.Api.Tests.Integration
             Assert.ThrowsAsync<HttpRequestException>(async () => await GetCharacterAsync(variableName));
         }
 
-        public async Task<Core.Cqrs.Sessions.Login.LoginResponse> LoginAsync(string email, string password)
+        private async Task<Core.Cqrs.Sessions.Login.LoginResponse> LoginAsync(string email, string password)
         {
             var loginRequest = new Core.Cqrs.Sessions.Login.LoginRequest
             {
@@ -147,7 +149,7 @@ namespace SmashCombos.Api.Tests.Integration
             return responseObject;
         }
 
-        public async Task<Core.Cqrs.Characters.GetCharacter.GetCharacterResponse> GetCharacterAsync(string variableName)
+        private async Task<Core.Cqrs.Characters.GetCharacter.GetCharacterResponse> GetCharacterAsync(string variableName)
         {
             var request = new HttpRequestMessage(new HttpMethod("GET"), $"/characters/{variableName}");
             var response = await Client.SendAsync(request);
