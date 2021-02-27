@@ -30,7 +30,7 @@ namespace SmashCombos.Core.Cqrs.Characters.PutCharacter
 
             if (currentUser.UserType == UserType.Admin)
             {
-                var character = await _dbContext.Characters.Where(character => character.VariableName == request.VariableName).FirstOrDefaultAsync();
+                var character = await _dbContext.Characters.Where(character => character.Id == request.CharacterId).FirstOrDefaultAsync();
 
                 if (character == null)
                     throw new KeyNotFoundException($"Character with name {request.VariableName} does not exist");

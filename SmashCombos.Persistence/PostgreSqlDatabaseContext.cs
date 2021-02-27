@@ -24,6 +24,11 @@ namespace SmashCombos.Persistence
         public DbSet<Report> Reports { get; set; }
         public DbSet<Infraction> Infractions { get; set; }
 
+        public PostgreSqlDatabaseContext(DbContextOptions options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (LOG_SQL_STATEMENTS_IN_DEVELOPMENT && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
