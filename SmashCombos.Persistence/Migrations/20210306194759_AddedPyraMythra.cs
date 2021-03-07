@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Smash_Combos.Persistence.Migrations
+namespace SmashCombos.Persistence.Migrations
 {
     public partial class AddedPyraMythra : Migration
     {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Smash_Combos.Persistence;
+using SmashCombos.Persistence;
 
-namespace Smash_Combos.Persistence.Migrations
+namespace SmashCombos.Persistence.Migrations
 {
     [DbContext(typeof(PostgreSqlDatabaseContext))]
     [Migration("20210306194759_AddedPyraMythra")]
@@ -21,7 +21,7 @@ namespace Smash_Combos.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Character", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Character", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("Characters");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Combo", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Combo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,7 +106,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("Combos");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.ComboVote", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.ComboVote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,7 +131,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("ComboVotes");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Comment", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +163,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.CommentVote", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.CommentVote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -188,7 +188,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("CommentVotes");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Infraction", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Infraction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -229,7 +229,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("Infractions");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Report", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Report", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -271,7 +271,7 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.User", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -303,86 +303,86 @@ namespace Smash_Combos.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Combo", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Combo", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Character", "Character")
+                    b.HasOne("SmashCombos.Domain.Models.Character", "Character")
                         .WithMany("Combos")
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("SmashCombos.Domain.Models.User", "User")
                         .WithMany("Combos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.ComboVote", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.ComboVote", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Combo", "Combo")
+                    b.HasOne("SmashCombos.Domain.Models.Combo", "Combo")
                         .WithMany()
                         .HasForeignKey("ComboId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("SmashCombos.Domain.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Comment", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Comment", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Combo", "Combo")
+                    b.HasOne("SmashCombos.Domain.Models.Combo", "Combo")
                         .WithMany("Comments")
                         .HasForeignKey("ComboId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("SmashCombos.Domain.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.CommentVote", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.CommentVote", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Comment", "Comment")
+                    b.HasOne("SmashCombos.Domain.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("SmashCombos.Domain.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Infraction", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Infraction", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.User", "Moderator")
+                    b.HasOne("SmashCombos.Domain.Models.User", "Moderator")
                         .WithMany()
                         .HasForeignKey("ModeratorId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("SmashCombos.Domain.Models.User", "User")
                         .WithMany("Infractions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Smash_Combos.Domain.Models.Report", b =>
+            modelBuilder.Entity("SmashCombos.Domain.Models.Report", b =>
                 {
-                    b.HasOne("Smash_Combos.Domain.Models.Combo", "Combo")
+                    b.HasOne("SmashCombos.Domain.Models.Combo", "Combo")
                         .WithMany("Reports")
                         .HasForeignKey("ComboId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.Comment", "Comment")
+                    b.HasOne("SmashCombos.Domain.Models.Comment", "Comment")
                         .WithMany("Reports")
                         .HasForeignKey("CommentId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "Reporter")
+                    b.HasOne("SmashCombos.Domain.Models.User", "Reporter")
                         .WithMany()
                         .HasForeignKey("ReporterId");
 
-                    b.HasOne("Smash_Combos.Domain.Models.User", "User")
+                    b.HasOne("SmashCombos.Domain.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
