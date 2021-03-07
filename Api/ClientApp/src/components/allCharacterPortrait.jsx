@@ -83,6 +83,7 @@ import Byleth from '../graphics/characters/Byleth/Byleth-5.png'
 import MinMin from '../graphics/characters/MinMin/MinMin-5.png'
 import Steve from '../graphics/characters/Steve/Steve-5.png'
 import Sephiroth from '../graphics/characters/Sephiroth/Sephiroth-5.png'
+import PyraMythra from '../graphics/characters/PyraMythra/PyraMythra-5.png'
 
 export const allCharacterPortrait = {
   Mario,
@@ -170,4 +171,5 @@ export const allCharacterPortrait = {
   MinMin,
   Steve,
   Sephiroth,
+  PyraMythra
 }
