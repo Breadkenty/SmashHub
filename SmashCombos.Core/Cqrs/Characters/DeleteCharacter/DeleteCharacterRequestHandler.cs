@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,7 +43,7 @@ namespace SmashCombos.Core.Cqrs.Characters.DeleteCharacter
             }
             else
             {
-                throw new SecurityException("Not authorized to create characters");
+                throw new SecurityException("Not authorized to delete characters");
             }
         }
     }

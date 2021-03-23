@@ -11,9 +11,9 @@ namespace SmashCombos.Api.Tests.Integration
 {
     public class SessionsControllerTests : ControllerTests
     {
-        [TestCase("testuser0@test.com", "testpassword", "TestUser0", Domain.Models.UserType.Admin)]
-        [TestCase("testuser1@test.com", "testpassword", "TestUser1", Domain.Models.UserType.Moderator)]
-        [TestCase("testuser2@test.com", "testpassword", "TestUser2", Domain.Models.UserType.User)]
+        [TestCase("testuseradmin@test.com", "testpassword", "TestUserAdmin", Domain.Models.UserType.Admin)]
+        [TestCase("testusermod@test.com", "testpassword", "TestUserMod", Domain.Models.UserType.Moderator)]
+        [TestCase("testuser@test.com", "testpassword", "TestUser", Domain.Models.UserType.User)]
         public async Task UsersLoginSuccessAsync(string email, string password, string displayName, Domain.Models.UserType type)
         {
             var loginRequest = new Core.Cqrs.Sessions.Login.LoginRequest

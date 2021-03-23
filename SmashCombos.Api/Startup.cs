@@ -41,7 +41,7 @@ namespace SmashCombos
             {
                 configure.Map<ArgumentException>(ex => new StatusCodeProblemDetails(StatusCodes.Status400BadRequest));
                 configure.Map<AuthenticationException>(ex => new StatusCodeProblemDetails(StatusCodes.Status401Unauthorized));
-                configure.Map<SecurityException>(ex => new StatusCodeProblemDetails(StatusCodes.Status403Forbidden));
+                configure.Map<SecurityException>(ex => new StatusCodeProblemDetails(StatusCodes.Status403Forbidden)); 
                 configure.Map<KeyNotFoundException>(ex => new StatusCodeProblemDetails(StatusCodes.Status404NotFound));
                 configure.Map<Exception>(ex => new StatusCodeProblemDetails(StatusCodes.Status500InternalServerError));
             });
@@ -78,7 +78,7 @@ namespace SmashCombos
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {
