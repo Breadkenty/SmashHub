@@ -4,6 +4,7 @@ using Smash_Combos.Domain.Models;
 using Smash_Combos.Core.Services;
 using System;
 using System.Text.RegularExpressions;
+using Npgsql;
 
 namespace Smash_Combos.Persistence
 {
@@ -38,7 +39,6 @@ namespace Smash_Combos.Persistence
                 var defaultConnectionString = $"server=localhost;database={DEVELOPMENT_DATABASE_NAME}";
 
                 var conn = databaseURL != null ? ConvertPostConnectionToConnectionString(databaseURL) : defaultConnectionString;
-
                 optionsBuilder.UseNpgsql(conn);
             }
         }
@@ -46,10 +46,18 @@ namespace Smash_Combos.Persistence
         private string ConvertPostConnectionToConnectionString(string connection)
         {
             var _connection = connection.Replace("postgres://", String.Empty);
-
             var connectionParts = Regex.Split(_connection, ":|@|/");
 
-            return $"server={connectionParts[2]};database={connectionParts[4]};User Id={connectionParts[0]};password={connectionParts[1]};port={connectionParts[3]}";
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
+            {
+                SslMode = SslMode.Require,
+                Username = connectionParts[0],
+                Password = connectionParts[1],
+                Port = int.Parse(connectionParts[3]),
+                Host = connectionParts[2]
+            };
+
+            return builder.ConnectionString;
         }
     }
 }
