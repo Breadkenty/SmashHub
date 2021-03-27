@@ -51,6 +51,7 @@ namespace Smash_Combos.Persistence
             NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
             {
                 SslMode = SslMode.Require,
+                TrustServerCertificate = true,
                 Username = connectionParts[0],
                 Password = connectionParts[1],
                 Port = int.Parse(connectionParts[3]),
