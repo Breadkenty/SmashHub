@@ -1,4 +1,4 @@
-# Smash Combos Code of Conduct
+# SmashHub Code of Conduct
 
 ## Our Pledge
 

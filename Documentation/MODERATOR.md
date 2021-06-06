@@ -1,6 +1,6 @@
 # Moderators
 
-First of all thank you so much for taking an interest in making our Smash Combos community a better place. We're really happy to have you on board the team! We've built out a system on our app that should be easy and straight forward to use. The process is pretty straight forward and we're also looking to improve the environment as we continue to work on the app.
+First of all thank you so much for taking an interest in making our SmashHub community a better place. We're really happy to have you on board the team! We've built out a system on our app that should be easy and straight forward to use. The process is pretty straight forward and we're also looking to improve the environment as we continue to work on the app.
 
 ## Objectives:
 
@@ -9,14 +9,14 @@ First of all thank you so much for taking an interest in making our Smash Combos
 
 ## Tasks:
 
-- Actively review reports on the Smash Combos app.
+- Actively review reports on the SmashHub app.
 - Keeping an eye on the comment section to make sure users are having a friendly, productive conversation.
 - Addressing hostility and abusive posts appropriately.
 - Handle reports with a warning or ban in your best judgement (guidelines to follow below).
 
 ## Guidelines:
 
-As a moderator, you are required to use your best judgement to follow certain protocols. However, in addition to your judgement, we would like to provide some guidelines to give you an idea on how to moderate the user activities in Smash Combos.
+As a moderator, you are required to use your best judgement to follow certain protocols. However, in addition to your judgement, we would like to provide some guidelines to give you an idea on how to moderate the user activities in SmashHub.
 
 - Give attention to users with the highest amount of reports
 - When addressing a user report, read the comments thoroughly, and review the reported content.
@@ -27,7 +27,7 @@ As a moderator, you are required to use your best judgement to follow certain pr
   1. A warning is given as an infraction
   2. A warning should be issued if a user has:
      1. Clearly broken a rule
-     2. Has received over three reports from other users and violates the Smash Combos rule and code of conduct.
+     2. Has received over three reports from other users and violates the SmashHub rule and code of conduct.
   3. Infract until the user hits `3` points
   4. On the third point, a `two-day` ban is issued
   5. If the next offense is within a `three-month` time frame, a `one-week` ban is issued. If it's not within the `three-month` time frame, another `two-day` ban is issued
@@ -75,11 +75,11 @@ Violating any of these rules will result to revoking your mod status, and in som
 5. No giving a warning or bans to a user for sharing their opinions, unless it breaks any of the rules in **Prohibited Behavior** and **Zero Tolerance Offenses**
 6. Remain neutral during a conflict, do not allow your emotions to make your decisions
 7. Be professional, fair, and effective—remember you are here to help users, not to punish them
-8. Must follow all of the rules in **Smash Combos Code of Conduct**
+8. Must follow all of the rules in **SmashHub Code of Conduct**
 
 ## Remarks
 
-Thank you so much for volunteering your time to make Smash Combos a better place. This app would not be where it is if it weren't for enthusiastic individuals like you! We're here to support you going forward and we're very happy to have you.
+Thank you so much for volunteering your time to make SmashHub a better place. This app would not be where it is if it weren't for enthusiastic individuals like you! We're here to support you going forward and we're very happy to have you.
 
 Welcome aboard,
 

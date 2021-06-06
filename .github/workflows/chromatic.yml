@@ -1,15 +1,15 @@
-name: 'Publish storybook to chromatic'
+name: "Publish storybook to chromatic"
 
 on:
   push:
-    branches: [ develop, master ]
+    branches: [develop, master]
 
 jobs:
   chromatic:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./SmashCombos.Client
+        working-directory: ./SmashHub.Client
     steps:
       - uses: actions/checkout@v1
       - run: yarn install

@@ -1,4 +1,4 @@
-# Contributing to Smash Combos
+# Contributing to SmashHub
 
 ---
 
@@ -114,7 +114,7 @@ There are a few tools you need to get started...
 
 After you've installed everything above, you need to do a couple of things to ensure your local development works properly.
 
-1. **In the `SmashCombos.Api` folder run:**
+1. **In the `SmashHub.Api` folder run:**
 
 `dotnet restore`
 
@@ -122,15 +122,15 @@ After you've installed everything above, you need to do a couple of things to en
 
 `dotnet ef database update`
 
-3. **Remove the `node_modules` directory in the `SmashCombos.Client` directory**
+3. **Remove the `node_modules` directory in the `SmashHub.Client` directory**
 
 If you have <a href="https://www.npmjs.com/package/trash">Trash</a> installed, you can use `trash node_modules`
 
-4. **Install npm in the `SmashCombos.Client` directory**
+4. **Install npm in the `SmashHub.Client` directory**
 
 `npm install`
 
-5. **Set a JWT token locally for login sessions to work. Set the token on the `SmashCombos.Api` folder**
+5. **Set a JWT token locally for login sessions to work. Set the token on the `SmashHub.Api` folder**
 
 You can just choose any set of strings but you can also grab a random key here: https://www.grc.com/passwords.htm
 
@@ -138,7 +138,7 @@ You can just choose any set of strings but you can also grab a random key here: 
 
 6. **Run the app locally and get started!**
 
-Everytime you want to launch your changes live, run the command `dotnet watch run` from the `SmashCombos.Api` folder.
+Everytime you want to launch your changes live, run the command `dotnet watch run` from the `SmashHub.Api` folder.
 
 On your browser and go to `https://0.0.0.0:5001`, and you should have the app running locally!
 
@@ -156,7 +156,7 @@ Please report all bugs as issues with the `bugs` label. Here are some things to 
 
 #### Features and enhancements
 
-The goal for Smash Combos is to provide a platform for players in Super Smash Bros (Ultimate) to share competitive information with one another. Which means we will be doing our best to listen to the community and their needs. Most feature requests will happen on our <a href="https://discord.com/invite/VbnAwUg">Discord server</a> however they will ultimately be posted as issues. Please tag the issues with the `enhancements` label.
+The goal for SmashHub is to provide a platform for players in Super Smash Bros (Ultimate) to share competitive information with one another. Which means we will be doing our best to listen to the community and their needs. Most feature requests will happen on our <a href="https://discord.com/invite/VbnAwUg">Discord server</a> however they will ultimately be posted as issues. Please tag the issues with the `enhancements` label.
 
 1. **Like bugs, have a clear descriptive title that can be explained in one sentence**. When requesting a feature, they should be broken down into small manageable bite-size pieces.
 2. **Describe what the feature does, and why it should be included**. It's important to know why the feature is being added in the first place. Features requests will be decided depending on the demand by the users.
