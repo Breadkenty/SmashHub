@@ -23,19 +23,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd SmashHub.Client
+          cd SmashHub.Client/smashhub-web-app
           yarn install
-
-      - name: Unit/Integration Test
-        run: |
-          cd SmashHub.Client
-          yarn test
 
       - name: E2E Test
         uses: cypress-io/github-action@v2
         with:
           start: npm start
-          working-directory: SmashHub.Client
+          working-directory: SmashHub.Client/smashhub-web-app
 
       - name: Notify on failure
         uses: rjstone/discord-webhook-notify@v1
