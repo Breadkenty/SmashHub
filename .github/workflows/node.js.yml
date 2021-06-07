@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./SmashHub.Client/smashhub-webapp
 
     steps:
       - uses: actions/checkout@v2
@@ -22,20 +25,10 @@ jobs:
           node-version: 15.x
 
       - name: Install Dependencies
-        run: |
-          cd SmashHub.Client
-          yarn install
-
-      - name: Unit/Integration Test
-        run: |
-          cd SmashHub.Client
-          yarn test
+        run: yarn install
 
       - name: E2E Test
-        uses: cypress-io/github-action@v2
-        with:
-          start: npm start
-          working-directory: SmashHub.Client
+        run: yarn run cypress run
 
       - name: Notify on failure
         uses: rjstone/discord-webhook-notify@v1

@@ -9,10 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./SmashHub.Client
+        working-directory: ./SmashHub.Client/smashhub-component-library
     steps:
       - uses: actions/checkout@v1
+
       - run: yarn install
+
+      - name: Unit/Integration Test
+        run: yarn test
+
       - run: |
           yarn build-storybook
           CHROMATIC_PROJECT_TOKEN=${{ secrets.CHROMATIC_PROJECT_TOKEN }} npx chromatic --exit-zero-on-changes -d storybook-static/
