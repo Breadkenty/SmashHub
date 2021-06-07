@@ -48,16 +48,7 @@ namespace SmashHub.Persistence
             var _connection = connection.Replace("postgres://", String.Empty);
             var connectionParts = Regex.Split(_connection, ":|@|/");
 
-            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
-            {
-                SslMode = SslMode.Require,
-                Username = connectionParts[0],
-                Password = connectionParts[1],
-                Port = int.Parse(connectionParts[3]),
-                Host = connectionParts[2]
-            };
-
-            return builder.ConnectionString;
+            return $"server={connectionParts[2]};SSL Mode=Require;Trust Server Certificate=true;database={connectionParts[4]}; User Id = { connectionParts[0] }; password={connectionParts[1]}; port={connectionParts[3]}";
         }
     }
 }
