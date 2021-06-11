@@ -15,7 +15,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:component-library": "cd ../smashhub-component-library && yarn install && yarn build && cd ../smashhub-webapp && yarn add ../smashhub-component-library && yarn build",
+    "link:component-library": "cd ../smashhub-component-library && yarn link && yarn run build && cd ../smashhub-webapp && yarn link smashhub-component-library && yarn start"
   },
   "eslintConfig": {
     "extends": [

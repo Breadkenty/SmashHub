@@ -1,7 +1,4 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
+name: Frontend pipeline
 
 on:
   push:
@@ -25,10 +22,22 @@ jobs:
           node-version: 15.x
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install && yarn build:component-library
 
       - name: E2E Test
         run: yarn run cypress run
+
+      - uses: actions/checkout@v1
+
+      - name: Unit/Integration Test
+        working-directory: ./SmashHub.Client/smashhub-component-library
+        run: yarn install && yarn test
+
+      - name: Deploy to Chromatic
+        working-directory: ./SmashHub.Client/smashhub-component-library
+        run: |
+          yarn build-storybook
+          CHROMATIC_PROJECT_TOKEN=${{ secrets.CHROMATIC_PROJECT_TOKEN }} npx chromatic --exit-zero-on-changes -d storybook-static/
 
       - name: Notify on failure
         uses: rjstone/discord-webhook-notify@v1
