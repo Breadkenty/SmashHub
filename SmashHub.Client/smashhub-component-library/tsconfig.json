@@ -12,12 +12,12 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/components/**/*"],
   "exclude": [
     "node_modules",
     "build",
     "storybook-static",
-    "src/**/*.stories.tsx",
-    "src/**/*.test.tsx"
+    "src/components/**/*.stories.tsx",
+    "src/components/**/*.test.tsx"
   ]
 }

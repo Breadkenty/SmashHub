@@ -1,11 +1,10 @@
 import "./App.css";
-import { TestComponent } from "smashhub-component-library";
+import { Button } from "smashhub-component-library";
 
 function App() {
   return (
     <div className="App">
-      <TestComponent />
-      <h2>yes?</h2>
+      <Button foo="HUHUHUHUH" />
     </div>
   );
 }
