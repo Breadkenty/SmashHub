@@ -1,8 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { theme } from "../../styles/theme";
 
-const useAppStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   root: {
-    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    height: "100vh",
   },
   nav: {
     display: "flex",
@@ -10,6 +12,6 @@ const useAppStyles = makeStyles(() => ({
   navButton: {
     margin: 8,
   },
-}));
+});
 
-export default useAppStyles;
+export default useStyles;

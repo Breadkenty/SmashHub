@@ -1,9 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useAboutStyles = makeStyles({
+const useUpdatesStyles = makeStyles(() => ({
   root: {
     color: "red",
   },
-});
+}));
 
-export default useAboutStyles;
+export default useUpdatesStyles;

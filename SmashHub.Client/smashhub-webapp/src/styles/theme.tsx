@@ -9,6 +9,23 @@ export const theme = createMuiTheme({
       default: "#181818",
       paper: "#212121",
     },
+    text: {
+      primary: "#FFF",
+      secondary: "#FFF",
+      disabled: "#FFF",
+      hint: "#FFF",
+    },
+  },
+  typography: {
+    h1: {
+      fontWeight: 800,
+      fontSize: "1.5rem",
+      lineHeight: 1.235,
+      letterSpacing: 0.24,
+    },
+    button: {
+      textTransform: "none",
+    },
   },
 });
 

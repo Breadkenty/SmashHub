@@ -3,17 +3,27 @@ import ReactDOM from "react-dom";
 import "./styles/index.css";
 import App from "./pages/App/App";
 import reportWebVitals from "./reportWebVitals";
-import { ThemeProvider } from "@material-ui/core/styles";
+import {
+  createGenerateClassName,
+  StylesProvider,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import theme from "./styles/theme";
 import { BrowserRouter } from "react-router-dom";
 
+const generateClassName = createGenerateClassName({
+  seed: "smashhub",
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <StylesProvider generateClassName={generateClassName}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </StylesProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

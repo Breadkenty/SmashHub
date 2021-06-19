@@ -11,10 +11,11 @@ import Reports from "../Reports/Reports";
 import Rules from "../Rules/Rules";
 import SignIn from "../SignIn/SignIn";
 import SignUp from "../SignUp/SignUp";
-import Spicy from "../Spicy/Spicy";
+import Trending from "../Trending/Trending";
 import Submit from "../Submit/Submit";
 import User from "../User/User";
 import Home from "../Home/Home";
+import Updates from "../Updates/Updates";
 
 function Routes() {
   return (
@@ -30,8 +31,9 @@ function Routes() {
       <Route exact path="/rules" component={Rules} />
       <Route exact path="/sign-in" component={SignIn} />
       <Route exact path="/sign-up" component={SignUp} />
-      <Route exact path="/spicy" component={Spicy} />
+      <Route exact path="/trending" component={Trending} />
       <Route exact path="/submit" component={Submit} />
+      <Route exact path="/updates" component={Updates} />
       <Route exact path="/user" component={User} />
     </>
   );
