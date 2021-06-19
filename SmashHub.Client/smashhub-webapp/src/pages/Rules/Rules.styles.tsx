@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useRulesStyles = makeStyles(() => ({
+const useRulesStyles = makeStyles((theme: Theme) => ({
   root: {
     color: "red",
   },

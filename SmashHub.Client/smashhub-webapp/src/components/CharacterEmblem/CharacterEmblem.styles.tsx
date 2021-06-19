@@ -1,7 +1,6 @@
-import { fade, makeStyles } from "@material-ui/core/styles";
-import theme from "../../styles/theme";
+import { fade, makeStyles, Theme } from "@material-ui/core";
 
-const useCharacterEmblemStyles = makeStyles({
+const useCharacterEmblemStyles = makeStyles((theme: Theme) => ({
   buttonBase: {
     color: theme.palette.common.white,
     borderRadius: 50,
@@ -26,6 +25,6 @@ const useCharacterEmblemStyles = makeStyles({
   img: {
     userDrag: "none",
   },
-});
+}));
 
 export default useCharacterEmblemStyles;

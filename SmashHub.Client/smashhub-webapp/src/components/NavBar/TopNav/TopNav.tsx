@@ -1,6 +1,5 @@
 // Main Imports
 import React, { useState } from "react";
-import useTopNavStyles from "./TopNav.styles";
 import { Link as RouterLink } from "react-router-dom";
 
 // Material UI Imports
@@ -27,8 +26,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 // Component Imports
 import SubSideNav from "../SubSideNav/SubSideNav";
 import MainSideNav from "../MainSideNav/MainSideNav";
-
-import theme from "../../../styles/theme";
+import useTopNavStyles from "./TopNav.styles";
 
 export interface TopNavProps {
   authenticated: boolean;
@@ -37,7 +35,7 @@ export interface TopNavProps {
 }
 
 function TopNav(props: TopNavProps) {
-  const classes = useTopNavStyles(theme);
+  const classes = useTopNavStyles();
   const mobile = useMediaQuery("(max-width:600px)");
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

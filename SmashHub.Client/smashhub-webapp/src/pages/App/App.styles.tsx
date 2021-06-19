@@ -1,7 +1,6 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { theme } from "../../styles/theme";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
     height: "100vh",
@@ -12,6 +11,6 @@ const useStyles = makeStyles({
   navButton: {
     margin: 8,
   },
-});
+}));
 
 export default useStyles;

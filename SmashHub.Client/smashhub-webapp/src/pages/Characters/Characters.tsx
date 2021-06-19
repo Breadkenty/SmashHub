@@ -1,7 +1,7 @@
 import CharacterEmblem from "../../components/CharacterEmblem/CharacterEmblem";
-import useCharactersStyles from "./Characters.styles";
 import parameters from "../../parameters.json";
 import { Divider, Typography } from "@material-ui/core";
+import useCharactersStyles from "./Characters.styles";
 
 function Characters() {
   const classes = useCharactersStyles();

@@ -1,9 +1,8 @@
-import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../styles/theme";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useMainSideNavStyles = makeStyles({
+const useMainSideNavStyles = makeStyles((theme: Theme) => ({
   content: {
-    // border: "1px solid red",
+    border: "1px solid red",
     margin: "64px 0px 0px 0px",
     padding: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
@@ -20,6 +19,6 @@ const useMainSideNavStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
   },
-});
+}));
 
 export default useMainSideNavStyles;

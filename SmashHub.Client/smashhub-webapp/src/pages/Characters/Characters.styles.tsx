@@ -1,7 +1,6 @@
-import { makeStyles } from "@material-ui/core/styles";
-import theme from "../../styles/theme";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useCharactersStyles = makeStyles(() => ({
+const useCharactersStyles = makeStyles((theme: Theme) => ({
   root: {
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.background.paper,

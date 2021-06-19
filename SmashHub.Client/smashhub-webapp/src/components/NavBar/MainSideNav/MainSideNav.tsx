@@ -1,7 +1,5 @@
 // Main Imports
 import { Dispatch, SetStateAction, useState } from "react";
-import useMainSideNavStyles from "./MainSideNav.styles";
-import theme from "../../../styles/theme";
 import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -24,6 +22,7 @@ import {
 
 // Component Imports
 import { mainOptions, subOptions, footerOptions } from "./options";
+import useMainSideNavStyles from "./MainSideNav.styles";
 
 export interface MainSideNavProps {
   mobileOpen: boolean;
@@ -38,7 +37,7 @@ export interface Option {
 }
 
 function MainSideNav(props: MainSideNavProps) {
-  const classes = useMainSideNavStyles(theme);
+  const classes = useMainSideNavStyles();
   const mobile = useMediaQuery("(max-width:600px)");
 
   const [open, setOpen] = useState(false);
@@ -61,7 +60,13 @@ function MainSideNav(props: MainSideNavProps) {
         };
 
     return (
-      <Link {...propToUse} underline="none" color="inherit" variant="button">
+      <Link
+        {...propToUse}
+        key={option.text}
+        underline="none"
+        color="inherit"
+        variant="button"
+      >
         <ListItem button>
           <ListItemIcon>{option.icon}</ListItemIcon>
           <ListItemText

@@ -1,7 +1,6 @@
-import { fade, makeStyles } from "@material-ui/core/styles";
-import { theme } from "../../../styles/theme";
+import { fade, makeStyles, Theme } from "@material-ui/core";
 
-const useTopNavStyles = makeStyles({
+const useTopNavStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     zIndex: theme.zIndex.drawer + 2,
@@ -85,6 +84,6 @@ const useTopNavStyles = makeStyles({
     height: 24,
     margin: 4,
   },
-});
+}));
 
 export default useTopNavStyles;

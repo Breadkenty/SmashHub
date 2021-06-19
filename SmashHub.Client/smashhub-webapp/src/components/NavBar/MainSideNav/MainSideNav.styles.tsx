@@ -1,9 +1,8 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { theme } from "../../../styles/theme";
+import { makeStyles, Theme } from "@material-ui/core";
 
 const drawerWidth = 275;
 
-const useMainSideNavStyles = makeStyles({
+const useMainSideNavStyles = makeStyles((theme: Theme) => ({
   root: {
     position: "fixed",
     top: 0,
@@ -39,6 +38,7 @@ const useMainSideNavStyles = makeStyles({
     overflowX: "hidden",
   },
   logoButton: {
+    border: "1px solid red",
     padding: theme.spacing(2),
     width: "100%",
   },
@@ -49,6 +49,6 @@ const useMainSideNavStyles = makeStyles({
   list: {
     padding: 0,
   },
-});
+}));
 
 export default useMainSideNavStyles;

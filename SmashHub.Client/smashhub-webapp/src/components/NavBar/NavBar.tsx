@@ -1,12 +1,11 @@
 // Main Imports
 import React from "react";
-import useNavBarStyles from "./NavBar.styles";
 
 // Material UI Imports
 
 // Component Imports
 import TopNav from "./TopNav/TopNav";
-import theme from "../../styles/theme";
+import useNavBarStyles from "./NavBar.styles";
 
 export interface NavBarProps {
   authenticated: boolean;
@@ -16,7 +15,7 @@ export interface NavBarProps {
 }
 
 function NavBar(props: NavBarProps) {
-  const classes = useNavBarStyles(theme);
+  const classes = useNavBarStyles();
 
   return (
     <>

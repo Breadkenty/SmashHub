@@ -1,6 +1,6 @@
 import { Avatar, ButtonBase } from "@material-ui/core";
-import useCharacterEmblemStyles from "./CharacterEmblem.styles";
 import parameters from "../../parameters.json";
+import useCharacterEmblemStyles from "./CharacterEmblem.styles";
 
 export interface CharacterEmblemProps {
   character: string;
