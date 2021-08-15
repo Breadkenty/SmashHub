@@ -1,9 +1,7 @@
 import { makeStyles, Theme } from "@material-ui/core";
 
 const useFaqStyles = makeStyles((theme: Theme) => ({
-  root: {
-    color: "red",
-  },
+  root: {},
 }));
 
 export default useFaqStyles;

@@ -1,9 +1,9 @@
 import { Avatar, ButtonBase } from "@material-ui/core";
-import parameters from "../../parameters.json";
+import constants from "../../constants.json";
 import useCharacterEmblemStyles from "./CharacterEmblem.styles";
 
 export interface CharacterEmblemProps {
-  character: string;
+  characterVariableName: string;
 }
 
 function CharacterEmblem(props: CharacterEmblemProps) {
@@ -20,7 +20,7 @@ function CharacterEmblem(props: CharacterEmblemProps) {
           classes={{
             img: classes.img,
           }}
-          src={`${parameters.imagePrefix}/character-emblem/${props.character}-emblem.png`}
+          src={`${constants.imagePrefix}/character-emblem/${props.characterVariableName}-emblem.png`}
         />
       </ButtonBase>
     </>

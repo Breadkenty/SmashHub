@@ -1,5 +1,5 @@
 import { useState } from "react";
-import NavBar from "../../components/NavBar/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 // import useAppStyles from "./App.styles";
 import Routes from "./Routes";
 

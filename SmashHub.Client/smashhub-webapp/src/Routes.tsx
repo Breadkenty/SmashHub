@@ -1,21 +1,21 @@
 import { Route } from "react-router";
 
 // Components
-import About from "../About/About";
-import Characters from "../Characters/Characters";
-import Character from "../Character/Character";
-import Faq from "../Faq/Faq";
-import OurTeam from "../OurTeam/OurTeam";
-import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
-import Reports from "../Reports/Reports";
-import Rules from "../Rules/Rules";
-import SignIn from "../SignIn/SignIn";
-import SignUp from "../SignUp/SignUp";
-import Trending from "../Trending/Trending";
-import Submit from "../Submit/Submit";
-import User from "../User/User";
-import Home from "../Home/Home";
-import Updates from "../Updates/Updates";
+import About from "./pages/About/About";
+import Characters from "./pages/Characters/Characters";
+import Character from "./pages/Character/Character";
+import Faq from "./pages/Faq/Faq";
+import OurTeam from "./pages/OurTeam/OurTeam";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import Reports from "./pages/Reports/Reports";
+import Rules from "./pages/Rules/Rules";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
+import Trending from "./pages/Trending/Trending";
+import Submit from "./pages/Submit/Submit";
+import User from "./pages/User/User";
+import Home from "./pages/Home/Home";
+import Updates from "./pages/Updates/Updates";
 
 function Routes() {
   return (
@@ -23,8 +23,12 @@ function Routes() {
       <Route exact path="/" component={Home} />
       <Route exact path="/about" component={About} />
       <Route exact path="/characters" component={Characters} />
-      <Route exact path="/character" component={Character} />
-      <Route exact path="/faq" component={Faq} />
+      <Route
+        exact
+        path="/character/:characterVariableName"
+        component={Character}
+      />
+      <Route exact path="/faq/:oh" component={Faq} />
       <Route exact path="/our-team" component={OurTeam} />
       <Route exact path="/privacy-policy" component={PrivacyPolicy} />
       <Route exact path="/reports" component={Reports} />

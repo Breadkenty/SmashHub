@@ -29,7 +29,7 @@ const useTopNavStyles = makeStyles((theme: Theme) => ({
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     width: "100%",
-    maxWidth: 600,
+    maxWidth: 350,
     margin: theme.spacing(0, 2),
   },
   searchIcon: {

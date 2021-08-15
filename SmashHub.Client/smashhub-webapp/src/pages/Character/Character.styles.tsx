@@ -1,8 +1,12 @@
-import { makeStyles, Theme } from "@material-ui/core";
+import { makeStyles, Theme } from '@material-ui/core';
 
 const useCharacterStyles = makeStyles((theme: Theme) => ({
   root: {
-    color: "red",
+    width: '100%',
+  },
+
+  characterCard: {
+    marginBottom: theme.spacing(1),
   },
 }));
 

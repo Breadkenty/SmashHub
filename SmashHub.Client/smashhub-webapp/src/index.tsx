@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.css";
-import App from "./pages/App/App";
+import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./styles/theme";

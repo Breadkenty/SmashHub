@@ -60,19 +60,10 @@ function MainSideNav(props: MainSideNavProps) {
         };
 
     return (
-      <Link
-        {...propToUse}
-        key={option.text}
-        underline="none"
-        color="inherit"
-        variant="button"
-      >
+      <Link {...propToUse} key={option.text} underline="none" color="inherit" variant="button" onClick={() => setOpen(false)}>
         <ListItem button>
           <ListItemIcon>{option.icon}</ListItemIcon>
-          <ListItemText
-            primary={<Typography variant="button">{option.text}</Typography>}
-            className={classes.listItemText}
-          />
+          <ListItemText primary={<Typography variant="button">{option.text}</Typography>} className={classes.listItemText} />
         </ListItem>
       </Link>
     );
@@ -94,9 +85,7 @@ function MainSideNav(props: MainSideNavProps) {
           </Link>
         )}
         {props.authenticated && menuItem(mainOptions[0], true)}
-        {mainOptions
-          .filter((option) => option.text !== "Submit a combo")
-          .map((option: Option) => menuItem(option, true))}
+        {mainOptions.filter((option) => option.text !== "Submit a combo").map((option: Option) => menuItem(option, true))}
         <Divider />
         {subOptions.map((option: Option) => menuItem(option, true))}
       </List>
@@ -124,15 +113,7 @@ function MainSideNav(props: MainSideNavProps) {
     onMouseLeave: handleDrawerClose,
   };
 
-  return (
-    <>
-      {mobile ? (
-        <Drawer {...drawerProps}>{menuItems()}</Drawer>
-      ) : (
-        <Paper {...paperProps}>{menuItems()}</Paper>
-      )}
-    </>
-  );
+  return <>{mobile ? <Drawer {...drawerProps}>{menuItems()}</Drawer> : <Paper {...paperProps}>{menuItems()}</Paper>}</>;
 }
 
 export default MainSideNav;
