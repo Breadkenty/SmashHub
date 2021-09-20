@@ -1,6 +1,87 @@
 {
   "version": 2,
   "projects": {
+    "smashhub-design-system": {
+      "root": "libs/smashhub-design-system",
+      "sourceRoot": "libs/smashhub-design-system/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/smashhub-design-system/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/smashhub-design-system"],
+          "options": {
+            "jestConfig": "libs/smashhub-design-system/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "executor": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/smashhub-design-system/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "executor": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/smashhub-design-system",
+            "config": {
+              "configFolder": "libs/smashhub-design-system/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
+    "smashhub-design-system-e2e": {
+      "root": "apps/smashhub-design-system-e2e",
+      "sourceRoot": "apps/smashhub-design-system-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/smashhub-design-system-e2e/cypress.json",
+            "devServerTarget": "smashhub-design-system:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "smashhub-design-system:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/smashhub-design-system-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
     "smashhub-web-app": {
       "root": "apps/smashhub-web-app",
       "sourceRoot": "apps/smashhub-web-app/src",

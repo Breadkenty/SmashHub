@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@smashhub-frontend/smashhub-design-system": [
+        "libs/smashhub-design-system/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
