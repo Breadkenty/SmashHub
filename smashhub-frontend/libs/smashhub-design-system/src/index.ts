@@ -1,1 +1,1 @@
-export * from './lib/SmashhubDesignSystem';
+export * from './lib/SmashHubMui/Button/Button';

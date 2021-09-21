@@ -5,8 +5,6 @@ import star from './star.svg';
 
 import { Route, Link } from 'react-router-dom';
 
-import { SmashhubDesignSystem } from '@smashhub-frontend/smashhub-design-system';
-
 const StyledApp = styled.div`
   font-family: sans-serif;
   min-width: 300px;
@@ -257,7 +255,6 @@ nx affected:e2e
           </div>
         )}
       />
-      <Route path="/smashhub-design-system" component={SmashhubDesignSystem} />
       <Route
         path="/page-2"
         exact
