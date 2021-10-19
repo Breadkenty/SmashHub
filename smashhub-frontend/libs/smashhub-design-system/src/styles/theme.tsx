@@ -17,12 +17,12 @@ export const theme = createTheme({
     // },
   },
   typography: {
-    //   h1: {
-    //     fontWeight: 800,
-    //     fontSize: "1.5rem",
-    //     lineHeight: 1.235,
-    //     letterSpacing: 0.24,
-    //   },
+      h1: {
+        fontWeight: 800,
+        fontSize: "1.5rem",
+        lineHeight: 1.235,
+        letterSpacing: 0.24,
+      },
     button: {
       textTransform: 'none',
     },
